@@ -40,6 +40,27 @@ class UserPost extends StatelessWidget {
         Container(
           height: 400,
           color: Colors.grey,
+        ),
+        // below the post
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Icon(Icons.favorite),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Icon(Icons.chat),
+                  ),
+                  Icon(Icons.share),
+                ],
+              ),
+              // Spacer(),
+              Icon(Icons.bookmark)
+            ],
+          ),
         )
       ],
     );
