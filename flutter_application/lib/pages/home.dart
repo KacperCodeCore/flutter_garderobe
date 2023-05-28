@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/pages/user_post.dart';
 
 class UserHome extends StatelessWidget {
   // const UserHome({super.key});
@@ -24,7 +25,9 @@ class UserHome extends StatelessWidget {
           ],
         ),
       ),
-      body: Center(child: Text('Hom')),
+      body: Column(children: [
+        UserPost(name: "kacper"),
+      ]),
     );
   }
 }
