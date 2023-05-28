@@ -8,15 +8,23 @@ class UserHome extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('MyGarderobe'),
-            Icon(Icons.add),
-            Icon(Icons.favorite),
-            Icon(Icons.share),
+            Row(
+              children: [
+                Icon(Icons.add),
+                Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Icon(Icons.favorite),
+                ),
+                Icon(Icons.share),
+              ],
+            )
           ],
         ),
       ),
-      body: const Center(child: Text('Hom')),
+      body: Center(child: Text('Hom')),
     );
   }
 }
