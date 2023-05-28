@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/pages/user_post.dart';
 
 class UserHome extends StatelessWidget {
-  // const UserHome({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

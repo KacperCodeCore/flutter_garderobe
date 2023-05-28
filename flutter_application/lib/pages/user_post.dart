@@ -46,12 +46,12 @@ class UserPost extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: const [
               Row(
                 children: [
                   Icon(Icons.favorite),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
                     child: Icon(Icons.chat),
                   ),
                   Icon(Icons.share),
