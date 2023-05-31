@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/pages/user_post.dart';
 
 class UserHome extends StatelessWidget {
+  final List<String> postNames = ['kacper', 'John', 'Alice', 'Bob'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,9 +25,14 @@ class UserHome extends StatelessWidget {
           ],
         ),
       ),
-      body: Column(children: [
-        UserPost(name: "kacper"),
-      ]),
+      body: ListView.builder(
+        itemCount: postNames.length,
+        itemBuilder: (context, index) {
+          return UserPost(
+            name: postNames[index],
+          );
+        },
+      ),
     );
   }
 }

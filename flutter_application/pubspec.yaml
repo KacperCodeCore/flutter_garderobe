@@ -57,6 +57,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  image_picker: ^0.8.7+5
 
   # To add assets to your application, add an assets section, like this:
   # assets:

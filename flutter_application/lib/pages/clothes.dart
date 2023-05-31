@@ -3,8 +3,20 @@ import 'package:flutter/material.dart';
 class UserClothes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Clothes')),
-    );
+    return Scaffold(
+        appBar: AppBar(
+      title: const Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Clothes'),
+          Row(
+            children: [
+              Icon(Icons.abc),
+              Icon(Icons.abc),
+            ],
+          ),
+        ],
+      ),
+    ));
   }
 }
