@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/pages/user_element.dart';
 
 class UserClothes extends StatelessWidget {
   @override
@@ -18,10 +19,10 @@ class UserClothes extends StatelessWidget {
             ],
           ),
         ),
-        body: Container(
-          color: Colors.blue,
-          height: 400,
-          width: 400,
+        body: Center(
+          child: Column(
+            children: [UserElement(), UserElement()],
+          ),
         ));
   }
 }
