@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/pages/clothes.dart';
-import 'package:flutter_application/pages/garderobe.dart';
-import 'package:flutter_application/pages/home.dart';
-import 'package:flutter_application/pages/search.dart';
+import 'package:flutter_application/pages/page_element/element_page.dart';
+import 'package:flutter_application/pages/page_collection/garderobe.dart';
+import 'package:flutter_application/pages/page_home/home.dart';
+import 'package:flutter_application/pages/page_search/search.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,8 +22,8 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _children = [
     UserHome(),
     UserSearch(),
-    UserGarderobe(),
-    UserClothes(),
+    CollectionPage(),
+    ElementPage(),
   ];
 
   @override
