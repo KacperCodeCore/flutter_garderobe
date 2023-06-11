@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/pages/page_element/element.dart'
     as MyElement;
 import 'package:flutter_application/pages/page_element/element_list.dart';
+// import 'package:flutter_application/Images/garderobe_background.png' as backround;
 
 class ElementPage extends StatelessWidget {
   final ElementList elementList = ElementList(elementList: []);
