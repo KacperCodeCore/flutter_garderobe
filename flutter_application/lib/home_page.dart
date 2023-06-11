@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/pages/page_element/element_page.dart';
-import 'package:flutter_application/pages/page_collection/garderobe.dart';
+import 'package:flutter_application/pages/page_collection/collection_page.dart';
 import 'package:flutter_application/pages/page_home/home.dart';
 import 'package:flutter_application/pages/page_search/search.dart';
 
