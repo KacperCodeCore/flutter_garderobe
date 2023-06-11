@@ -12,4 +12,10 @@ class ElementList {
   void removeElement(Widget element) {
     elementList.remove(element);
   }
+
+  void editElement(int index, Widget newWidget) {
+    if (index >= 0 && index < elementList.length) {
+      elementList[index] = newWidget;
+    }
+  }
 }

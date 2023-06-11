@@ -8,34 +8,41 @@ class ElementPage extends StatelessWidget {
 
   ElementPage() {
     elementList.addElement(MyElement.Element());
-    elementList.addElement(MyElement.Element());
-    elementList.addElement(MyElement.Element());
-    elementList.addElement(MyElement.Element());
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Clothes'),
-            Row(
-              children: [
-                Icon(Icons.abc),
-                Icon(Icons.abc),
-              ],
-            ),
-          ],
+        appBar: AppBar(
+          title: const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Clothes'),
+              Row(
+                children: [
+                  Icon(Icons.abc),
+                  Icon(Icons.abc),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
-      body: ListView.builder(
-        itemCount: elementList.elementList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return elementList.elementList[index];
-        },
-      ),
-    );
+        body: Center(
+          child: ListView.builder(
+            itemCount: elementList.elementList.length,
+            itemBuilder: (BuildContext context, int index) {
+              return elementList.elementList[index];
+            },
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            elementList.addElement(MyElement.Element());
+          },
+          child: Icon(
+            Icons.add,
+            size: 40,
+          ),
+        ));
   }
 }

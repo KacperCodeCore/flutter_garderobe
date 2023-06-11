@@ -10,8 +10,6 @@ class Element extends StatefulWidget {
   State<Element> createState() => _ElementState();
 }
 
-// todo fix
-//! fix
 class _ElementState extends State<Element> {
   File? _image;
 
