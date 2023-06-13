@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application/widget/custom_button.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ElementPgeCreator extends StatefulWidget {
@@ -17,12 +18,19 @@ class _ElementPgeCreatorState extends State<ElementPgeCreator> {
   Future getImage(imageSource) async {
     final image = await ImagePicker().pickImage(source: imageSource);
     if (image == null) return;
-
     _image = null;
-    final imageTemporary = File(image.path);
-
+    // final imageTemporary = File(image.path);
     setState(() {
-      this._image = imageTemporary;
+      this._image = File(image.path);
+    });
+    _cropImage();
+  }
+
+  Future _cropImage() async {
+    File? cropperFile =
+        await ImageCropper().cropImage(sourcePath: _image!.path) as File?;
+    setState(() {
+      this._image = cropperFile != null ? File(cropperFile.path) : null;
     });
   }
 
