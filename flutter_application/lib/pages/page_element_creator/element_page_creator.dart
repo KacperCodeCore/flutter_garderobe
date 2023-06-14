@@ -1,12 +1,19 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application/data/list_manager.dart';
 import 'package:flutter_application/widget/custom_button.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ElementPgeCreator extends StatefulWidget {
-  const ElementPgeCreator({Key? key}) : super(key: key);
+  final ListManager<Image> elementList;
+  final void Function(Image) addElementCallback;
+
+  ElementPgeCreator({
+    required this.elementList,
+    required this.addElementCallback,
+  });
 
   @override
   State<ElementPgeCreator> createState() => _ElementPgeCreatorState();
@@ -23,15 +30,17 @@ class _ElementPgeCreatorState extends State<ElementPgeCreator> {
     setState(() {
       this._image = File(image.path);
     });
-    _cropImage();
+    // _cropImage();
   }
 
   Future _cropImage() async {
-    File? cropperFile =
-        await ImageCropper().cropImage(sourcePath: _image!.path) as File?;
-    setState(() {
-      this._image = cropperFile != null ? File(cropperFile.path) : null;
-    });
+    try {
+      File? cropperFile =
+          await ImageCropper().cropImage(sourcePath: _image!.path) as File?;
+      setState(() {
+        this._image = cropperFile != null ? File(cropperFile.path) : null;
+      });
+    } catch (e) {}
   }
 
   @override
@@ -74,7 +83,7 @@ class _ElementPgeCreatorState extends State<ElementPgeCreator> {
               title: "Save element",
               icon: Icons.save,
               onClick: () {
-                // ElementList(elementList: );
+                widget.addElementCallback(Image.file(_image!));
               },
             )
           ],

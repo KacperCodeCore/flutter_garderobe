@@ -8,17 +8,8 @@ class Element extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1,
+    return Center(
       child: Container(
-        decoration: BoxDecoration(
-          color: Colors.brown[100],
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(
-            color: Color.fromARGB(255, 216, 97, 54),
-            width: 3,
-          ),
-        ),
         child: file != null
             ? Image.file(file!)
             : Icon(

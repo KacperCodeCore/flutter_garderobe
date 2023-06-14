@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/pages/page_element/element.dart'
-    as MyElement;
-import 'package:flutter_application/pages/page_element/element_list.dart';
+import 'package:flutter_application/data/list_manager.dart';
 
 // import 'package:flutter_application/Images/garderobe_background.png' as backround;
 
 class ElementPageList extends StatelessWidget {
-  final ElementList elementList = ElementList(elementList: []);
+  final ListManager<Image> elementList;
+  final void Function(Image) addElementCallback;
 
-  ElementPage() {
-    elementList.addElement(MyElement.Element());
-  }
+  ElementPageList({
+    required this.elementList,
+    required this.addElementCallback,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,17 +39,9 @@ class ElementPageList extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // elementList.addElement(MyElement.Element());
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return Dialog(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      // child: ElementPageCreator(),
-                    ),
-                  );
-                });
+            //? why it dont use setState from PageHome?
+            addElementCallback(Image.network(
+                'https://i.ytimg.com/vi/3xlREA-SL_k/maxresdefault.jpg'));
           },
           child: Icon(
             Icons.add,
