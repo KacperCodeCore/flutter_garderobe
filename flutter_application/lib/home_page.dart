@@ -23,6 +23,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void editElement(int index, Image newElement) {
+    if (index >= 0 && index < elementList.elementList.length) {
+      elementList.elementList[index] = newElement;
+    }
+  }
+
   int _selectedIndex = 0;
   void _navigateBottonNavBar(int index) {
     setState(() {
@@ -39,6 +45,7 @@ class _HomePageState extends State<HomePage> {
       ElementPageList(
         elementList: elementList,
         addElementCallback: addElement,
+        editElementCallback: editElement,
       ),
       ElementPgeCreator(
         elementList: elementList,
