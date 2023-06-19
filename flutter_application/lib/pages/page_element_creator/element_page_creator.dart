@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/data/list_manager.dart';
 import 'package:flutter_application/widget/custom_button.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ElementPgeCreator extends StatefulWidget {
@@ -22,7 +21,7 @@ class ElementPgeCreator extends StatefulWidget {
 class _ElementPgeCreatorState extends State<ElementPgeCreator> {
   File? _image;
 
-  Future getImage(imageSource) async {
+  Future _getImage(imageSource) async {
     final image = await ImagePicker().pickImage(source: imageSource);
     if (image == null) return;
     _image = null;
@@ -30,18 +29,55 @@ class _ElementPgeCreatorState extends State<ElementPgeCreator> {
     setState(() {
       this._image = File(image.path);
     });
-    // _cropImage();
   }
 
-  Future _cropImage() async {
-    try {
-      File? cropperFile =
-          await ImageCropper().cropImage(sourcePath: _image!.path) as File?;
-      setState(() {
-        this._image = cropperFile != null ? File(cropperFile.path) : null;
-      });
-    } catch (e) {}
-  }
+  // Future _croppImage() async {
+  //   try {
+  //     File? cropperFile =
+  //         await ImageCropper().cropImage(sourcePath: _image!.path) as File?;
+  //     setState(() {
+  //       this._image = cropperFile != null ? File(cropperFile.path) : null;
+  //     });
+  //   } catch (e) {}
+  // }
+
+  // Future _croppImage() async {
+  //   try {
+  //     if (_image != null) {
+  //       final croppedFile = await ImageCropper().cropImage(
+  //         sourcePath: _image!.path,
+  //         aspectRatioPresets: [
+  //           CropAspectRatioPreset.square,
+  //           CropAspectRatioPreset.ratio3x2,
+  //           CropAspectRatioPreset.original,
+  //           CropAspectRatioPreset.ratio4x3,
+  //           CropAspectRatioPreset.ratio16x9,
+  //         ],
+  //         uiSettings: [
+  //           AndroidUiSettings(
+  //               toolbarTitle: 'Cropper',
+  //               toolbarColor: Colors.deepOrange,
+  //               toolbarWidgetColor: Colors.white,
+  //               initAspectRatio: CropAspectRatioPreset.original,
+  //               lockAspectRatio: false),
+  //           IOSUiSettings(
+  //             title: 'Cropper',
+  //           ),
+  //           WebUiSettings(
+  //             context: context,
+  //           ),
+  //         ],
+  //       );
+  //       setState(() {
+  //         this._image = croppedFile != null ? File(croppedFile.path) : null;
+  //       });
+  //     }
+
+  //     // Tutaj możesz obsłużyć przycięty plik obrazu
+  //   } catch (e) {
+  //     // Tutaj możesz obsłużyć błędy
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -73,12 +109,16 @@ class _ElementPgeCreatorState extends State<ElementPgeCreator> {
             CustomButton(
               title: 'Pick from camera',
               icon: Icons.camera,
-              onClick: () => getImage(ImageSource.camera),
+              onClick: () => _getImage(ImageSource.camera),
             ),
             CustomButton(
                 title: 'Pick from gallery',
                 icon: Icons.image_outlined,
-                onClick: () => getImage(ImageSource.gallery)),
+                onClick: () => _getImage(ImageSource.gallery)),
+            CustomButton(
+                title: 'image cropper',
+                icon: Icons.image_outlined,
+                onClick: () => ()), //_croppImage
             CustomButton(
               title: "Save element",
               icon: Icons.save,

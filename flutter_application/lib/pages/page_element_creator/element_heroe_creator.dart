@@ -8,11 +8,15 @@ class ElementHeroeCreator extends StatefulWidget {
   final int index;
   final Image image;
   final void Function(int, Image) editElementCallback;
+  // final void Function() setStateCallback;
+  // final void Function() addElementCallback;
 
   const ElementHeroeCreator({
     required this.index,
     required this.image,
     required this.editElementCallback,
+    // required this.setStateCallback,
+    // required this.addElementCallback,
   });
 
   @override
@@ -40,6 +44,12 @@ class _ElementHeroeCreatorState extends State<ElementHeroeCreator> {
   }
 
   @override
+  void dispose() {
+    // widget.setStateCallback();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
@@ -57,6 +67,14 @@ class _ElementHeroeCreatorState extends State<ElementHeroeCreator> {
           ])
         ],
       )),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   type: BottomNavigationBarType.fixed,
+      //   items: const [
+      //       icon: Icon(Icons.camera),
+      //       icon: Icon(Icons.photo),
+      //       icon: Icon(Icons.save),
+      //     ]
+      // )
     );
   }
 }
