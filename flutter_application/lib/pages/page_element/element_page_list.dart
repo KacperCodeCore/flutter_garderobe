@@ -74,7 +74,7 @@ class ElementPageList extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            //? why it dont use setState from PageHome?
+            //! ? why it dont use setState from PageHome?
             addElementCallback(Image.network(
                 'https://i.ytimg.com/vi/3xlREA-SL_k/maxresdefault.jpg'));
             Navigator.of(context).push(
@@ -90,7 +90,7 @@ class ElementPageList extends StatelessWidget {
           },
           child: Icon(
             Icons.add,
-            size: 40,
+            size: 30,
           ),
         ));
   }
