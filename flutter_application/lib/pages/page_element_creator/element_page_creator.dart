@@ -105,42 +105,6 @@ class _ElementPgeCreatorState extends State<ElementPgeCreator> {
               )
             : Image.network(
                 'https://i.ytimg.com/vi/3xlREA-SL_k/maxresdefault.jpg'),
-        // child: Column(
-        //   children: [
-        //     _image != null
-        //         ? Image.file(
-        //             _image!,
-        //             height: 400,
-        //           )
-        //         : Image.network(
-        //             'https://i.ytimg.com/vi/3xlREA-SL_k/maxresdefault.jpg'),
-        //     CustomButton(
-        //       title: 'Pick from camera',
-        //       icon: Icons.camera,
-        //       onClick: () => _getImage(ImageSource.camera),
-        //     ),
-        //     CustomButton(
-        //         title: 'Pick from gallery',
-        //         icon: Icons.image_outlined,
-        //         onClick: () => _getImage(ImageSource.gallery)),
-        //     CustomButton(
-        //         title: 'image cropper',
-        //         icon: Icons.image_outlined,
-        //         onClick: () async => {
-        //               ImagePickerService().pickCropImage(
-        //                 cropAspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-        //                 imageSource: ImageSource.camera,
-        //               )
-        //             }), //_croppImage
-        //     CustomButton(
-        //       title: "Save element",
-        //       icon: Icons.save,
-        //       onClick: () {
-        //         widget.addElementCallback(Image.file(_image!));
-        //       },
-        //     )
-        //   ],
-        // ),
       ),
       floatingActionButton: Column(
         // padding: EdgeInsets.only(top: 10, bottom: 10),
@@ -148,12 +112,12 @@ class _ElementPgeCreatorState extends State<ElementPgeCreator> {
         children: [
           FloatingActionButton(
             onPressed: () => _getImage(ImageSource.camera),
-            child: Icon(Icons.camera),
-          ),
+            child: Icon(Icons.photo_camera),
+          ), // image from camera
           FloatingActionButton(
             onPressed: () => _getImage(ImageSource.gallery),
-            child: Icon(Icons.photo_library_outlined),
-          ),
+            child: Icon(Icons.photo),
+          ), // image from gallery
           FloatingActionButton(
             onPressed: () async => {
               ImagePickerService().pickCropImage(
@@ -161,16 +125,20 @@ class _ElementPgeCreatorState extends State<ElementPgeCreator> {
                 imageSource: ImageSource.camera,
               )
             },
-            child: Icon(Icons.image),
-          ),
+            child: Icon(Icons.photo_filter),
+          ), // rotation
+          FloatingActionButton(
+            onPressed: () => {widget.addElementCallback(Image.file(_image!))},
+            child: Icon(Icons.star),
+          ), // remove background
           FloatingActionButton(
             onPressed: () => {widget.addElementCallback(Image.file(_image!))},
             child: Icon(Icons.save),
-          ),
+          ), // save
           FloatingActionButton(
             onPressed: () => {widget.addElementCallback(Image.file(_image!))},
             child: Icon(Icons.delete),
-          ),
+          ), // delete
         ],
       ),
     );
