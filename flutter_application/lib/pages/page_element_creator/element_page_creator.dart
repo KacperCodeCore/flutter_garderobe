@@ -97,11 +97,11 @@ class _ElementPgeCreatorState extends State<ElementPgeCreator> {
           ],
         ),
       ),
-      body: Center(
+      body: Container(
         child: _image != null
             ? Image.file(
                 _image!,
-                height: 400,
+                // height: 400,
               )
             : Image.network(
                 'https://i.ytimg.com/vi/3xlREA-SL_k/maxresdefault.jpg'),
