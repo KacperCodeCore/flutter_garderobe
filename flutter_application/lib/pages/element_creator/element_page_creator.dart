@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application/data/list_manager.dart';
-import 'package:flutter_application/image_picker_service.dart';
+import 'package:flutter_application/service/image_picker_service.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/data/list_manager.dart';
-import 'package:flutter_application/pages/page_collection/collection_page.dart';
-import 'package:flutter_application/pages/page_element_creator/element_page_creator.dart';
-import 'package:flutter_application/pages/page_element/element_page_list.dart';
-import 'package:flutter_application/pages/page_home/home.dart';
+import 'package:flutter_application/home.dart';
+import 'package:flutter_application/pages/element/element_star_page.dart';
+
+import '../collection/collection_page.dart';
+import '../element/element_page_list.dart';
+import '../element_creator/element_page_creator.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -51,6 +53,7 @@ class _HomePageState extends State<HomePage> {
         elementList: elementList,
         addElementCallback: addElement,
       ),
+      ElementStarPage(),
     ];
   }
 
@@ -69,6 +72,8 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(icon: Icon(Icons.image), label: 'Element'),
           BottomNavigationBarItem(
               icon: Icon(Icons.add_a_photo_outlined), label: 'Create Element'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.star), label: 'Create Element'),
         ],
       ),
     );

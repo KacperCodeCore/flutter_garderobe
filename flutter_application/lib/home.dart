@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/pages/page_home/user_post.dart';
+
+import 'pages/home/user_post.dart';
 
 class UserHome extends StatelessWidget {
   final List<String> postNames = ['kacper', 'John', 'Alice', 'Bob'];
