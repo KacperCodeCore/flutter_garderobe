@@ -31,13 +31,20 @@ class _ElementStarPageState extends State<ElementStarPage> {
     super.initState();
   }
 
-  //save new task
-  void saveNewElement(String name) {
+  //save new element
+  void addElement(String name) {
     setState(() {
       db.elementList.add([name]);
     });
     db.updateData();
     // Navigator.of(context).pop();
+  }
+
+  void updateElement(String name, int index) {
+    setState(() {
+      db.elementList[index][0] = name;
+    });
+    db.updateData();
   }
 
   get editElementCallback => null;
@@ -54,16 +61,24 @@ class _ElementStarPageState extends State<ElementStarPage> {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => ElementStarCreator(
                           name: 'New Element',
-                          onSave: saveNewElement,
+                          onSave: addElement,
                           // title: 'New Element',
                         )))
               }),
       body: ListView.builder(
         itemCount: db.elementList.length,
         itemBuilder: (BuildContext context, int index) {
-          return ElementStar(
-            name: db.elementList[index][0],
-            // image: elementList[index][1],
+          return GestureDetector(
+            child: ElementStar(
+              name: db.elementList[index][0],
+            ),
+            onTap: () => {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ElementStarCreator(
+                        name: db.elementList[index][0],
+                        onSave: (name) => updateElement(name, index),
+                      )))
+            },
           );
         },
       ),
