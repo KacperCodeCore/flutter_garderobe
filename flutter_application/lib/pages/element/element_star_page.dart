@@ -32,12 +32,12 @@ class _ElementStarPageState extends State<ElementStarPage> {
   }
 
   //save new task
-  void saveNewElement() {
+  void saveNewElement(String name) {
     setState(() {
-      db.elementList.add(['ZZZZZZZZZZZ']);
+      db.elementList.add([name]);
     });
     db.updateData();
-    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
   }
 
   get editElementCallback => null;
@@ -53,7 +53,9 @@ class _ElementStarPageState extends State<ElementStarPage> {
           onPressed: () => {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => ElementStarCreator(
-                          onSave: () => saveNewElement(),
+                          name: 'New Element',
+                          onSave: saveNewElement,
+                          // title: 'New Element',
                         )))
               }),
       body: ListView.builder(
