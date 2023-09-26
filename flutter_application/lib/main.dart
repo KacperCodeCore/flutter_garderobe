@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'pages/home/home_page.dart';
+import 'package:flutter_application/data/my_element.dart';
+import 'pages/home.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   await Hive.initFlutter();
-  await Hive.openBox('myBox');
+  Hive.registerAdapter(MyElementAdapter());
+  await Hive.openBox<MyElement>('myElementBox');
 
   runApp(MyApp());
 }

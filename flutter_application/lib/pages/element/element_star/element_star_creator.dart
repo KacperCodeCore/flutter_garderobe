@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 
 class ElementStarCreator extends StatefulWidget {
   final String name;
-  final Function(String) onSave;
+  final String path;
+  final Function(String, String) onSave;
 
   ElementStarCreator({
     Key? key,
     required this.name,
+    required this.path,
     required this.onSave,
   }) : super(key: key);
 
@@ -39,7 +41,7 @@ class _ElementStarCreatorState extends State<ElementStarCreator> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {
-          widget.onSave(_controller.text),
+          widget.onSave(_controller.text, widget.path),
           Navigator.of(context).pop(),
         },
         child: Icon(
