@@ -1,6 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_application/pages/element_star/element_star_page.dart';
+import 'package:flutter_application/pages/home/homepage.dart';
 
 class ElementStarCreator extends StatefulWidget {
   final String name;
@@ -39,14 +39,20 @@ class _ElementStarCreatorState extends State<ElementStarCreator> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => {
-          widget.onSave(_controller.text, widget.path),
-          Navigator.of(context).pop(),
-        },
-        child: Icon(
-          Icons.save,
-        ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.blue,
+      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: Column(
+        children: [
+          FloatingActionButton(
+            backgroundColor: Colors.blue,
+            onPressed: () {
+              widget.onSave(_controller.text, widget.path);
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
       ),
     );
   }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/data/boxes.dart';
 import 'package:flutter_application/data/my_element.dart';
-import 'package:flutter_application/pages/element/element_star/element_star_creator.dart';
-import 'package:flutter_application/pages/element/element_star/element_star.dart';
+import 'package:flutter_application/pages/element_star/element_star_creator.dart';
+import 'package:flutter_application/pages/element_star/element_star.dart';
 
 class ElementStarPage extends StatefulWidget {
   const ElementStarPage({super.key});
@@ -13,7 +13,6 @@ class ElementStarPage extends StatefulWidget {
 
 class _ElementStarPageState extends State<ElementStarPage> {
   var element = Boxes.getMyElements().values.toList().cast<MyElement>();
-  final elements = Boxes.getMyElements();
 
   // @override
   // void initState() {

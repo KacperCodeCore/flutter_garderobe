@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/pages/home/homepage.dart';
-import 'package:flutter_application/pages/element/element_star/element_star_page.dart';
+import 'package:flutter_application/pages/element_star/element_star_page.dart';
 import 'collection/collection_page.dart';
 
 class HomePage extends StatefulWidget {
