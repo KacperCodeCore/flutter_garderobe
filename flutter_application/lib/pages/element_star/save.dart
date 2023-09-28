@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/pages/element_star/element_star_page.dart';
-import 'package:flutter_application/pages/home/homepage.dart';
 
 class ElementStarCreator extends StatefulWidget {
   final String name;

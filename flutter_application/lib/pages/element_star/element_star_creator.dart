@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/pages/element_star/element_star_page.dart';
-import 'package:flutter_application/pages/home/homepage.dart';
 
 class ElementStarCreator extends StatefulWidget {
   final String name;
@@ -40,13 +38,8 @@ class _ElementStarCreatorState extends State<ElementStarCreator> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.blue,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Dodaj przyciski nawigacji tutaj, np. BottomNavigationBarItem
-          ],
-        ),
+        shape: const CircularNotchedRectangle(),
+        child: Container(height: 50.0),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: Column(
@@ -60,11 +53,11 @@ class _ElementStarCreatorState extends State<ElementStarCreator> {
             },
             child: Icon(Icons.save), // Możesz zmienić ikonę na odpowiednią
           ),
-          FloatingActionButton(
-            backgroundColor: Colors.blue,
-            onPressed: () {},
-            child: Icon(Icons.save), // Możesz zmienić ikonę na odpowiednią
-          ),
+          // FloatingActionButton(
+          //   backgroundColor: Colors.blue,
+          //   onPressed: () {},
+          //   child: Icon(Icons.save), // Możesz zmienić ikonę na odpowiednią
+          // ),
         ],
       ),
     );
