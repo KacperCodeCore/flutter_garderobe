@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/pages/home/homepage.dart';
+
 import 'package:flutter_application/pages/element_star/element_star_page.dart';
+import 'package:flutter_application/pages/home/homepage.dart';
+
 import 'collection/collection_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,7 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // ListManager<Image> elementList = ListManager<Image>();
-  // ListManager<Widget> collectionList = ListManager<Widget>();
+  // ListManager<Widget> collectionList = ListMan   ager<Widget>();
   late List<Widget> _children;
 
   // void addElement(Image image) {

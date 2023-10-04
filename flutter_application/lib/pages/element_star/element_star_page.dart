@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_application/data/boxes.dart';
 import 'package:flutter_application/data/my_element.dart';
-import 'package:flutter_application/pages/element_star/element_star_creator.dart';
 import 'package:flutter_application/pages/element_star/element_star.dart';
+import 'package:flutter_application/pages/element_star/element_star_creator.dart';
 
 class ElementStarPage extends StatefulWidget {
   const ElementStarPage({super.key});
@@ -48,7 +49,7 @@ class _ElementStarPageState extends State<ElementStarPage> {
     });
   }
 
-  void updateElement(String name, String path, int index) {
+  void updateElement(String name, String path, int index)    {
     setState(() {
       element[index].name = name;
       element[index].path = path;
@@ -56,7 +57,12 @@ class _ElementStarPageState extends State<ElementStarPage> {
     // db.updateData();
   }
 
-  get editElementCallback => null;
+  
+  get editElementCallback => 
+  
+  
+  
+  null;
 
   @override
   Widget build(BuildContext context) {
@@ -72,9 +78,11 @@ class _ElementStarPageState extends State<ElementStarPage> {
                           name: 'New Element',
                           path: 'path',
                           onSave: (name, path) => _addMyElement(name, path),
-                          // title: 'New Element',
-                        )))
-              }),
+                        ),
+                        ),
+                        ),
+              },
+   ), 
       body: ListView.builder(
         itemCount: element.length,
         itemBuilder: (BuildContext context, int index) {

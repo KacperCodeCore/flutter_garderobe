@@ -15,7 +15,8 @@ class UserHome extends StatelessWidget {
             Text('MyGarderobe'),
             Row(
               children: [
-                Icon(Icons.add),
+                Icon(Icons.add
+                ),
                 Padding(
                   padding: EdgeInsets.all(15.0),
                   child: Icon(Icons.favorite),
