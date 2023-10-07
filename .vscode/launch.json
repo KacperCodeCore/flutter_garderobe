@@ -9,7 +9,7 @@
             "cwd": "flutter_application",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "debug"//fix
+            "flutterMode": "debug" //fix
         },
         {
             "name": "flutter_application (profile mode)",

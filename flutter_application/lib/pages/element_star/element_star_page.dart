@@ -13,7 +13,7 @@ class ElementStarPage extends StatefulWidget {
 }
 
 class _ElementStarPageState extends State<ElementStarPage> {
-  var element = Boxes.getMyElements().values.toList().cast<MyElement>();
+  var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
 
   // @override
   // void initState() {
@@ -45,24 +45,28 @@ class _ElementStarPageState extends State<ElementStarPage> {
 
     // Po dodaniu elementu, możemy zaktualizować listę elementów 'element'.
     setState(() {
-      element = box.values.toList().cast<MyElement>();
+      elements = box.values.toList().cast<MyElement>();
     });
   }
 
-  void updateElement(String name, String path, int index)    {
+  void _deleteElement(int index) {
+    final box = Boxes.getMyElements();
+    box.deleteAt(index);
     setState(() {
-      element[index].name = name;
-      element[index].path = path;
+      elements = box.values.toList().cast<MyElement>();
+      // elements.removeAt(index)
+    });
+  }
+
+  void updateElement(String name, String path, int index) {
+    setState(() {
+      elements[index].name = name;
+      elements[index].path = path;
     });
     // db.updateData();
   }
 
-  
-  get editElementCallback => 
-  
-  
-  
-  null;
+  get editElementCallback => null;
 
   @override
   Widget build(BuildContext context) {
@@ -72,32 +76,41 @@ class _ElementStarPageState extends State<ElementStarPage> {
         title: Text('Your elements'),
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () => {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ElementStarCreator(
-                          name: 'New Element',
-                          path: 'path',
-                          onSave: (name, path) => _addMyElement(name, path),
-                        ),
-                        ),
-                        ),
-              },
-   ), 
+        child: Icon(Icons.add),
+        onPressed: () => {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ElementStarCreator(
+                  name: 'New Element',
+                  imagePath: 'path',
+                  onSave: (name, path) => _addMyElement(name, path),
+                  onDelete: () {
+                    Navigator.of(context).pop();
+                  }),
+            ),
+          ),
+        },
+      ),
       body: ListView.builder(
-        itemCount: element.length,
+        itemCount: elements.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             child: ElementStar(
-              name: element[index].name + "  " + element[index].path,
+              name: elements[index].name + "  " + elements[index].path,
             ),
             onTap: () => {
-              Navigator.of(context).push(MaterialPageRoute(
+              Navigator.of(context).push(
+                MaterialPageRoute(
                   builder: (context) => ElementStarCreator(
-                        name: element[index].name,
-                        path: element[index].path,
-                        onSave: (name, path) =>
-                            updateElement(name, path, index),
-                      )))
+                      name: elements[index].name,
+                      imagePath: elements[index].path,
+                      onSave: (name, path) => updateElement(name, path, index),
+                      onDelete: () => {
+                            _deleteElement(elements[index]),
+                            Navigator.of(context).pop(),
+                          }),
+                ),
+              ),
             },
           );
         },

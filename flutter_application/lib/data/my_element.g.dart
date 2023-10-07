@@ -17,18 +17,20 @@ class MyElementAdapter extends TypeAdapter<MyElement> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MyElement(
-      name: fields[0] as String,
-      path: fields[1] as String,
-    );
+      name: fields[1] as String,
+      path: fields[2] as String,
+    )..id = fields[0] as String;
   }
 
   @override
   void write(BinaryWriter writer, MyElement obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.name)
+      ..write(obj.id)
       ..writeByte(1)
+      ..write(obj.name)
+      ..writeByte(2)
       ..write(obj.path);
   }
 
