@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_application/data/boxes.dart';
@@ -15,26 +17,6 @@ class ElementStarPage extends StatefulWidget {
 class _ElementStarPageState extends State<ElementStarPage> {
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
 
-  // @override
-  // void initState() {
-  //   if (_myBox.get("ELEMENTLIST") == null) {
-  //     //if this is 1st time ever opening the app, then create default data
-  //     db.createInitialData();
-  //   } else {
-  //     //if there arleady exist data
-  //     db.loadData();
-  //   }
-  //   super.initState();
-  // }
-
-  //save new element
-  // void addElement(String name) {
-  //   setState(() {
-  //     db.elementList.add([name]);
-  //   });
-  //   db.updateData();
-  //   // Navigator.of(context).pop();
-  // }
   Future<void> _addMyElement(String name, String path) async {
     var newElement = MyElement(
       name: name,
@@ -49,13 +31,14 @@ class _ElementStarPageState extends State<ElementStarPage> {
     });
   }
 
-  void _deleteElement(String key) {
-    // final box = Boxes.getMyElements();
+  void _deleteElement(MyElement element) async {
+    Boxes.getMyElements().delete(element);
+    final box = Boxes.getMyElements();
+    var index = box.values.toList().cast<MyElement>().indexOf(element);
     setState(
       () {
-        // box.delete(key);
-        // elements = box.values.toList().cast<MyElement>();
-        elements.removeWhere((element) => element.key == key);
+        box.deleteAt(index);
+        elements = box.values.toList().cast<MyElement>();
       },
     );
   }
@@ -63,11 +46,16 @@ class _ElementStarPageState extends State<ElementStarPage> {
   void updateElement(String name, String path, int index) {
     final myElement = elements[index];
 
+    final box = Boxes.getMyElements();
+    final keys = box.keys;
+    print("Keys in the Hive box: $keys");
+    print(myElement.id);
+
     setState(() {
       elements[index].name = name;
       elements[index].path = path;
     });
-    Boxes.getMyElements().put(myElement.key, myElement);
+    Boxes.getMyElements().put(myElement.id, myElement);
   }
 
   @override
@@ -106,7 +94,7 @@ class _ElementStarPageState extends State<ElementStarPage> {
                       imagePath: elements[index].path,
                       onSave: (name, path) => updateElement(name, path, index),
                       onDelete: () => {
-                            _deleteElement(elements[index].key),
+                            _deleteElement(elements[index]),
                           }),
                 ),
               ),

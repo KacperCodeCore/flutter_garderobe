@@ -6,7 +6,7 @@ part 'my_element.g.dart';
 @HiveType(typeId: 0, adapterName: 'MyElementAdapter')
 class MyElement {
   @HiveField(0)
-  String key = Uuid().v4();
+  String id = Uuid().v4();
 
   @HiveField(1)
   String name;

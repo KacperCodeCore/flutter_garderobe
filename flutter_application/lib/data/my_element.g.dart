@@ -19,7 +19,7 @@ class MyElementAdapter extends TypeAdapter<MyElement> {
     return MyElement(
       name: fields[1] as String,
       path: fields[2] as String,
-    )..key = fields[0] as String;
+    )..id = fields[0] as String;
   }
 
   @override
@@ -27,7 +27,7 @@ class MyElementAdapter extends TypeAdapter<MyElement> {
     writer
       ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.key)
+      ..write(obj.id)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
