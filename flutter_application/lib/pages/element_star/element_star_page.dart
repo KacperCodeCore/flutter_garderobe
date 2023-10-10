@@ -25,7 +25,6 @@ class _ElementStarPageState extends State<ElementStarPage> {
     final box = Boxes.getMyElements();
     box.add(newElement); // Dodanie elementu do Box.
 
-    // Po dodaniu elementu, możemy zaktualizować listę elementów 'element'.
     setState(() {
       elements = box.values.toList().cast<MyElement>();
     });
@@ -45,11 +44,6 @@ class _ElementStarPageState extends State<ElementStarPage> {
 
   void updateElement(String name, String path, int index) {
     final myElement = elements[index];
-
-    final box = Boxes.getMyElements();
-    final keys = box.keys;
-    print("Keys in the Hive box: $keys");
-    print(myElement.id);
 
     setState(() {
       elements[index].name = name;
@@ -84,7 +78,8 @@ class _ElementStarPageState extends State<ElementStarPage> {
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             child: ElementStar(
-              name: elements[index].name + "  " + elements[index].path,
+              name: elements[index].name,
+              path: elements[index].path,
             ),
             onTap: () => {
               Navigator.of(context).push(

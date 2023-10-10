@@ -1,13 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class ElementStar extends StatelessWidget {
   final String name;
+  final String path;
   // final Image? imageSorce;
 
   const ElementStar({
     super.key,
     required this.name,
-    // required this.imageSorce,
+    required this.path,
   });
 
   @override
@@ -25,7 +28,13 @@ class ElementStar extends StatelessWidget {
                 Container(
                   height: 400,
                   width: 300,
-                  // child: Image.file(File(imagePath)),)
+                  child: File(path).existsSync()
+                      ? Image.file(
+                          File(
+                            path,
+                          ),
+                          fit: BoxFit.fitWidth)
+                      : Icon(Icons.not_accessible),
                 ),
                 Container(
                   height: 400,
