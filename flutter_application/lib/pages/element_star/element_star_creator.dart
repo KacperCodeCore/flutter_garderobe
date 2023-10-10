@@ -70,13 +70,12 @@ class _ElementStarCreatorState extends State<ElementStarCreator> {
           // mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            // button add photo
+            // camera button
             FloatingActionButton.extended(
               heroTag: 'takePicture',
               onPressed: () {
                 _choseImage(ImageSource.camera);
                 widget.onSave(_controller.text, widget.imagePath);
-                Navigator.of(context).pop();
               },
               label: Text('Take photo'),
               icon: Icon(Icons.add_a_photo),
@@ -87,24 +86,37 @@ class _ElementStarCreatorState extends State<ElementStarCreator> {
               icon: Icon(Icons.save),
               label: Text('Chose from gallery'),
             ),
+            //delete button
             FloatingActionButton.extended(
               heroTag: 'TagDeletePicture',
               backgroundColor: Colors.blue,
               onPressed: () {
                 widget.onDelete();
+                Navigator.of(context).pop(); //good
               },
               icon: Icon(Icons.delete),
               label: Text('Delete'),
             ),
+            //save button
             FloatingActionButton.extended(
               heroTag: 'TagSavePicture',
               backgroundColor: Colors.blue,
               onPressed: () {
-                widget.onSave(_controller.text, widget.imagePath);
+                widget.onSave(_controller.text, _imagePath);
                 Navigator.of(context).pop();
               },
               icon: Icon(Icons.save),
               label: Text('Save'),
+            ),
+            //exit button
+            FloatingActionButton.extended(
+              heroTag: 'TagExitCreator',
+              backgroundColor: Colors.blue,
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: null,
+              label: Text('x'),
             ),
             SizedBox(
               height: 10,

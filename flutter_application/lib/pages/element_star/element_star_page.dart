@@ -49,24 +49,26 @@ class _ElementStarPageState extends State<ElementStarPage> {
     });
   }
 
-  void _deleteElement(int index) {
-    final box = Boxes.getMyElements();
-    box.deleteAt(index);
-    setState(() {
-      elements = box.values.toList().cast<MyElement>();
-      // elements.removeAt(index)
-    });
+  void _deleteElement(String key) {
+    // final box = Boxes.getMyElements();
+    setState(
+      () {
+        // box.delete(key);
+        // elements = box.values.toList().cast<MyElement>();
+        elements.removeWhere((element) => element.key == key);
+      },
+    );
   }
 
   void updateElement(String name, String path, int index) {
+    final myElement = elements[index];
+
     setState(() {
       elements[index].name = name;
       elements[index].path = path;
     });
-    // db.updateData();
+    Boxes.getMyElements().put(myElement.key, myElement);
   }
-
-  get editElementCallback => null;
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +86,7 @@ class _ElementStarPageState extends State<ElementStarPage> {
                   name: 'New Element',
                   imagePath: 'path',
                   onSave: (name, path) => _addMyElement(name, path),
-                  onDelete: () {
-                    Navigator.of(context).pop();
-                  }),
+                  onDelete: () {}),
             ),
           ),
         },
@@ -106,8 +106,7 @@ class _ElementStarPageState extends State<ElementStarPage> {
                       imagePath: elements[index].path,
                       onSave: (name, path) => updateElement(name, path, index),
                       onDelete: () => {
-                            _deleteElement(elements[index]),
-                            Navigator.of(context).pop(),
+                            _deleteElement(elements[index].key),
                           }),
                 ),
               ),
