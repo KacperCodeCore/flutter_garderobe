@@ -31,7 +31,7 @@ class _ElementStarPageState extends State<ElementStarPage> {
   }
 
   void _deleteElement(MyElement element) async {
-    Boxes.getMyElements().delete(element);
+    // Boxes.getMyElements().delete(element);
     final box = Boxes.getMyElements();
     var index = box.values.toList().cast<MyElement>().indexOf(element);
     setState(

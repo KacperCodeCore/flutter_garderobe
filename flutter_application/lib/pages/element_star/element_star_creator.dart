@@ -75,14 +75,16 @@ class _ElementStarCreatorState extends State<ElementStarCreator> {
               heroTag: 'takePicture',
               onPressed: () {
                 _choseImage(ImageSource.camera);
-                widget.onSave(_controller.text, widget.imagePath);
               },
               label: Text('Take photo'),
               icon: Icon(Icons.add_a_photo),
             ),
+            // gallery button
             FloatingActionButton.extended(
               heroTag: 'tagChoseFromGallery',
-              onPressed: () {},
+              onPressed: () {
+                _choseImage(ImageSource.gallery);
+              },
               icon: Icon(Icons.save),
               label: Text('Chose from gallery'),
             ),
