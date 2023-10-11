@@ -18,13 +18,23 @@ class CollectionPage extends StatelessWidget {
           ],
         ),
       ),
-      body: Center(child: Text('Garderobe')),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(
-          Icons.add,
-          size: 40,
-        ),
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Image.asset(
+              'images/wood.jpg',
+              fit: BoxFit.cover,
+            ),
+          ),
+          Icon(
+            Icons.favorite,
+            size: 120,
+            color: Colors.red,
+          )
+        ],
       ),
     );
   }
