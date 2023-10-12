@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/pages/collection/overlayed_widget.dart';
 
 class CollectionPage extends StatefulWidget {
   const CollectionPage({super.key});
@@ -18,11 +19,11 @@ class _CollectionPageState extends State<CollectionPage> {
         title: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text('Collection'),
+            const Text('Collection'),
             Row(
               children: [
-                Icon(Icons.abc),
-                Icon(Icons.abc),
+                const Icon(Icons.abc),
+                const Icon(Icons.abc),
               ],
             ),
           ],
@@ -45,7 +46,9 @@ class _CollectionPageState extends State<CollectionPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
-            _addedWidgets.add(_dummyWidgets.elementAt(0));
+            _addedWidgets.add(OverlaydWidget(
+              child: _dummyWidgets.elementAt(_addedWidgets.length),
+            ));
             print(_addedWidgets.length);
           });
         },
