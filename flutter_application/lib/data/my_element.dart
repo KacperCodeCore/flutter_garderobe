@@ -14,9 +14,13 @@ class MyElement {
   @HiveField(2)
   String path;
 
+  @HiveField(3)
+  double height;
+
   MyElement({
     required this.name,
     required this.path,
+    required this.height,
   });
 }
 

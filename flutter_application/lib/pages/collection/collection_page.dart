@@ -15,20 +15,6 @@ class _CollectionPageState extends State<CollectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('Collection'),
-            Row(
-              children: [
-                const Icon(Icons.abc),
-                const Icon(Icons.abc),
-              ],
-            ),
-          ],
-        ),
-      ),
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -41,6 +27,13 @@ class _CollectionPageState extends State<CollectionPage> {
             ),
           ),
           for (int i = 0; i < _addedWidgets.length; i++) _addedWidgets[i],
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Icon(Icons.delete),
+            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

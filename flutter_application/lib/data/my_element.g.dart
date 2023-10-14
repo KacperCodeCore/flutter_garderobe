@@ -19,19 +19,22 @@ class MyElementAdapter extends TypeAdapter<MyElement> {
     return MyElement(
       name: fields[1] as String,
       path: fields[2] as String,
+      height: fields[3] as double,
     )..id = fields[0] as String;
   }
 
   @override
   void write(BinaryWriter writer, MyElement obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.path);
+      ..write(obj.path)
+      ..writeByte(3)
+      ..write(obj.height);
   }
 
   @override

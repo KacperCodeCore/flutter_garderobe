@@ -18,9 +18,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'flutter_garderobe',
-        debugShowCheckedModeBanner: false,
-        home: HomePage(),
-        theme: ThemeData(primarySwatch: Colors.brown));
+      title: 'flutter_garderobe',
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
+      // theme: ThemeData(primarySwatch: Colors.brown)
+    );
   }
 }
