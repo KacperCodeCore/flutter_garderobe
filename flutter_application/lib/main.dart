@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'pages/home.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -17,6 +18,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // hide statusbar
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+    //     overlays: [SystemUiOverlay.bottom]);
+
+    //transparent bacground for system buttons
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      // systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarColor: Color.fromARGB(0, 155, 53, 53),
+      systemNavigationBarDividerColor: null,
+      systemNavigationBarIconBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.dark,
+      // statusBarColor: Colors.transparent,
+    ));
+    // Setting SystemUIMode // from transparent
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
+        overlays: [SystemUiOverlay.top]);
+
     return MaterialApp(
       title: 'flutter_garderobe',
       debugShowCheckedModeBanner: false,

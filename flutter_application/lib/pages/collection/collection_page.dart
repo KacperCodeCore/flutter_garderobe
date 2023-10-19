@@ -15,17 +15,14 @@ class _CollectionPageState extends State<CollectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.brown.shade300,
       body: Stack(
         alignment: Alignment.center,
         children: [
           SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: Image.asset(
-              'images/wood.jpg',
-              fit: BoxFit.cover,
-            ),
-          ),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: Container()),
           for (int i = 0; i < _addedWidgets.length; i++) _addedWidgets[i],
           Align(
             alignment: Alignment.bottomCenter,
@@ -36,16 +33,19 @@ class _CollectionPageState extends State<CollectionPage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _addedWidgets.add(OverlaydWidget(
-              child: _dummyWidgets.elementAt(_addedWidgets.length),
-            ));
-            print(_addedWidgets.length);
-          });
-        },
-        child: Icon(Icons.add),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 100),
+        child: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              _addedWidgets.add(OverlaydWidget(
+                child: _dummyWidgets.elementAt(_addedWidgets.length),
+              ));
+              print(_addedWidgets.length);
+            });
+          },
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }

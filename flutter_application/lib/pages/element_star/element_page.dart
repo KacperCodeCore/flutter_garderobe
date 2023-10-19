@@ -59,21 +59,25 @@ class _ElementPageState extends State<ElementPage> {
     return Scaffold(
       backgroundColor: Colors.brown.shade300,
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 70),
+        padding: EdgeInsets.only(bottom: 100),
         child: FloatingActionButton(
           child: Icon(Icons.add),
-          onPressed: () => {
-            Navigator.of(context).push(
+          onPressed: () async {
+            final newHeight = await Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => ElementCreator(
-                    name: 'New Element',
-                    imagePath: 'path',
-                    height: 100,
-                    onSave: (name, path, height) =>
-                        _addMyElement(name, path, height),
-                    onDelete: () {}),
+                  name: 'New Element',
+                  imagePath: 'path',
+                  height: 100,
+                  onSave: (name, path, height) =>
+                      _addMyElement(name, path, height),
+                  onDelete: () {},
+                ),
               ),
-            ),
+            );
+            if (newHeight != null) {
+              _addMyElement('New Element', 'path', newHeight);
+            }
           },
         ),
       ),

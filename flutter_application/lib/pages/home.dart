@@ -34,31 +34,53 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double _iconSize = 40;
+
     return Scaffold(
       extendBody: true,
       body: _children[_selectedIndex],
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 5, left: 2, right: 2),
-        child: ClipRRect(
-          // decoration: const BoxDecoration(
-          //   color: Colors.brown,
-          //   borderRadius: BorderRadius.all(Radius.circular(30)),
-          // ),
-
-          borderRadius: BorderRadius.all(Radius.circular(30)),
-          child: BottomNavigationBar(
-            currentIndex: _selectedIndex,
-            onTap: _navigateBottonNavBar,
-            // elevation: 10,
-
-            backgroundColor: Colors.brown,
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.collections), label: 'Collection'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.add_a_photo_outlined),
-                  label: 'Create Element'),
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.all(10),
+        margin: EdgeInsets.only(top: 10, bottom: 50, left: 10, right: 10),
+        decoration: BoxDecoration(
+            color: Colors.brown[200],
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+            border: Border.all(
+              color: const Color.fromARGB(255, 30, 21, 17),
+              width: 3,
+            )),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  _navigateBottonNavBar(0);
+                },
+                child: Icon(
+                  Icons.home,
+                  size: _iconSize,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  _navigateBottonNavBar(1);
+                },
+                child: Icon(
+                  Icons.collections,
+                  size: _iconSize,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  _navigateBottonNavBar(2);
+                },
+                child: Icon(
+                  Icons.add_a_photo_outlined,
+                  size: _iconSize,
+                ),
+              ),
             ],
           ),
         ),

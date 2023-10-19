@@ -31,6 +31,9 @@ class SingleElement extends StatelessWidget {
           ),
           Container(
             height: height,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+            ),
             child: File(path).existsSync()
                 ? Image.file(
                     File(

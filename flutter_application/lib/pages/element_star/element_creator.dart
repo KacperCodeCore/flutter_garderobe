@@ -31,6 +31,8 @@ class _ElementCreatorState extends State<ElementCreator> {
   @override
   void initState() {
     _controller = TextEditingController(text: widget.name);
+    _imagePath = widget.imagePath;
+    _height = widget.height;
     super.initState();
   }
 
@@ -46,7 +48,13 @@ class _ElementCreatorState extends State<ElementCreator> {
       setState(() {
         _imagePath = image.path;
       });
+      Navigator.pop(context, _height);
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   void _getPictureHeight() async {
