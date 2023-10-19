@@ -35,6 +35,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     double _iconSize = 40;
+    Color _iconColor = Colors.brown.shade600;
+    Color _selectedIconColor = Colors.brown.shade300;
 
     return Scaffold(
       extendBody: true,
@@ -46,7 +48,7 @@ class _HomePageState extends State<HomePage> {
             color: Colors.brown[200],
             borderRadius: BorderRadius.all(Radius.circular(30)),
             border: Border.all(
-              color: const Color.fromARGB(255, 30, 21, 17),
+              color: _iconColor,
               width: 3,
             )),
         child: Padding(
@@ -60,6 +62,7 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: Icon(
                   Icons.home,
+                  color: _selectedIndex == 0 ? _selectedIconColor : _iconColor,
                   size: _iconSize,
                 ),
               ),
@@ -69,6 +72,7 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: Icon(
                   Icons.collections,
+                  color: _selectedIndex == 1 ? _selectedIconColor : _iconColor,
                   size: _iconSize,
                 ),
               ),
@@ -78,6 +82,7 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: Icon(
                   Icons.add_a_photo_outlined,
+                  color: _selectedIndex == 2 ? _selectedIconColor : _iconColor,
                   size: _iconSize,
                 ),
               ),
