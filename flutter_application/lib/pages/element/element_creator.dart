@@ -30,7 +30,7 @@ class _ElementCreatorState extends State<ElementCreator> {
 
   @override
   void initState() {
-    _controller = TextEditingController(text: widget.name);
+    _controller = TextEditingController(text: '$widget.name $_height');
     _imagePath = widget.imagePath;
     _height = widget.height;
     super.initState();
@@ -44,11 +44,11 @@ class _ElementCreatorState extends State<ElementCreator> {
     File imageFile = File(image.path);
     if (imageFile.existsSync()) {
       if (mounted) {}
-      _getPictureHeight();
+
       setState(() {
         _imagePath = image.path;
       });
-      Navigator.pop(context, _height);
+      _getPictureHeight();
     }
   }
 
@@ -68,7 +68,9 @@ class _ElementCreatorState extends State<ElementCreator> {
     final scale = height / width;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    _height = screenWidth * scale;
+    setState(() {
+      _height = screenWidth * scale;
+    });
   }
 
   @override
@@ -77,7 +79,9 @@ class _ElementCreatorState extends State<ElementCreator> {
       backgroundColor: Colors.amber,
       body: Column(
         children: [
-          TextField(controller: _controller),
+          TextField(
+            controller: _controller,
+          ),
           File(_imagePath).existsSync()
               ? Image.file(
                   File(
@@ -154,4 +158,3 @@ class _ElementCreatorState extends State<ElementCreator> {
     );
   }
 }
-  //git test

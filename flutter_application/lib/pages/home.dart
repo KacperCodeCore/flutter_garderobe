@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/pages/element_star/element_page.dart';
+import 'package:flutter_application/pages/element/element_page.dart';
 
 import 'package:flutter_application/pages/home/homepage.dart';
 
@@ -34,9 +34,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    double _iconSize = 40;
-    Color _iconColor = Colors.brown.shade600;
-    Color _selectedIconColor = Colors.brown.shade300;
+    double _iconSize = 35;
+    Color _iconColor = Colors.brown.shade300;
+    Color _selectedIconColor = Colors.brown.shade600;
 
     return Scaffold(
       extendBody: true,
@@ -45,12 +45,21 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.all(10),
         margin: EdgeInsets.only(top: 10, bottom: 50, left: 10, right: 10),
         decoration: BoxDecoration(
-            color: Colors.brown[200],
-            borderRadius: BorderRadius.all(Radius.circular(30)),
-            border: Border.all(
-              color: _iconColor,
-              width: 3,
-            )),
+          color: Colors.brown[200],
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          border: Border.all(
+            color: _selectedIconColor,
+            width: 3,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Row(

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_application/data/boxes.dart';
 import 'package:flutter_application/data/my_element.dart';
-import 'package:flutter_application/pages/element_star/single_element.dart';
-import 'package:flutter_application/pages/element_star/element_creator.dart';
+import 'package:flutter_application/pages/element/single_element.dart';
+import 'package:flutter_application/pages/element/element_creator.dart';
 
 class ElementPage extends StatefulWidget {
   const ElementPage({super.key});
@@ -62,22 +62,18 @@ class _ElementPageState extends State<ElementPage> {
         padding: EdgeInsets.only(bottom: 100),
         child: FloatingActionButton(
           child: Icon(Icons.add),
-          onPressed: () async {
-            final newHeight = await Navigator.of(context).push(
+          onPressed: () => {
+            Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => ElementCreator(
-                  name: 'New Element',
-                  imagePath: 'path',
-                  height: 100,
-                  onSave: (name, path, height) =>
-                      _addMyElement(name, path, height),
-                  onDelete: () {},
-                ),
+                    name: 'New Element',
+                    imagePath: 'path',
+                    height: 100,
+                    onSave: (name, path, height) =>
+                        _addMyElement(name, path, height),
+                    onDelete: () {}),
               ),
-            );
-            if (newHeight != null) {
-              _addMyElement('New Element', 'path', newHeight);
-            }
+            ),
           },
         ),
       ),
