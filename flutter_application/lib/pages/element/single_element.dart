@@ -38,7 +38,10 @@ class SingleElement extends StatelessWidget {
                       path,
                     ),
                     fit: BoxFit.fitWidth)
-                : Icon(Icons.not_accessible),
+                : Icon(
+                    Icons.block_outlined,
+                    size: 50,
+                  ),
           ),
         ],
       ),
