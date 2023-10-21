@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application/data/my_element.dart';
 import 'package:flutter_application/pages/collection/overlayed_widget.dart';
+
+import '../../data/boxes.dart';
 
 class CollectionPage extends StatefulWidget {
   const CollectionPage({super.key});
@@ -9,6 +14,7 @@ class CollectionPage extends StatefulWidget {
 }
 
 class _CollectionPageState extends State<CollectionPage> {
+  var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
   List<Widget> _addedWidgets = [];
 
   @override
@@ -37,12 +43,22 @@ class _CollectionPageState extends State<CollectionPage> {
         padding: EdgeInsets.only(bottom: 100),
         child: FloatingActionButton(
           onPressed: () {
-            setState(() {
-              _addedWidgets.add(OverlaydWidget(
-                child: _dummyWidgets.elementAt(_addedWidgets.length),
-              ));
-              print(_addedWidgets.length);
-            });
+            setState(
+              () {
+                if (_addedWidgets.length < 10) {
+                  _addedWidgets.add(
+                    OverlaydWidget(
+                      // child: _dummyWidgets.elementAt(_addedWidgets.length),
+                      child: SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: Image.file(File(elements[1].path))),
+                    ),
+                  );
+                  print(_addedWidgets.length);
+                }
+              },
+            );
           },
           child: Icon(Icons.add),
         ),

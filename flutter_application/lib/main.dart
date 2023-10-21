@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // #region Description
     // hide statusbar
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
     //     overlays: [SystemUiOverlay.bottom]);
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
     // block screen rotation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    // #endregion
     return MaterialApp(
       title: 'flutter_garderobe',
       debugShowCheckedModeBanner: false,
