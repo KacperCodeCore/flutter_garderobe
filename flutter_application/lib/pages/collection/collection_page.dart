@@ -45,14 +45,14 @@ class _CollectionPageState extends State<CollectionPage> {
           onPressed: () {
             setState(
               () {
-                if (_addedWidgets.length < 10) {
+                if (_addedWidgets.length < 10 && elements.length > 0) {
                   _addedWidgets.add(
                     OverlaydWidget(
                       // child: _dummyWidgets.elementAt(_addedWidgets.length),
                       child: SizedBox(
                           width: 100,
                           height: 100,
-                          child: Image.file(File(elements[1].path))),
+                          child: Image.file(File(elements[0].path))),
                     ),
                   );
                   print(_addedWidgets.length);
@@ -66,26 +66,26 @@ class _CollectionPageState extends State<CollectionPage> {
     );
   }
 
-  final List<Widget> _dummyWidgets = [
-    //emoji
-    Text("🙂", style: TextStyle(fontSize: 120)),
-    //heart
-    Icon(
-      Icons.favorite,
-      size: 120,
-      color: Colors.red,
-    ),
-    //text
-    ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: Container(
-        color: Colors.white,
-        padding: const EdgeInsets.all(8),
-        child: Text(
-          'Test text ♥️',
-          style: TextStyle(fontSize: 18, color: Colors.black),
-        ),
-      ),
-    )
-  ];
+  // final List<Widget> _dummyWidgets = [
+  //   //emoji
+  //   Text("🙂", style: TextStyle(fontSize: 120)),
+  //   //heart
+  //   Icon(
+  //     Icons.favorite,
+  //     size: 120,
+  //     color: Colors.red,
+  //   ),
+  //   //text
+  //   ClipRRect(
+  //     borderRadius: BorderRadius.circular(10),
+  //     child: Container(
+  //       color: Colors.white,
+  //       padding: const EdgeInsets.all(8),
+  //       child: Text(
+  //         'Test text ♥️',
+  //         style: TextStyle(fontSize: 18, color: Colors.black),
+  //       ),
+  //     ),
+  //   )
+  // ];
 }
