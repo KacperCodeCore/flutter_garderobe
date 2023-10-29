@@ -66,26 +66,32 @@ class _CollectionPageState extends State<CollectionPage> {
     );
   }
 
-  // final List<Widget> _dummyWidgets = [
-  //   //emoji
-  //   Text("🙂", style: TextStyle(fontSize: 120)),
-  //   //heart
-  //   Icon(
-  //     Icons.favorite,
-  //     size: 120,
-  //     color: Colors.red,
-  //   ),
-  //   //text
-  //   ClipRRect(
-  //     borderRadius: BorderRadius.circular(10),
-  //     child: Container(
-  //       color: Colors.white,
-  //       padding: const EdgeInsets.all(8),
-  //       child: Text(
-  //         'Test text ♥️',
-  //         style: TextStyle(fontSize: 18, color: Colors.black),
-  //       ),
-  //     ),
-  //   )
-  // ];
+  final List<Widget> _dummyWidgets = [
+    Positioned(
+      child: Container(
+        width: 100,
+        height: 100,
+      ),
+    ),
+    //emoji
+    Text("🙂", style: TextStyle(fontSize: 120)),
+    //heart
+    Icon(
+      Icons.favorite,
+      size: 120,
+      color: Colors.red,
+    ),
+    //text
+    ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        color: Colors.white,
+        padding: const EdgeInsets.all(8),
+        child: Text(
+          'Test text ♥️',
+          style: TextStyle(fontSize: 18, color: Colors.black),
+        ),
+      ),
+    )
+  ];
 }
