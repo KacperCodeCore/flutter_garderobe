@@ -48,6 +48,7 @@ class _CollectionPageState extends State<CollectionPage> {
                 if (_addedWidgets.length < 10 && elements.length > 0) {
                   _addedWidgets.add(
                     OverlaydWidget(
+                      initMatrix4: Boxes.m4,
                       // child: _dummyWidgets.elementAt(_addedWidgets.length),
                       child: SizedBox(
                           width: 100,
