@@ -53,9 +53,7 @@ class _CollectionPageState extends State<CollectionPage> {
                   _addedWidgets.add(
                     OverlaydWidget(
                       initMatrix4: Boxes.m4,
-                      initX: -100,
-                      initY: 0,
-                      initRotation: 0,
+                      // child: _dummyWidgets.elementAt(_addedWidgets.length),
                       child: SizedBox(
                           width: 100,
                           height: 100,
