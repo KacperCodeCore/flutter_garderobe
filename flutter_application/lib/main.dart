@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application/data/collection.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'pages/home.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -7,7 +8,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(MyElementAdapter());
+  Hive.registerAdapter(CollectionElementAdapter());
+  // Hive.registerAdapter(CollectionAdapter());
   await Hive.openBox<MyElement>('myElementBox');
+  await Hive.openBox<CollectionElement>('collectionElementBox');
 
   runApp(MyApp());
 }

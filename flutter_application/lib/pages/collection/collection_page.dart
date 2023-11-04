@@ -1,6 +1,8 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application/data/collection.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'package:flutter_application/pages/collection/overlayed_widget.dart';
 
@@ -14,6 +16,8 @@ class CollectionPage extends StatefulWidget {
 }
 
 class _CollectionPageState extends State<CollectionPage> {
+  var collectionElements =
+      Boxes.getCollectionElement().values.toList().cast<CollectionElement>();
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
   List<Widget> _addedWidgets = [];
 
@@ -48,7 +52,10 @@ class _CollectionPageState extends State<CollectionPage> {
                 if (_addedWidgets.length < 10 && elements.length > 0) {
                   _addedWidgets.add(
                     OverlaydWidget(
-                      // child: _dummyWidgets.elementAt(_addedWidgets.length),
+                      initMatrix4: Boxes.m4,
+                      initX: -100,
+                      initY: 0,
+                      initRotation: 0,
                       child: SizedBox(
                           width: 100,
                           height: 100,
@@ -67,12 +74,13 @@ class _CollectionPageState extends State<CollectionPage> {
   }
 
   final List<Widget> _dummyWidgets = [
-    Positioned(
-      child: Container(
-        width: 100,
-        height: 100,
-      ),
-    ),
+    // Positioned(
+
+    //   child: Container(
+    //     width: 100,
+    //     height: 100,
+    //   ),
+    // ),
     //emoji
     Text("🙂", style: TextStyle(fontSize: 120)),
     //heart
