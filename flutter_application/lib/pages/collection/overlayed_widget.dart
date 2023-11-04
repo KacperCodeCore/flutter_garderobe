@@ -34,15 +34,15 @@ class _OverlaydWidgetState extends State<OverlaydWidget> {
   void initState() {
     super.initState();
     if (widget.initMatrix4 != null) {
-      currentMatrix = widget.initMatrix4!.clone();
+      initialMatrix = widget.initMatrix4!.clone();
     } else {
       initialMatrix
         ..translate(widget.initY, widget.initX)
         ..scale(widget.initScale)
         ..rotateZ(widget.initRotation);
-      currentMatrix = Matrix4.identity()..multiply(initialMatrix);
+      // currentMatrix = Matrix4.identity()..multiply(initialMatrix);
     }
-    notifier = ValueNotifier(currentMatrix);
+    notifier = ValueNotifier(initialMatrix);
   }
 
   @override
