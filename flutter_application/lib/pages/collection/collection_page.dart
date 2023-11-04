@@ -17,6 +17,9 @@ class CollectionPage extends StatefulWidget {
 
 class _CollectionPageState extends State<CollectionPage> {
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
+  var collectionE =
+      Boxes.getMyElements().values.toList().cast<CollectionElement>();
+
   List<Widget> _addedWidgets = [];
 
   @override

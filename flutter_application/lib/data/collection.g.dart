@@ -18,27 +18,21 @@ class CollectionElementAdapter extends TypeAdapter<CollectionElement> {
     };
     return CollectionElement(
       name: fields[0] as String,
-      x: fields[1] as double,
-      y: fields[2] as double,
-      rotation: fields[3] as double,
-      scale: fields[4] as double,
+      path: fields[1] as String,
+      matrix4: fields[2] as Matrix4,
     );
   }
 
   @override
   void write(BinaryWriter writer, CollectionElement obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.x)
+      ..write(obj.path)
       ..writeByte(2)
-      ..write(obj.y)
-      ..writeByte(3)
-      ..write(obj.rotation)
-      ..writeByte(4)
-      ..write(obj.scale);
+      ..write(obj.matrix4);
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'collection.g.dart';
@@ -9,23 +10,16 @@ class CollectionElement {
   String name;
 
   @HiveField(1)
-  double x;
+  String path;
 
   @HiveField(2)
-  double y;
+  Matrix4 matrix4;
 
-  @HiveField(3)
-  double rotation;
-
-  @HiveField(4)
-  double scale;
-
-  CollectionElement(
-      {required this.name,
-      required this.x,
-      required this.y,
-      required this.rotation,
-      required this.scale});
+  CollectionElement({
+    required this.name,
+    required this.path,
+    required this.matrix4,
+  });
 }
 
 @HiveType(typeId: 2, adapterName: 'CollectionAdapter')
