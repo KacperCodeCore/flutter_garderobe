@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/data/boxes.dart';
 import 'package:matrix_gesture_detector/matrix_gesture_detector.dart';
 
-class OverlaydWidget extends StatefulWidget {
+class DraggableWidget extends StatefulWidget {
   final Widget child;
   final double initX;
   final double initY;
@@ -10,7 +10,7 @@ class OverlaydWidget extends StatefulWidget {
   final double initRotation;
   final Matrix4? initMatrix4;
 
-  OverlaydWidget({
+  DraggableWidget({
     Key? key,
     required this.child,
     this.initY = 0.0,
@@ -21,10 +21,10 @@ class OverlaydWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _OverlaydWidgetState createState() => _OverlaydWidgetState();
+  _DraggableWidgetState createState() => _DraggableWidgetState();
 }
 
-class _OverlaydWidgetState extends State<OverlaydWidget> {
+class _DraggableWidgetState extends State<DraggableWidget> {
   Matrix4 initialMatrix = Matrix4.identity();
   Matrix4 currentMatrix = Matrix4.identity();
 
@@ -49,6 +49,7 @@ class _OverlaydWidgetState extends State<OverlaydWidget> {
   Widget build(BuildContext context) {
     return MatrixGestureDetector(
       onMatrixUpdate: (m, tm, sm, rm) {
+        // currentMatrix = m..multiply(initialMatrix); // może zmienić?
         currentMatrix = m.clone()..multiply(initialMatrix);
         notifier.value = currentMatrix;
       },

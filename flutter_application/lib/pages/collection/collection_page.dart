@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/data/collection.dart';
 import 'package:flutter_application/data/my_element.dart';
-import 'package:flutter_application/pages/collection/overlayed_widget.dart';
+import 'package:flutter_application/pages/collection/draggable_widget.dart';
 
 import '../../data/boxes.dart';
 
@@ -52,7 +52,7 @@ class _CollectionPageState extends State<CollectionPage> {
               () {
                 if (_addedWidgets.length < 10 && elements.length > 0) {
                   _addedWidgets.add(
-                    OverlaydWidget(
+                    DraggableWidget(
                       initMatrix4: Boxes.m4,
                       // child: _dummyWidgets.elementAt(_addedWidgets.length),
                       child: SizedBox(
