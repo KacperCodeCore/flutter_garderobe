@@ -59,17 +59,20 @@ class CollectionAdapter extends TypeAdapter<Collection> {
     return Collection(
       name: fields[0] as String,
       elements: (fields[1] as List).cast<CollectionElement>(),
+      lastEdited: fields[2] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, Collection obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.elements);
+      ..write(obj.elements)
+      ..writeByte(2)
+      ..write(obj.lastEdited);
   }
 
   @override

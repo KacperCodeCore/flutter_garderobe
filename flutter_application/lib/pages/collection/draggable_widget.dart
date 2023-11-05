@@ -40,7 +40,6 @@ class _DraggableWidgetState extends State<DraggableWidget> {
         ..translate(widget.initY, widget.initX)
         ..scale(widget.initScale)
         ..rotateZ(widget.initRotation);
-      // currentMatrix = Matrix4.identity()..multiply(initialMatrix);
     }
     notifier = ValueNotifier(initialMatrix);
   }
@@ -49,8 +48,7 @@ class _DraggableWidgetState extends State<DraggableWidget> {
   Widget build(BuildContext context) {
     return MatrixGestureDetector(
       onMatrixUpdate: (m, tm, sm, rm) {
-        // currentMatrix = m..multiply(initialMatrix); // może zmienić?
-        currentMatrix = m.clone()..multiply(initialMatrix);
+        currentMatrix = m..multiply(initialMatrix);
         notifier.value = currentMatrix;
       },
       child: AnimatedBuilder(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'collection.g.dart';
-// part 'auto_generated.g.dart';
 
 @HiveType(typeId: 1, adapterName: 'CollectionElementAdapter')
 class CollectionElement {
@@ -30,5 +29,12 @@ class Collection {
   @HiveField(1)
   List<CollectionElement> elements;
 
-  Collection({required this.name, required this.elements});
+  @HiveField(2)
+  DateTime lastEdited;
+
+  Collection({
+    required this.name,
+    required this.elements,
+    required this.lastEdited,
+  });
 }
