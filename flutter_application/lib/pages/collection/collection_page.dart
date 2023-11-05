@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -17,12 +16,45 @@ class CollectionPage extends StatefulWidget {
 
 class _CollectionPageState extends State<CollectionPage> {
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
-  var collectionE =
-      Boxes.getMyElements().values.toList().cast<CollectionElement>();
+  var collectionElements =
+      Boxes.getCollectionElement().values.toList().cast<CollectionElement>();
+  var collections = Boxes.getCollection().values.toList().cast<Collection>();
 
   List<Widget> _addedWidgets = [];
 
   @override
+  void initState() {
+    // Sprawdanie, czy instancja Collection już istnieje w Hive
+    // tymczasowe
+    if (collections.isEmpty) {
+      List<CollectionElement> element = [];
+      Collection newCollection = Collection(
+          name: 'name', elements: element, lastEdited: DateTime.now());
+      final box = Boxes.getCollection();
+      box.add(newCollection);
+    }
+    // utworzenie listy widgetów na podstawie danych z hive
+    for (int i = 0; i < collections[0].elements.length; i++)
+      (
+        _addedWidgets.add(
+          DraggableWidget(
+            // todo sprawdzanie poprawności ścieżki
+            child: File(collections[0].elements[i].path).existsSync()
+                ? Image.file(
+                    File(
+                      collections[0].elements[i].path,
+                    ),
+                    fit: BoxFit.fitWidth)
+                : Icon(
+                    Icons.block_outlined,
+                    size: 50,
+                  ),
+          ),
+        ),
+      );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +66,11 @@ class _CollectionPageState extends State<CollectionPage> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: Container()),
+
+          // Wyświetla wszystkie elementy z kolekcji
           for (int i = 0; i < _addedWidgets.length; i++) _addedWidgets[i],
+
+          // todo śmietnik dla elemetów kolekcji
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
@@ -47,19 +83,20 @@ class _CollectionPageState extends State<CollectionPage> {
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 100),
         child: FloatingActionButton(
+          //dodawanie elementu do kolekcji
           onPressed: () {
             setState(
               () {
-                if (_addedWidgets.length < 10 && elements.length > 0) {
+                if (_addedWidgets.length < 10) {
                   _addedWidgets.add(
                     DraggableWidget(
                       initMatrix4: Boxes.m4,
-                      // child: _dummyWidgets.elementAt(_addedWidgets.length),
                       child: SizedBox(
                           width: 100,
                           height: 100,
                           child: Image.file(File(elements[0].path))),
                     ),
+                    _addHiveElement(),
                   );
                   print(_addedWidgets.length);
                 }
@@ -73,13 +110,6 @@ class _CollectionPageState extends State<CollectionPage> {
   }
 
   final List<Widget> _dummyWidgets = [
-    // Positioned(
-
-    //   child: Container(
-    //     width: 100,
-    //     height: 100,
-    //   ),
-    // ),
     //emoji
     Text("🙂", style: TextStyle(fontSize: 120)),
     //heart
@@ -101,4 +131,16 @@ class _CollectionPageState extends State<CollectionPage> {
       ),
     )
   ];
+
+  void _addHiveElement() {
+    // CollectionElement element = CollectionElement(
+    //   name: 'name',
+    //   path: path,
+    //   matrix4: Matrix4.identity(),
+    // );
+
+    // final box = Boxes.getCollection();
+    // var collection = box.getAt(0) as Collection;
+    // collection.elements.add(element);
+  }
 }

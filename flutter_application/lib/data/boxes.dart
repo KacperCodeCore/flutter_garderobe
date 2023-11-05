@@ -5,7 +5,9 @@ import 'my_element.dart';
 
 class Boxes {
   static Box<MyElement> getMyElements() => Hive.box<MyElement>('myElementBox');
-  static Box<CollectionElement> getCollection() =>
+  static Box<CollectionElement> getCollectionElement() =>
       Hive.box<CollectionElement>('collectionBox');
+  static Box<Collection> getCollection() =>
+      Hive.box<Collection>('collectionBox');
   static Matrix4 m4 = Matrix4.identity();
 }
