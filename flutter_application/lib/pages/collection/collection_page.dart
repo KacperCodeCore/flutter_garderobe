@@ -34,26 +34,69 @@ class _CollectionPageState extends State<CollectionPage> {
       box.add(newCollection);
     }
     // utworzenie listy widgetów na podstawie danych z hive
-    for (int i = 0; i < collections[0].elements.length; i++)
-      (
-        _addedWidgets.add(
-          DraggableWidget(
-            // todo sprawdzanie poprawności ścieżki
-            child: File(collections[0].elements[i].path).existsSync()
+    for (int i = 0; i < collections[0].elements.length; i++) {
+      var _path = collections[0].elements[i].path;
+      bool fileExists =
+          File(_path).existsSync(); // Przechwytujemy rezultat existsSync
+      _addedWidgets.add(
+        DraggableWidget(
+          onDoubleTap: () => {},
+          onSave: (Matrix4) {},
+          child: SizedBox(
+            height: 100,
+            width: 100,
+            child: fileExists
                 ? Image.file(
                     File(
-                      collections[0].elements[i].path,
+                      _path,
                     ),
-                    fit: BoxFit.fitWidth)
+                  )
                 : Icon(
                     Icons.block_outlined,
-                    size: 50,
                   ),
           ),
         ),
       );
+    }
+
     super.initState();
   }
+
+  void _addDraggableWidget() {
+    if (_addedWidgets.length < 10) {
+      _addedWidgets.add(
+        DraggableWidget(
+          initMatrix4: Boxes.m4,
+          onDoubleTap: () => {},
+          onSave: (m4) {
+            _updateElementInHive(m4);
+          },
+          child: SizedBox(
+              width: 100,
+              height: 100,
+              child: Image.file(File(elements[0].path))),
+        ),
+      );
+      _addElementToHive(elements[0].path);
+      print(_addedWidgets.length);
+    }
+  }
+
+  void _addElementToHive(String path) {
+    CollectionElement element = CollectionElement(
+      name: 'name',
+      path: path,
+      matrix4: Matrix4.identity(),
+    );
+
+    final box = Boxes.getCollection();
+    var collection = box.getAt(0) as Collection;
+    collection.elements.add(element);
+  }
+
+  void _updateElementInHive(Matrix4 m4) {}
+
+  void _saveToHive() {}
 
   @override
   Widget build(BuildContext context) {
@@ -87,19 +130,7 @@ class _CollectionPageState extends State<CollectionPage> {
           onPressed: () {
             setState(
               () {
-                if (_addedWidgets.length < 10) {
-                  _addedWidgets.add(
-                    DraggableWidget(
-                      initMatrix4: Boxes.m4,
-                      child: SizedBox(
-                          width: 100,
-                          height: 100,
-                          child: Image.file(File(elements[0].path))),
-                    ),
-                    _addHiveElement(),
-                  );
-                  print(_addedWidgets.length);
-                }
+                _addDraggableWidget();
               },
             );
           },
@@ -129,18 +160,12 @@ class _CollectionPageState extends State<CollectionPage> {
           style: TextStyle(fontSize: 18, color: Colors.black),
         ),
       ),
-    )
+    ),
   ];
 
-  void _addHiveElement() {
-    // CollectionElement element = CollectionElement(
-    //   name: 'name',
-    //   path: path,
-    //   matrix4: Matrix4.identity(),
-    // );
-
-    // final box = Boxes.getCollection();
-    // var collection = box.getAt(0) as Collection;
-    // collection.elements.add(element);
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 }

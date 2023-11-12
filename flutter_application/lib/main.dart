@@ -9,9 +9,10 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(MyElementAdapter());
   Hive.registerAdapter(CollectionElementAdapter());
-  // Hive.registerAdapter(CollectionAdapter());
+  Hive.registerAdapter(CollectionAdapter());
   await Hive.openBox<MyElement>('myElementBox');
   await Hive.openBox<CollectionElement>('collectionElementBox');
+  await Hive.openBox<Collection>('collectionBox');
 
   runApp(MyApp());
 }
