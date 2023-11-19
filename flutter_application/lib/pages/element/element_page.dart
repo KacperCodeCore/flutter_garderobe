@@ -66,6 +66,7 @@ class _ElementPageState extends State<ElementPage> {
           onPressed: () => {
             Navigator.of(context).push(
               MaterialPageRoute(
+                // todo dwa razy korzystam z ElementCreator() i działa to delikatnie ineczej, czy można to naprawić?
                 builder: (context) => ElementCreator(
                     name: 'New Element',
                     imagePath: 'path',

@@ -20,12 +20,16 @@ class _CollectionPageState extends State<CollectionPage> {
       Boxes.getCollectionElement().values.toList().cast<CollectionElement>();
   var collections = Boxes.getCollection().values.toList().cast<Collection>();
 
+  int _id = 0;
+  int get _getID {
+    _id += 1;
+    return _id;
+  }
   List<Widget> _addedWidgets = [];
 
   @override
   void initState() {
     // Sprawdanie, czy instancja Collection już istnieje w Hive
-    // tymczasowe
     if (collections.isEmpty) {
       List<CollectionElement> element = [];
       Collection newCollection = Collection(
@@ -35,66 +39,52 @@ class _CollectionPageState extends State<CollectionPage> {
     }
     // utworzenie listy widgetów na podstawie danych z hive
     for (int i = 0; i < collections[0].elements.length; i++) {
-      var _path = collections[0].elements[i].path;
-      bool fileExists =
-          File(_path).existsSync(); // Przechwytujemy rezultat existsSync
-      _addedWidgets.add(
-        DraggableWidget(
-          onDoubleTap: () => {},
-          onSave: (Matrix4) {},
-          child: SizedBox(
-            height: 100,
-            width: 100,
-            child: fileExists
-                ? Image.file(
-                    File(
-                      _path,
-                    ),
-                  )
-                : Icon(
-                    Icons.block_outlined,
-                  ),
-          ),
-        ),
-      );
+      CollectionElement element = collections[0].elements[i];
+      _addDraggableWidget(_getID, element);
     }
-
     super.initState();
   }
 
-  void _addDraggableWidget() {
-    if (_addedWidgets.length < 10) {
-      _addedWidgets.add(
-        DraggableWidget(
-          initMatrix4: Boxes.m4,
-          onDoubleTap: () => {},
-          onSave: (m4) {
-            _updateElementInHive(m4);
-          },
-          child: SizedBox(
-              width: 100,
-              height: 100,
-              child: Image.file(File(elements[0].path))),
-        ),
-      );
-      _addElementToHive(elements[0].path);
-      print(_addedWidgets.length);
-    }
+  /// dodaje DraggableWidget do List<Widget> _addedWidgets = [];
+  /// z hive
+  void _addDraggableWidget(int id, CollectionElement element) {
+    if (_addedWidgets.length > 9) return;
+
+    _addedWidgets.add(
+      DraggableWidget(
+        initMatrix4: element.matrix4,
+        onDoubleTap: () => {},
+        onSave: (m4, str) {
+          print(str);
+          _updateElementInHive(id, element)
+        },
+        child: SizedBox(
+            width: 100, height: 100, child: Image.file(File(element.path))),
+      ),
+    );
+    // ?-
+    print(_addedWidgets.length);
   }
 
-  void _addElementToHive(String path) {
-    CollectionElement element = CollectionElement(
-      name: 'name',
-      path: path,
-      matrix4: Matrix4.identity(),
-    );
+  void _addElementToHive(CollectionElement element) {
+    if (_addedWidgets.length > 9) return;
+
+    final box = Boxes.getCollection();
+    // todo usunąć 0 index
+    var collection = box.getAt(0) as Collection;
+    collection.elements.add(element);
+
+    _addDraggableWidget(element);
+  }
+
+  void _updateElementInHive(int id ,CollectionElement element) {
 
     final box = Boxes.getCollection();
     var collection = box.getAt(0) as Collection;
-    collection.elements.add(element);
+    // collection.elements.add(element);
+    collection.elements[id] = element;
+    box.putAt(0, collection); // zaktualizuj kolekcję w bazie danych
   }
-
-  void _updateElementInHive(Matrix4 m4) {}
 
   void _saveToHive() {}
 
@@ -113,24 +103,17 @@ class _CollectionPageState extends State<CollectionPage> {
           // Wyświetla wszystkie elementy z kolekcji
           for (int i = 0; i < _addedWidgets.length; i++) _addedWidgets[i],
 
-          // todo śmietnik dla elemetów kolekcji
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Icon(Icons.delete),
-            ),
-          ),
+        
         ],
       ),
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 100),
         child: FloatingActionButton(
-          //dodawanie elementu do kolekcji
+          //dodawanie elementu do hve a potem do kolekcji
           onPressed: () {
             setState(
               () {
-                _addDraggableWidget();
+                _addElementToHive(elements[0].path);
               },
             );
           },
@@ -165,7 +148,11 @@ class _CollectionPageState extends State<CollectionPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    for (var widget in _addedWidgets) {
+      if (widget is DraggableWidget) {
+        widget.dispose();
+      }
+    }
     super.dispose();
   }
 }

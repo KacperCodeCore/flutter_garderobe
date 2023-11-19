@@ -12,7 +12,7 @@ class DraggableWidget extends StatefulWidget {
   final double initRotation;
   final Matrix4? initMatrix4;
   final Function onDoubleTap;
-  final Function(Matrix4) onSave;
+  final Function(Matrix4, String) onSave;
 
   DraggableWidget({
     Key? key,
@@ -28,6 +28,10 @@ class DraggableWidget extends StatefulWidget {
 
   @override
   _DraggableWidgetState createState() => _DraggableWidgetState();
+
+  void dispose() {
+    //todo
+  }
 }
 
 class _DraggableWidgetState extends State<DraggableWidget> {
@@ -72,13 +76,13 @@ class _DraggableWidgetState extends State<DraggableWidget> {
         currentMatrix = m..multiply(initialMatrix);
         notifier.value = currentMatrix;
 
+        // chwilę po przestaniu korzystana z widgetu następuje onSave
         if (timer.isActive) {
           timer.cancel();
         }
-        timer = Timer(Duration(seconds: 1), () {
+        timer = Timer(Duration(milliseconds: 1000), () {
           isBeingUsed = false;
-          widget.onSave(notifier.value);
-          print('inActive');
+          widget.onSave(notifier.value, 'inActive');
         });
 
         isBeingUsed = true;

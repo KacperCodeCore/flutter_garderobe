@@ -6,14 +6,23 @@ import 'pages/home.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
+  // Ensure Flutter is initialized
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Hive
   await Hive.initFlutter();
+
+  // Register adapters for your models
   Hive.registerAdapter(MyElementAdapter());
   Hive.registerAdapter(CollectionElementAdapter());
   Hive.registerAdapter(CollectionAdapter());
+
+  // Open boxes
   await Hive.openBox<MyElement>('myElementBox');
   await Hive.openBox<CollectionElement>('collectionElementBox');
   await Hive.openBox<Collection>('collectionBox');
 
+  // Run your app
   runApp(MyApp());
 }
 
