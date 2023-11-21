@@ -40,14 +40,14 @@ class _CollectionPageState extends State<CollectionPage> {
     // utworzenie listy widgetów na podstawie danych z hive
     for (int i = 0; i < collections[0].elements.length; i++) {
       CollectionElement element = collections[0].elements[i];
-      _addDraggableWidget(_getID, element);
+      _addDraggableWidget(element);
     }
     super.initState();
   }
 
   /// dodaje DraggableWidget do List<Widget> _addedWidgets = [];
   /// z hive
-  void _addDraggableWidget(int id, CollectionElement element) {
+  void _addDraggableWidget(CollectionElement element) {
     if (_addedWidgets.length > 9) return;
 
     _addedWidgets.add(
@@ -56,7 +56,7 @@ class _CollectionPageState extends State<CollectionPage> {
         onDoubleTap: () => {},
         onSave: (m4, str) {
           print(str);
-          _updateElementInHive(id, element)
+          _updateElementInHive(element);
         },
         child: SizedBox(
             width: 100, height: 100, child: Image.file(File(element.path))),
@@ -66,6 +66,7 @@ class _CollectionPageState extends State<CollectionPage> {
     print(_addedWidgets.length);
   }
 
+  /// dodanie nowego elementu do hive
   void _addElementToHive(CollectionElement element) {
     if (_addedWidgets.length > 9) return;
 
@@ -77,51 +78,76 @@ class _CollectionPageState extends State<CollectionPage> {
     _addDraggableWidget(element);
   }
 
-  void _updateElementInHive(int id ,CollectionElement element) {
-
+  /// aktualizacja danych elementu w hive
+  void _updateElementInHive(CollectionElement element) {
     final box = Boxes.getCollection();
     var collection = box.getAt(0) as Collection;
-    // collection.elements.add(element);
-    collection.elements[id] = element;
+    int index = collection.elements.indexWhere((e) => e.id == element.id);
+    collection.elements[index] = element;
     box.putAt(0, collection); // zaktualizuj kolekcję w bazie danych
   }
-
-  void _saveToHive() {}
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.brown.shade300,
-      body: Stack(
-        alignment: Alignment.center,
-        children: [
-          SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: Container()),
+      body: Center(
+        ListView.builder(
+          itemCount: collections[0].elements.length,
+          itemBuilder: itemBuilder,
 
-          // Wyświetla wszystkie elementy z kolekcji
-          for (int i = 0; i < _addedWidgets.length; i++) _addedWidgets[i],
-
-        
-        ],
-      ),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 100),
-        child: FloatingActionButton(
-          //dodawanie elementu do hve a potem do kolekcji
-          onPressed: () {
-            setState(
-              () {
-                _addElementToHive(elements[0].path);
-              },
-            );
-          },
-          child: Icon(Icons.add),
-        ),
-      ),
+          
+          )
+      )),
     );
   }
+    
+  }
+  int _index = 0;
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     backgroundColor: Colors.brown.shade300,
+  //     body: Center(
+  //       child: ListView(
+  //         children: <Widget>[],
+  //       )
+
+        
+        
+  //       (
+  //         // index: _index,
+  //         // children: [
+  //         //   // SizedBox(
+  //         //   //     width: MediaQuery.of(context).size.width,
+  //         //   //     height: MediaQuery.of(context).size.height,
+  //         //   //     child: Container()),
+      
+  //         //   // Wyświetla wszystkie elementy z kolekcji
+  //         //   for (int i = 0; i < _addedWidgets.length; i++) _addedWidgets[i],
+  //         //   addwidget
+      
+          
+  //         // ],
+  //       ),
+  //     ),
+  //     floatingActionButton: Padding(
+  //       padding: EdgeInsets.only(bottom: 100),
+  //       child: FloatingActionButton(
+  //         //dodawanie elementu do hve a potem do kolekcji
+  //         onPressed: () {
+  //           setState(
+  //             () {
+  //               _addElementToHive(elements[0].path);
+  //             },
+  //           );
+  //         },
+  //         child: Icon(Icons.add),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   final List<Widget> _dummyWidgets = [
     //emoji

@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 
 part 'collection.g.dart';
 
 @HiveType(typeId: 1, adapterName: 'CollectionElementAdapter')
 class CollectionElement {
   @HiveField(0)
-  String name;
+  String id = Uuid().v4();
 
   @HiveField(1)
-  String path;
+  String name;
 
   @HiveField(2)
+  String path;
+
+  @HiveField(3)
   Matrix4 matrix4;
 
   CollectionElement({
@@ -24,12 +28,15 @@ class CollectionElement {
 @HiveType(typeId: 2, adapterName: 'CollectionAdapter')
 class Collection {
   @HiveField(0)
-  String name;
+  String id = Uuid().v4();
 
   @HiveField(1)
-  List<CollectionElement> elements;
+  String name;
 
   @HiveField(2)
+  List<CollectionElement> elements;
+
+  @HiveField(3)
   DateTime lastEdited;
 
   Collection({
