@@ -30,7 +30,9 @@ class _CollectionPageState extends State<CollectionPage> {
         lastEdited: DateTime.now(),
       );
       Boxes.getCollection().add(newCollection);
-      setState(() {});
+      setState(() {
+        collections = Boxes.getCollection().values.toList();
+      });
     }
   }
 
@@ -46,16 +48,16 @@ class _CollectionPageState extends State<CollectionPage> {
     // box.putAt(0, collection); // Aktualizuj kolekcję w Boxie
 
     // Pobierz Box kolekcji
-    var collectionBox = Boxes.getCollection();
+    // var collectionBox = Boxes.getCollection();
 
-    // Pobierz kolekcję z Boxa
-    var collection = collectionBox.getAt(0) as Collection;
+    // // Pobierz kolekcję z Boxa
+    // var collection = collectionBox.getAt(0) as Collection;
 
-    // Dodaj element do kolekcji
-    collection.elements.add(collectionElement);
+    // // Dodaj element do kolekcji
+    // collection.elements.add(collectionElement);
 
-    // Zapisz kolekcję z powrotem do Boxa
-    collectionBox.putAt(0, collection);
+    // // Zapisz kolekcję z powrotem do Boxa
+    // collectionBox.putAt(0, collection);
 
     setState(() {
       Boxes.getCollection().getAt(0)!.elements.add(collectionElement);

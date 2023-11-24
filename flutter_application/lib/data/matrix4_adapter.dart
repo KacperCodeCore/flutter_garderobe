@@ -8,10 +8,9 @@ class Matrix4Adapter extends TypeAdapter<Matrix4> {
 
   @override
   Matrix4 read(BinaryReader reader) {
-    final listLength = reader.readByte();
-    final data = Float64List(listLength * 4); // Macierz 4x4
+    final data = Float64List(16); // Macierz 4x4
 
-    for (int i = 0; i < listLength * 4; i++) {
+    for (int i = 0; i < 16; i++) {
       data[i] = reader.readDouble();
     }
 
@@ -22,7 +21,6 @@ class Matrix4Adapter extends TypeAdapter<Matrix4> {
   void write(BinaryWriter writer, Matrix4 obj) {
     final data = obj.storage;
 
-    writer.writeByte(16); // Macierz 4x4
     for (final value in data) {
       writer.writeDouble(value);
     }

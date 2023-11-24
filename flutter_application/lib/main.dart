@@ -23,9 +23,7 @@ void main() async {
   await Hive.openBox<MyElement>('myElementBox');
   // await Hive.openBox<CollectionElement>('collectionElementBox');
   await Hive.openBox<Collection>('collectionBox');
-
   // await Hive.deleteBoxFromDisk('collectionBox');
-  // await Hive.openBox<Collection>('collectionBox');
 
   // Run your app
   runApp(MyApp());
