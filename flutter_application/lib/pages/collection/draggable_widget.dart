@@ -80,10 +80,13 @@ class _DraggableWidgetState extends State<DraggableWidget> {
         if (timer.isActive) {
           timer.cancel();
         }
-        timer = Timer(Duration(milliseconds: 1000), () {
-          isBeingUsed = false;
-          widget.onSave(notifier.value, 'inActive');
-        });
+        timer = Timer(
+          Duration(milliseconds: 1000),
+          () {
+            isBeingUsed = false;
+            widget.onSave(notifier.value, 'onSave was initiated!!!!!!!!!');
+          },
+        );
 
         isBeingUsed = true;
       },
