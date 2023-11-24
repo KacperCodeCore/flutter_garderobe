@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application/data/boxes.dart';
 import 'package:matrix_gesture_detector/matrix_gesture_detector.dart';
 
 class DraggableWidget extends StatefulWidget {

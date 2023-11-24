@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_application/data/boxes.dart';
-import 'package:flutter_application/data/collection.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'package:flutter_application/pages/element/single_element.dart';
 import 'package:flutter_application/pages/element/element_creator.dart';
@@ -24,11 +23,10 @@ class _ElementPageState extends State<ElementPage> {
       path: path,
       height: height,
     );
-    final box = Boxes.getMyElements();
-    box.add(newElement); // Dodanie elementu do Box.
+    Boxes.getMyElements().add(newElement);
 
     setState(() {
-      elements = box.values.toList().cast<MyElement>();
+      elements = Boxes.getMyElements().values.toList().cast<MyElement>();
     });
   }
 
