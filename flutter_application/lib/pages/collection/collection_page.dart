@@ -16,8 +16,6 @@ class CollectionPage extends StatefulWidget {
 
 class _CollectionPageState extends State<CollectionPage> {
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
-  // var collectionElements =
-  //     Boxes.getCollectionElement().values.toList().cast<CollectionElement>();
   var collections = Boxes.getCollection().values.toList().cast<Collection>();
 
   @override
@@ -44,13 +42,28 @@ class _CollectionPageState extends State<CollectionPage> {
     );
 
     setState(() {
+      // aktualizacjia kolekcji w Hive, aby zapisac zmiany.
       Boxes.getCollection().getAt(0)!.elements.add(collectionElement);
+      // jest to konieczne, aby Hive śledził i zapisywał zmiany.
+      Boxes.getCollection().putAt(0, Boxes.getCollection().getAt(0)!);
     });
-
-    var temp = Boxes.getCollection().getAt(0)!.elements.length;
-    print('length: $temp');
   }
 
+  void _updateCollectionElement(
+      String name, String path, Matrix4 m4, int index) {
+    CollectionElement element = CollectionElement(
+      name: name,
+      path: path,
+      matrix4: m4,
+    );
+    // final collection = collections[0];
+
+    // Boxes.getCollection().putAt(0, collection);
+
+    setState(() {
+      Boxes.getCollection().getAt(0)!.elements[index] = element;
+    });
+  }
   // /// dodanie nowego elementu do hive
   // void _deleteCollectionElement(CollectionElement element) {
   //   if (collections.length > 9) return;
@@ -69,22 +82,6 @@ class _CollectionPageState extends State<CollectionPage> {
   //     //collectionBox.put(0, collection);
   //   });
   // }
-
-  void _updateCollectionElement(
-      String name, String path, Matrix4 m4, int index) {
-    CollectionElement element = CollectionElement(
-      name: name,
-      path: path,
-      matrix4: m4,
-    );
-    // final collection = collections[0];
-
-    // Boxes.getCollection().putAt(0, collection);
-
-    setState(() {
-      Boxes.getCollection().getAt(0)!.elements[index] = element;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
