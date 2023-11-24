@@ -36,33 +36,18 @@ class _CollectionPageState extends State<CollectionPage> {
     }
   }
 
-  Future<void> _addCollectionElement(String name, String path) async {
+  Future<void> _addElement(String name, String path) async {
     var collectionElement = CollectionElement(
       name: name,
       path: path,
       matrix4: Matrix4.identity(),
     );
-    // final box = Boxes.getCollection();
-    // var collection = box.getAt(0) as Collection;
-    // collection.elements.add(collectionElement);
-    // box.putAt(0, collection); // Aktualizuj kolekcję w Boxie
-
-    // Pobierz Box kolekcji
-    // var collectionBox = Boxes.getCollection();
-
-    // // Pobierz kolekcję z Boxa
-    // var collection = collectionBox.getAt(0) as Collection;
-
-    // // Dodaj element do kolekcji
-    // collection.elements.add(collectionElement);
-
-    // // Zapisz kolekcję z powrotem do Boxa
-    // collectionBox.putAt(0, collection);
 
     setState(() {
       Boxes.getCollection().getAt(0)!.elements.add(collectionElement);
     });
-    var temp = Boxes.getCollection().length;
+
+    var temp = Boxes.getCollection().getAt(0)!.elements.length;
     print('length: $temp');
   }
 
@@ -110,7 +95,11 @@ class _CollectionPageState extends State<CollectionPage> {
           children: List.generate(
             collections[0].elements.length,
             (index) => DraggableWidget(
-              child: Image.file(File(elements[0].path)),
+              child: SizedBox(
+                height: 100,
+                width: 100,
+                child: Image.file(File(elements[0].path)),
+              ),
               onDoubleTap: () {},
               onSave: (m4, str) {
                 _updateCollectionElement('name', elements[0].path, m4, index);
@@ -127,7 +116,7 @@ class _CollectionPageState extends State<CollectionPage> {
           onPressed: () {
             setState(
               () {
-                _addCollectionElement('test name1', elements[0].path);
+                _addElement('test name1', elements[0].path);
               },
             );
           },
