@@ -70,10 +70,15 @@ class _DraggableWidgetState extends State<DraggableWidget> {
 
   @override
   Widget build(BuildContext context) {
+    //służy do init matrix4 przy każdym odświerzeniu
+    bool useOneTime = true;
     return MatrixGestureDetector(
       onMatrixUpdate: (m, tm, sm, rm) {
-        currentMatrix = m..multiply(initialMatrix);
-        notifier.value = currentMatrix;
+        if (useOneTime) {
+          currentMatrix = m..multiply(initialMatrix);
+          useOneTime = false;
+        }
+        notifier.value = m;
 
         // chwilę po przestaniu korzystana z widgetu następuje onSave
         if (timer.isActive) {
