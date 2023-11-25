@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application/data/collection.dart';
@@ -21,6 +22,7 @@ class _CollectionPageState extends State<CollectionPage> {
   @override
   void initState() {
     super.initState();
+
     if (collections.isEmpty) {
       Collection newCollection = Collection(
         name: 'name',
@@ -36,7 +38,7 @@ class _CollectionPageState extends State<CollectionPage> {
 
   Future<void> _addElement(String name, String path) async {
     var collectionElement = CollectionElement(
-      name: name,
+      name: 'new',
       path: path,
       matrix4: Matrix4.identity(),
     );
@@ -56,57 +58,65 @@ class _CollectionPageState extends State<CollectionPage> {
       path: path,
       matrix4: m4,
     );
+
     // final collection = collections[0];
 
     // Boxes.getCollection().putAt(0, collection);
-    print('1 ${Boxes.getCollection().get(0)!.elements[index].matrix4}');
+    // print('1 ${Boxes.getCollection().get(0)!.elements[index].name}');
+    print(
+        'before update ${Boxes.getCollection().get(0)!.elements[index].matrix4}');
     setState(() {
       // aktualizacja elementu w kolekcji w stanie.
       Boxes.getCollection().getAt(0)!.elements[index] = element;
-      print('2 ${element.matrix4}');
+      // print('2 ${element.name}');
+      print('during updating ${element.matrix4}');
       // Zapisanie aktualizowany element w Hive.
+      //todo update tylko dla elementu nie ckolekcji
       Boxes.getCollection().putAt(0, Boxes.getCollection().getAt(0)!);
     });
-    print('3 ${Boxes.getCollection().get(0)!.elements[index].matrix4}');
+    // print('3 ${Boxes.getCollection().get(0)!.elements[index].name}');
+    print(
+        'after update ${Boxes.getCollection().get(0)!.elements[index].matrix4}');
   }
-  // /// dodanie nowego elementu do hive
-  // void _deleteCollectionElement(CollectionElement element) {
-  //   if (collections.length > 9) return;
 
-  //   final boxes = Boxes.getCollection();
-  //   // todo usunąć 0 index
-  //   var collection = boxes.getAt(0) as Collection;
-  //   var tempElement =
-  //       collection.elements.singleWhere((e) => e.id == element.id);
+  /// dodanie nowego elementu do hive
+  void _deleteCollectionElement(int index) {
+    // var tempElement =
+    //     collection.elements.singleWhere((e) => e.id == element.id);
 
-  //   setState(() {
-  //     // usuwanie znaleziony element z kolekcji
-  //     collection.elements.remove(tempElement);
-
-  //     // aktualizacjia pudełka z kolekcją
-  //     //collectionBox.put(0, collection);
-  //   });
-  // }
+    setState(() {
+      Boxes.getCollection().deleteAt(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    // print('build ${Boxes.getCollection().get(0)!.elements[0].matrix4}');
+
     return Scaffold(
       backgroundColor: Colors.brown.shade300,
       body: Center(
-        child: Stack(
-          children: List.generate(
-            collections[0].elements.length,
-            (index) => DraggableWidget(
-              child: SizedBox(
-                height: 100,
-                width: 100,
-                child: Image.file(File(elements[0].path)),
+        child: Container(
+          color: Colors.brown,
+          height: 500,
+          width: 300,
+          child: Stack(
+            children: List.generate(
+              collections[0].elements.length,
+              (index) => DraggableWidget(
+                initMatrix4: collections[0].elements[index].matrix4,
+                child: SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Image.file(File(elements[0].path)),
+                ),
+                onDoubleTap: () {},
+                onSave: (m4, str) {
+                  _updateCollectionElement(
+                      'saved', elements[0].path, m4, index);
+                  print(str);
+                },
               ),
-              onDoubleTap: () {},
-              onSave: (m4, str) {
-                _updateCollectionElement('name', elements[0].path, m4, index);
-                print(str);
-              },
             ),
           ),
         ),
@@ -129,24 +139,22 @@ class _CollectionPageState extends State<CollectionPage> {
   }
 }
 
-
-
-  // final List<Widget> _dummyWidgets = [
-  //   Text("🙂", style: TextStyle(fontSize: 120)),
-  //   Icon(
-  //     Icons.favorite,
-  //     size: 120,
-  //     color: Colors.red,
-  //   ),
-  //   ClipRRect(
-  //     borderRadius: BorderRadius.circular(10),
-  //     child: Container(
-  //       color: Colors.white,
-  //       padding: const EdgeInsets.all(8),
-  //       child: Text(
-  //         'Test text ♥️',
-  //         style: TextStyle(fontSize: 18, color: Colors.black),
-  //       ),
-  //     ),
-  //   ),
-  // ];
+// final List<Widget> _dummyWidgets = [
+//   Text("🙂", style: TextStyle(fontSize: 120)),
+//   Icon(
+//     Icons.favorite,
+//     size: 120,
+//     color: Colors.red,
+//   ),
+//   ClipRRect(
+//     borderRadius: BorderRadius.circular(10),
+//     child: Container(
+//       color: Colors.white,
+//       padding: const EdgeInsets.all(8),
+//       child: Text(
+//         'Test text ♥️',
+//         style: TextStyle(fontSize: 18, color: Colors.black),
+//       ),
+//     ),
+//   ),
+// ];
