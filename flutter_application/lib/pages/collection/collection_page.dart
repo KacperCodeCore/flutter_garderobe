@@ -97,9 +97,13 @@ class _CollectionPageState extends State<CollectionPage> {
       backgroundColor: Colors.brown.shade300,
       body: Center(
         child: Container(
-          color: Colors.brown,
-          height: 500,
-          width: 300,
+          margin: EdgeInsets.only(
+            top: 30,
+            bottom: 120,
+          ),
+          decoration: BoxDecoration(
+              color: Colors.brown,
+              borderRadius: BorderRadius.all(Radius.circular(30))),
           child: Stack(
             children: List.generate(
               collections[0].elements.length,

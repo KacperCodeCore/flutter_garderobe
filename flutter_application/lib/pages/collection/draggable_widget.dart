@@ -38,6 +38,7 @@ class _DraggableWidgetState extends State<DraggableWidget> {
   Matrix4 currentMatrix = Matrix4.identity();
   bool isBeingUsed = false;
   late Timer timer;
+  late bool canOneTime;
 
   late ValueNotifier<Matrix4> notifier;
 
@@ -66,17 +67,19 @@ class _DraggableWidgetState extends State<DraggableWidget> {
     }
     notifier = ValueNotifier(initialMatrix);
     timer = Timer(Duration.zero, () {});
+
+    canOneTime = true;
   }
 
   @override
   Widget build(BuildContext context) {
     //służy do init matrix4 przy każdym odświerzeniu
-    bool useOneTime = true;
+    // bool.useOneTime = true;
     return MatrixGestureDetector(
       onMatrixUpdate: (m, tm, sm, rm) {
-        if (useOneTime) {
+        if (canOneTime) {
           currentMatrix = m..multiply(initialMatrix);
-          useOneTime = false;
+          canOneTime = false;
         }
         notifier.value = m;
 
@@ -85,7 +88,7 @@ class _DraggableWidgetState extends State<DraggableWidget> {
           timer.cancel();
         }
         timer = Timer(
-          Duration(milliseconds: 1000),
+          Duration(milliseconds: 100),
           () {
             isBeingUsed = false;
             widget.onSave(notifier.value, 'onSave was initiated!!!!!!!!!');
