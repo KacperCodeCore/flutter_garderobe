@@ -59,10 +59,15 @@ class _CollectionPageState extends State<CollectionPage> {
     // final collection = collections[0];
 
     // Boxes.getCollection().putAt(0, collection);
-
+    print('1 ${Boxes.getCollection().get(0)!.elements[index].matrix4}');
     setState(() {
+      // aktualizacja elementu w kolekcji w stanie.
       Boxes.getCollection().getAt(0)!.elements[index] = element;
+      print('2 ${element.matrix4}');
+      // Zapisanie aktualizowany element w Hive.
+      Boxes.getCollection().putAt(0, Boxes.getCollection().getAt(0)!);
     });
+    print('3 ${Boxes.getCollection().get(0)!.elements[index].matrix4}');
   }
   // /// dodanie nowego elementu do hive
   // void _deleteCollectionElement(CollectionElement element) {
