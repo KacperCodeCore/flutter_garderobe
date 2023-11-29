@@ -18,10 +18,15 @@ class CollectionElement {
   @HiveField(3)
   Matrix4 matrix4;
 
+  //todo remove
+  @HiveField(4)
+  String screenshotPath;
+
   CollectionElement({
     required this.name,
     required this.path,
     required this.matrix4,
+    required this.screenshotPath,
   });
 }
 
@@ -39,9 +44,13 @@ class Collection {
   @HiveField(3)
   DateTime lastEdited;
 
+  @HiveField(4)
+  String path;
+
   Collection({
     required this.name,
     required this.elements,
     required this.lastEdited,
+    required this.path,
   });
 }

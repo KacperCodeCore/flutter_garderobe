@@ -54,6 +54,10 @@ class _DraggableWidgetState extends State<DraggableWidget> {
     print('onTapCancel!!!');
   }
 
+  void shouldBeDeleted() {}
+
+  void delete() {}
+
   @override
   void initState() {
     super.initState();
@@ -87,9 +91,11 @@ class _DraggableWidgetState extends State<DraggableWidget> {
           timer.cancel();
         }
         timer = Timer(
-          Duration(milliseconds: 100),
+          Duration(milliseconds: 10),
           () {
             isBeingUsed = false;
+            //todo
+            shouldBeDeleted();
             widget.onSave(notifier.value, 'onSave was initiated!!!!!!!!!');
           },
         );

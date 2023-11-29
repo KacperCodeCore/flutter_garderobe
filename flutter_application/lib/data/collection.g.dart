@@ -20,13 +20,14 @@ class CollectionElementAdapter extends TypeAdapter<CollectionElement> {
       name: fields[1] as String,
       path: fields[2] as String,
       matrix4: fields[3] as Matrix4,
+      screenshotPath: fields[4] as String,
     )..id = fields[0] as String;
   }
 
   @override
   void write(BinaryWriter writer, CollectionElement obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -34,7 +35,9 @@ class CollectionElementAdapter extends TypeAdapter<CollectionElement> {
       ..writeByte(2)
       ..write(obj.path)
       ..writeByte(3)
-      ..write(obj.matrix4);
+      ..write(obj.matrix4)
+      ..writeByte(4)
+      ..write(obj.screenshotPath);
   }
 
   @override
@@ -62,13 +65,14 @@ class CollectionAdapter extends TypeAdapter<Collection> {
       name: fields[1] as String,
       elements: (fields[2] as List).cast<CollectionElement>(),
       lastEdited: fields[3] as DateTime,
+      path: fields[4] as String,
     )..id = fields[0] as String;
   }
 
   @override
   void write(BinaryWriter writer, Collection obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -76,7 +80,9 @@ class CollectionAdapter extends TypeAdapter<Collection> {
       ..writeByte(2)
       ..write(obj.elements)
       ..writeByte(3)
-      ..write(obj.lastEdited);
+      ..write(obj.lastEdited)
+      ..writeByte(4)
+      ..write(obj.path);
   }
 
   @override
