@@ -45,7 +45,7 @@ class UserPost extends StatelessWidget {
         ),
         //Post
         Container(
-          height: 400,
+          height: 600,
           child: Image.file(File(path)),
         ),
         // below the post

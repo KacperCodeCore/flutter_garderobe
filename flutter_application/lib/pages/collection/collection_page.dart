@@ -118,38 +118,48 @@ class _CollectionPageState extends State<CollectionPage> {
 
     return Scaffold(
       backgroundColor: Colors.brown.shade300,
-      body: Center(
-        child: Screenshot(
-          controller: screenshotController,
-          child: Container(
-            margin: EdgeInsets.only(
-              top: 30,
-              bottom: 120,
-            ),
+      body: Column(
+        children: [
+          SizedBox(height: 30),
+          Container(
+            height: 600,
+            // margin: EdgeInsets.only(
+            //   top: 30,
+            //   bottom: 120,
+            // ),
             decoration: BoxDecoration(
-                color: Colors.brown,
+                color: Colors.brown.shade400,
                 borderRadius: BorderRadius.all(Radius.circular(30))),
-            child: Stack(
-              children: List.generate(
-                collections[0].elements.length,
-                (index) => DraggableWidget(
-                  initMatrix4: collections[0].elements[index].matrix4,
-                  child: SizedBox(
-                    height: 100,
-                    width: 100,
-                    child: Image.file(File(elements[0].path)),
+            child: Screenshot(
+              controller: screenshotController,
+              child: Center(
+                child: Container(
+                  height: 500,
+                  color: Colors.brown,
+                  child: Stack(
+                    children: List.generate(
+                      collections[0].elements.length,
+                      (index) => DraggableWidget(
+                        initMatrix4: collections[0].elements[index].matrix4,
+                        child: SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: Image.file(File(elements[0].path)),
+                        ),
+                        onDoubleTap: () {},
+                        onSave: (m4, str) {
+                          _updateCollectionElement(
+                              'saved', elements[0].path, m4, index);
+                          print(str);
+                        },
+                      ),
+                    ),
                   ),
-                  onDoubleTap: () {},
-                  onSave: (m4, str) {
-                    _updateCollectionElement(
-                        'saved', elements[0].path, m4, index);
-                    print(str);
-                  },
                 ),
               ),
             ),
           ),
-        ),
+        ],
       ),
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 100),
