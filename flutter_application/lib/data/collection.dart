@@ -39,9 +39,13 @@ class Collection {
   @HiveField(3)
   DateTime lastEdited;
 
+  @HiveField(4)
+  String screenshotPath;
+
   Collection({
     required this.name,
     required this.elements,
     required this.lastEdited,
+    required this.screenshotPath,
   });
 }

@@ -62,13 +62,14 @@ class CollectionAdapter extends TypeAdapter<Collection> {
       name: fields[1] as String,
       elements: (fields[2] as List).cast<CollectionElement>(),
       lastEdited: fields[3] as DateTime,
+      screenshotPath: fields[4] as String,
     )..id = fields[0] as String;
   }
 
   @override
   void write(BinaryWriter writer, Collection obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -76,7 +77,9 @@ class CollectionAdapter extends TypeAdapter<Collection> {
       ..writeByte(2)
       ..write(obj.elements)
       ..writeByte(3)
-      ..write(obj.lastEdited);
+      ..write(obj.lastEdited)
+      ..writeByte(4)
+      ..write(obj.screenshotPath);
   }
 
   @override

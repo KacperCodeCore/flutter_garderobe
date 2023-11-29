@@ -1,9 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application/data/boxes.dart';
 
 class UserPost extends StatelessWidget {
   final String name;
+  final String path;
 
-  UserPost({required this.name});
+  UserPost({
+    required this.name,
+    required this.path,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +46,7 @@ class UserPost extends StatelessWidget {
         //Post
         Container(
           height: 400,
-          color: Colors.grey,
+          child: Image.file(File(path)),
         ),
         // below the post
         Padding(

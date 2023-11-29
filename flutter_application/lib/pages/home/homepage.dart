@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 
+import '../../data/boxes.dart';
+import '../../data/collection.dart';
 import 'user_post.dart';
 
 class UserHome extends StatelessWidget {
-  final List<String> postNames = ['kacper', 'John', 'Alice', 'Bob'];
+  var collections = Boxes.getCollection().values.toList().cast<Collection>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-        itemCount: postNames.length,
+        itemCount: 1,
         itemBuilder: (context, index) {
           return UserPost(
-            name: postNames[index],
+            name: collections[index].name,
+            path: collections[index].screenshotPath,
           );
         },
       ),

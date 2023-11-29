@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/data/collection.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'package:flutter_application/pages/collection/draggable_widget.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
 
 import '../../data/boxes.dart';
 
@@ -18,6 +20,7 @@ class CollectionPage extends StatefulWidget {
 class _CollectionPageState extends State<CollectionPage> {
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
   var collections = Boxes.getCollection().values.toList().cast<Collection>();
+  ScreenshotController screenshotController = ScreenshotController();
 
   @override
   void initState() {
@@ -28,6 +31,7 @@ class _CollectionPageState extends State<CollectionPage> {
         name: 'name',
         elements: [],
         lastEdited: DateTime.now(),
+        screenshotPath: '',
       );
       Boxes.getCollection().add(newCollection);
       setState(() {
@@ -51,32 +55,25 @@ class _CollectionPageState extends State<CollectionPage> {
     });
   }
 
-  void _updateCollectionElement(
-      String name, String path, Matrix4 m4, int index) {
+  Future<void> _updateCollectionElement(
+      String name, String path, Matrix4 m4, int index) async {
+    print('w czasie zapisu');
+    String? _screenshotPath = await TakeScreenshotPath();
+    print('w czasie zapi2');
+    if (_screenshotPath == null) return;
+    print('w czasie zapisu3');
     CollectionElement element = CollectionElement(
       name: name,
       path: path,
       matrix4: m4,
     );
 
-    // final collection = collections[0];
-
-    // Boxes.getCollection().putAt(0, collection);
-    // print('1 ${Boxes.getCollection().get(0)!.elements[index].name}');
-    print(
-        'before update ${Boxes.getCollection().get(0)!.elements[index].matrix4}');
+    Collection collection = Boxes.getCollection().getAt(0)!;
+    collection.elements[index] = element;
+    collection.screenshotPath = _screenshotPath;
     setState(() {
-      // aktualizacja elementu w kolekcji w stanie.
-      Boxes.getCollection().getAt(0)!.elements[index] = element;
-      // print('2 ${element.name}');
-      print('during updating ${element.matrix4}');
-      // Zapisanie aktualizowany element w Hive.
-      //todo update tylko dla elementu nie ckolekcji
-      Boxes.getCollection().putAt(0, Boxes.getCollection().getAt(0)!);
+      Boxes.getCollection().putAt(0, collection);
     });
-    // print('3 ${Boxes.getCollection().get(0)!.elements[index].name}');
-    print(
-        'after update ${Boxes.getCollection().get(0)!.elements[index].matrix4}');
   }
 
   /// dodanie nowego elementu do hive
@@ -89,6 +86,32 @@ class _CollectionPageState extends State<CollectionPage> {
     });
   }
 
+  Future<String?> TakeScreenshotPath() async {
+    print('wywołano');
+    final Uint8List? image = await screenshotController.capture(
+        delay: const Duration(milliseconds: 10));
+    if (image == null) return null;
+    print('TakeScreenshotPath != null');
+
+    //todo jedno zdjęcie na jeden element
+    final time = DateTime.now()
+        .toIso8601String()
+        .replaceAll('.', '-')
+        .replaceAll(':', '-');
+    final name = "Screenshoot$time";
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
+    String filePath = '$appDocPath/$name';
+
+    File file = File(filePath);
+    await file.writeAsBytes(image);
+
+    print('Zapisano do galerji');
+    // Boxes.path = filePath;
+
+    return await filePath;
+  }
+
   @override
   Widget build(BuildContext context) {
     // print('build ${Boxes.getCollection().get(0)!.elements[0].matrix4}');
@@ -96,30 +119,33 @@ class _CollectionPageState extends State<CollectionPage> {
     return Scaffold(
       backgroundColor: Colors.brown.shade300,
       body: Center(
-        child: Container(
-          margin: EdgeInsets.only(
-            top: 30,
-            bottom: 120,
-          ),
-          decoration: BoxDecoration(
-              color: Colors.brown,
-              borderRadius: BorderRadius.all(Radius.circular(30))),
-          child: Stack(
-            children: List.generate(
-              collections[0].elements.length,
-              (index) => DraggableWidget(
-                initMatrix4: collections[0].elements[index].matrix4,
-                child: SizedBox(
-                  height: 100,
-                  width: 100,
-                  child: Image.file(File(elements[0].path)),
+        child: Screenshot(
+          controller: screenshotController,
+          child: Container(
+            margin: EdgeInsets.only(
+              top: 30,
+              bottom: 120,
+            ),
+            decoration: BoxDecoration(
+                color: Colors.brown,
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            child: Stack(
+              children: List.generate(
+                collections[0].elements.length,
+                (index) => DraggableWidget(
+                  initMatrix4: collections[0].elements[index].matrix4,
+                  child: SizedBox(
+                    height: 100,
+                    width: 100,
+                    child: Image.file(File(elements[0].path)),
+                  ),
+                  onDoubleTap: () {},
+                  onSave: (m4, str) {
+                    _updateCollectionElement(
+                        'saved', elements[0].path, m4, index);
+                    print(str);
+                  },
                 ),
-                onDoubleTap: () {},
-                onSave: (m4, str) {
-                  _updateCollectionElement(
-                      'saved', elements[0].path, m4, index);
-                  print(str);
-                },
               ),
             ),
           ),
