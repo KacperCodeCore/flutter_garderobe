@@ -122,7 +122,7 @@ class _CollectionPageState extends State<CollectionPage> {
         children: [
           SizedBox(height: 30),
           Container(
-            height: 600,
+            height: 630,
             // margin: EdgeInsets.only(
             //   top: 30,
             //   bottom: 120,

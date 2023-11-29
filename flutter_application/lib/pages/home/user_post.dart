@@ -45,12 +45,12 @@ class UserPost extends StatelessWidget {
         ),
         //Post
         Container(
-          height: 600,
+          height: 500,
           child: Image.file(File(path)),
         ),
         // below the post
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(0.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
