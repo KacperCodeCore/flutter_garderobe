@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/data/collection.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'package:flutter_application/pages/collection/draggable_widget.dart';
+import 'package:flutter_application/pages/collection/header.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
@@ -121,38 +122,29 @@ class _CollectionPageState extends State<CollectionPage> {
       body: Column(
         children: [
           SizedBox(height: 30),
-          Container(
-            height: 630,
-            // margin: EdgeInsets.only(
-            //   top: 30,
-            //   bottom: 120,
-            // ),
-            decoration: BoxDecoration(
-                color: Colors.brown.shade400,
-                borderRadius: BorderRadius.all(Radius.circular(30))),
-            child: Screenshot(
-              controller: screenshotController,
-              child: Center(
-                child: Container(
-                  height: 500,
-                  color: Colors.brown,
-                  child: Stack(
-                    children: List.generate(
-                      collections[0].elements.length,
-                      (index) => DraggableWidget(
-                        initMatrix4: collections[0].elements[index].matrix4,
-                        child: SizedBox(
-                          height: 100,
-                          width: 100,
-                          child: Image.file(File(elements[0].path)),
-                        ),
-                        onDoubleTap: () {},
-                        onSave: (m4, str) {
-                          _updateCollectionElement(
-                              'saved', elements[0].path, m4, index);
-                          print(str);
-                        },
+          Header(),
+          Screenshot(
+            controller: screenshotController,
+            child: Center(
+              child: Container(
+                height: 500,
+                color: Colors.brown,
+                child: Stack(
+                  children: List.generate(
+                    collections[0].elements.length,
+                    (index) => DraggableWidget(
+                      initMatrix4: collections[0].elements[index].matrix4,
+                      child: SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: Image.file(File(elements[0].path)),
                       ),
+                      onDoubleTap: () {},
+                      onSave: (m4, str) {
+                        _updateCollectionElement(
+                            'saved', elements[0].path, m4, index);
+                        print(str);
+                      },
                     ),
                   ),
                 ),

@@ -17,7 +17,7 @@ class UserPost extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(0.0),
           child: Row(
             children: [
               // profile logo
