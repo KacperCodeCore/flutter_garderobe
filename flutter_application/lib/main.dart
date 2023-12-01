@@ -60,6 +60,7 @@ class MyApp extends StatelessWidget {
       title: 'flutter_garderobe',
       debugShowCheckedModeBanner: false,
       home: HomePage(),
+      theme: ThemeData(scaffoldBackgroundColor: Colors.brown.shade300),
       // theme: ThemeData(primarySwatch: Colors.brown)
     );
   }

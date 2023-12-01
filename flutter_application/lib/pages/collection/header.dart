@@ -1,28 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 
 class Header extends StatefulWidget {
-  const Header({super.key});
+  final int index;
+  final Function(String, int) onTextChange;
+
+  const Header({
+    Key? key,
+    required this.index,
+    required this.onTextChange,
+  }) : super(key: key);
 
   @override
   State<Header> createState() => _HeaderState();
 }
 
 class _HeaderState extends State<Header> {
-  final TextEditingController _controller = TextEditingController();
+  TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _controller.addListener(() {
-      final String text = _controller.text;
-      _controller.value = _controller.value.copyWith(
-        text: text,
-        selection:
-            TextSelection(baseOffset: text.length, extentOffset: text.length),
-        composing: TextRange.empty,
-      );
-    });
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   Widget build(BuildContext context) {
@@ -30,24 +34,47 @@ class _HeaderState extends State<Header> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(
+          // lewo
+          const Icon(
             Icons.chevron_left_rounded,
             size: 45,
           ),
+
           // Text('Collection name', style: TextStyle(fontSize: 35)),
-          TextField(controller: _controller),
-          Icon(
+          Expanded(
+            child: TextField(
+              style: TextStyle(fontSize: 30),
+              textAlign: TextAlign.center,
+              controller: _controller,
+              maxLength: 16,
+              maxLengthEnforcement: null,
+              onChanged: (text) {
+                widget.onTextChange(text, widget.index);
+              },
+              decoration: InputDecoration(
+                counterText: '',
+                hintText: 'Collection Name',
+                border: InputBorder.none,
+                // focusedBorder: OutlineInputBorder(
+                //   gapPadding: 0.0,
+                //   borderSide: BorderSide(
+                //     color: Colors.brown.shade700,
+                //     width: 3,
+                //   ),
+                //   borderRadius: BorderRadius.all(Radius.circular(20)),
+                // ),
+                hintStyle: TextStyle(fontSize: 30),
+              ),
+            ),
+          ),
+
+          //prewo
+          const Icon(
             Icons.chevron_right_rounded,
             size: 45,
           ),
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
   }
 }

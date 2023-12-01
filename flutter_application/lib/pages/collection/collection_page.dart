@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/data/collection.dart';
 import 'package:flutter_application/data/my_element.dart';
+import 'package:flutter_application/pages/collection/botton_buttons.dart';
 import 'package:flutter_application/pages/collection/draggable_widget.dart';
 import 'package:flutter_application/pages/collection/header.dart';
 import 'package:path_provider/path_provider.dart';
@@ -118,40 +119,46 @@ class _CollectionPageState extends State<CollectionPage> {
     // print('build ${Boxes.getCollection().get(0)!.elements[0].matrix4}');
 
     return Scaffold(
-      backgroundColor: Colors.brown.shade300,
-      body: Column(
-        children: [
-          SizedBox(height: 30),
-          Header(),
-          Screenshot(
-            controller: screenshotController,
-            child: Center(
-              child: Container(
-                height: 500,
-                color: Colors.brown,
-                child: Stack(
-                  children: List.generate(
-                    collections[0].elements.length,
-                    (index) => DraggableWidget(
-                      initMatrix4: collections[0].elements[index].matrix4,
-                      child: SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: Image.file(File(elements[0].path)),
+      // resizeToAvoidBottomInset: false,
+      // backgroundColor: Colors.brown.shade300,
+      body: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        child: Column(
+          children: [
+            SizedBox(height: 30),
+            Header(index: 0, onTextChange: (String name, int index) {}),
+            Screenshot(
+              controller: screenshotController,
+              child: Center(
+                child: Container(
+                  height: 500,
+                  color: Colors.brown,
+                  child: Stack(
+                    children: List.generate(
+                      collections[0].elements.length,
+                      (index) => DraggableWidget(
+                        initMatrix4: collections[0].elements[index].matrix4,
+                        child: SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: Image.file(File(elements[0].path)),
+                        ),
+                        onDoubleTap: () {},
+                        onSave: (m4, str) {
+                          _updateCollectionElement(
+                              'saved', elements[0].path, m4, index);
+                          print(str);
+                        },
                       ),
-                      onDoubleTap: () {},
-                      onSave: (m4, str) {
-                        _updateCollectionElement(
-                            'saved', elements[0].path, m4, index);
-                        print(str);
-                      },
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+            SizedBox(height: 10),
+            BottonButtons(),
+          ],
+        ),
       ),
       floatingActionButton: Padding(
         padding: EdgeInsets.only(bottom: 100),
