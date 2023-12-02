@@ -173,8 +173,7 @@ class _CollectionPageState extends State<CollectionPage> {
       floatingActionButton: Visibility(
         visible: _isVisible,
         child: Padding(
-          padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom + 65),
+          padding: EdgeInsets.only(bottom: 100),
           child: FloatingActionButton(
             onPressed: () {
               setState(() {
