@@ -7,6 +7,7 @@ import 'package:flutter_application/data/my_element.dart';
 import 'package:flutter_application/pages/collection/botton_buttons.dart';
 import 'package:flutter_application/pages/collection/draggable_widget.dart';
 import 'package:flutter_application/pages/collection/header.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
@@ -23,10 +24,17 @@ class _CollectionPageState extends State<CollectionPage> {
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
   var collections = Boxes.getCollection().values.toList().cast<Collection>();
   ScreenshotController screenshotController = ScreenshotController();
+  bool isKeyboardVisible = false;
 
   @override
   void initState() {
     super.initState();
+
+    KeyboardVisibilityController().onChange.listen((visible) {
+      setState(() {
+        isKeyboardVisible = visible;
+      });
+    });
 
     if (collections.isEmpty) {
       Collection newCollection = Collection(
@@ -116,10 +124,10 @@ class _CollectionPageState extends State<CollectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool _isVisible = true;
     // print('build ${Boxes.getCollection().get(0)!.elements[0].matrix4}');
 
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       // backgroundColor: Colors.brown.shade300,
       body: SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
@@ -160,18 +168,21 @@ class _CollectionPageState extends State<CollectionPage> {
           ],
         ),
       ),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 100),
-        child: FloatingActionButton(
-          //dodawanie elementu do kolekcji
-          onPressed: () {
-            setState(
-              () {
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: Visibility(
+        visible: _isVisible,
+        child: Padding(
+          padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom + 65),
+          child: FloatingActionButton(
+            onPressed: () {
+              setState(() {
                 _addElement('test name1', elements[0].path);
-              },
-            );
-          },
-          child: Icon(Icons.add),
+              });
+            },
+            child: Icon(Icons.add),
+          ),
         ),
       ),
     );

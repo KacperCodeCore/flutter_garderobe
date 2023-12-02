@@ -58,7 +58,7 @@ class _ElementPageState extends State<ElementPage> {
     return Scaffold(
       backgroundColor: Colors.brown.shade300,
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 100),
+        padding: EdgeInsets.only(bottom: 65),
         child: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () => {
