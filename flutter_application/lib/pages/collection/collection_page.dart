@@ -53,13 +53,6 @@ class _CollectionPageState extends State<CollectionPage> {
     }
   }
 
-  // KeyboardVisibilityController().addListener
-  // KeyboardVisibilityController().onChange.listen((visible) {
-  //     setState(() {
-  //       isKeyboardVisible = visible;
-  //     });
-  //   });
-
   void showHideButton(bool isKeyboardVisible) {
     if (isKeyboardVisible) {
       showButton = false;
@@ -90,11 +83,9 @@ class _CollectionPageState extends State<CollectionPage> {
 
   Future<void> _updateCollectionElement(
       String name, String path, Matrix4 m4, int index) async {
-    print('w czasie zapisu');
-    String? _screenshotPath = await _TakeScreenshotPath();
-    print('w czasie zapi2');
+    String? _screenshotPath = await _TakeScreenshotPath(path);
+
     if (_screenshotPath == null) return;
-    print('w czasie zapisu3');
     CollectionElement element = CollectionElement(
       name: name,
       path: path,
@@ -119,14 +110,11 @@ class _CollectionPageState extends State<CollectionPage> {
     });
   }
 
-  Future<String?> _TakeScreenshotPath() async {
-    print('wywołano');
+  Future<String?> _TakeScreenshotPath(String oldPath) async {
     final Uint8List? image = await screenshotController.capture(
         delay: const Duration(milliseconds: 10));
     if (image == null) return null;
-    print('TakeScreenshotPath != null');
 
-    //todo jedno zdjęcie na jeden element
     final time = DateTime.now()
         .toIso8601String()
         .replaceAll('.', '-')
@@ -136,20 +124,14 @@ class _CollectionPageState extends State<CollectionPage> {
     String appDocPath = appDocDir.path;
     String filePath = '$appDocPath/$name';
 
+    if (await File(oldPath).exists()) {
+    } else {
+      File(oldPath).delete();
+    }
     File file = File(filePath);
     await file.writeAsBytes(image);
-
-    print('Zapisano do galerji');
-    // Boxes.path = filePath;
-
     return await filePath;
   }
-
-  // bool PrintVisible(Context context) {
-  //   double mediaquery = (MediaQuery.of(context).viewInsets.bottom);
-  //   print('mediaqueryto: $mediaquery');
-  //   return MediaQuery.of(context).viewInsets.bottom == 0;
-  // }
 
   @override
   Widget build(BuildContext context) {
