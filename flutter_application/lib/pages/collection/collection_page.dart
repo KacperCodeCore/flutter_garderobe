@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application/data/collection.dart';
@@ -24,12 +25,19 @@ class _CollectionPageState extends State<CollectionPage> {
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
   var collections = Boxes.getCollection().values.toList().cast<Collection>();
   ScreenshotController screenshotController = ScreenshotController();
-  bool isKeyboardVisible = false;
   bool showButton = true;
+  late StreamSubscription<bool> _keyboardVisibilitySubscription;
 
   @override
   void initState() {
     super.initState();
+
+    _keyboardVisibilitySubscription =
+        KeyboardVisibilityController().onChange.listen((visible) {
+      setState(() {
+        showHideButton(visible);
+      });
+    });
 
     if (collections.isEmpty) {
       Collection newCollection = Collection(
@@ -145,27 +153,12 @@ class _CollectionPageState extends State<CollectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    KeyboardVisibilityController().onChange.listen((visible) {
-      setState(() {
-        isKeyboardVisible = visible;
-        showHideButton(visible);
-      });
-    });
     // bool _isVisible = true;
     // print('build ${Boxes.getCollection().get(0)!.elements[0].matrix4}');
 
     return Scaffold(
       // backgroundColor: Colors.brown.shade300,
       resizeToAvoidBottomInset: false,
-      // floatingActionButton: Visibility(
-      //   visible: showButton,
-      //   child: FloatingActionButton(
-      //     onPressed: () {
-      //       // Do something when FAB is pressed.
-      //     },
-      //     child: Icon(Icons.add),
-      //   ),
-      // ),
 
       body: SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
@@ -223,6 +216,12 @@ class _CollectionPageState extends State<CollectionPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _keyboardVisibilitySubscription.cancel();
+    super.dispose();
   }
 }
 
