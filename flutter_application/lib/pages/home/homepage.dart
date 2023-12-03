@@ -11,7 +11,7 @@ class UserHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-        itemCount: 1,
+        itemCount: collections.length,
         itemBuilder: (context, index) {
           return UserPost(
             name: collections[index].name,
