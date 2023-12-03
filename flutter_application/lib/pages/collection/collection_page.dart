@@ -25,16 +25,11 @@ class _CollectionPageState extends State<CollectionPage> {
   var collections = Boxes.getCollection().values.toList().cast<Collection>();
   ScreenshotController screenshotController = ScreenshotController();
   bool isKeyboardVisible = false;
+  bool showButton = true;
 
   @override
   void initState() {
     super.initState();
-
-    KeyboardVisibilityController().onChange.listen((visible) {
-      setState(() {
-        isKeyboardVisible = visible;
-      });
-    });
 
     if (collections.isEmpty) {
       Collection newCollection = Collection(
@@ -48,6 +43,26 @@ class _CollectionPageState extends State<CollectionPage> {
         collections = Boxes.getCollection().values.toList();
       });
     }
+  }
+
+  // KeyboardVisibilityController().addListener
+  // KeyboardVisibilityController().onChange.listen((visible) {
+  //     setState(() {
+  //       isKeyboardVisible = visible;
+  //     });
+  //   });
+
+  void showHideButton(bool isKeyboardVisible) {
+    if (isKeyboardVisible) {
+      showButton = false;
+    } else {
+      Future.delayed(Duration(milliseconds: 400), () {
+        setState(() {
+          showButton = true;
+        });
+      });
+    }
+    print('showButton $showButton');
   }
 
   Future<void> _addElement(String name, String path) async {
@@ -68,7 +83,7 @@ class _CollectionPageState extends State<CollectionPage> {
   Future<void> _updateCollectionElement(
       String name, String path, Matrix4 m4, int index) async {
     print('w czasie zapisu');
-    String? _screenshotPath = await TakeScreenshotPath();
+    String? _screenshotPath = await _TakeScreenshotPath();
     print('w czasie zapi2');
     if (_screenshotPath == null) return;
     print('w czasie zapisu3');
@@ -96,7 +111,7 @@ class _CollectionPageState extends State<CollectionPage> {
     });
   }
 
-  Future<String?> TakeScreenshotPath() async {
+  Future<String?> _TakeScreenshotPath() async {
     print('wywołano');
     final Uint8List? image = await screenshotController.capture(
         delay: const Duration(milliseconds: 10));
@@ -122,13 +137,36 @@ class _CollectionPageState extends State<CollectionPage> {
     return await filePath;
   }
 
+  // bool PrintVisible(Context context) {
+  //   double mediaquery = (MediaQuery.of(context).viewInsets.bottom);
+  //   print('mediaqueryto: $mediaquery');
+  //   return MediaQuery.of(context).viewInsets.bottom == 0;
+  // }
+
   @override
   Widget build(BuildContext context) {
-    bool _isVisible = true;
+    KeyboardVisibilityController().onChange.listen((visible) {
+      setState(() {
+        isKeyboardVisible = visible;
+        showHideButton(visible);
+      });
+    });
+    // bool _isVisible = true;
     // print('build ${Boxes.getCollection().get(0)!.elements[0].matrix4}');
 
     return Scaffold(
       // backgroundColor: Colors.brown.shade300,
+      resizeToAvoidBottomInset: false,
+      // floatingActionButton: Visibility(
+      //   visible: showButton,
+      //   child: FloatingActionButton(
+      //     onPressed: () {
+      //       // Do something when FAB is pressed.
+      //     },
+      //     child: Icon(Icons.add),
+      //   ),
+      // ),
+
       body: SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
         child: Column(
@@ -171,7 +209,7 @@ class _CollectionPageState extends State<CollectionPage> {
 
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: Visibility(
-        visible: _isVisible,
+        visible: showButton,
         child: Padding(
           padding: EdgeInsets.only(bottom: 100),
           child: FloatingActionButton(

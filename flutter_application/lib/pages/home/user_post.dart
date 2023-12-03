@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application/data/boxes.dart';
 
 class UserPost extends StatelessWidget {
   final String name;
