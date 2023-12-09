@@ -27,6 +27,7 @@ class _CollectionPageState extends State<CollectionPage> {
   ScreenshotController screenshotController = ScreenshotController();
   bool showButton = true;
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
+  final containerKey = GlobalKey();
 
   @override
   void initState() {
@@ -152,26 +153,32 @@ class _CollectionPageState extends State<CollectionPage> {
               controller: screenshotController,
               child: Center(
                 child: Container(
+                  key: containerKey,
                   height: 500,
                   color: Colors.brown,
                   child: Stack(
-                    children: List.generate(
-                      collections[0].elements.length,
-                      (index) => DraggableWidget(
+                    children:
+                        List.generate(collections[0].elements.length, (index) {
+                      final GlobalKey _draggableKey = GlobalKey();
+                      return DraggableWidget(
                         initMatrix4: collections[0].elements[index].matrix4,
                         child: SizedBox(
+                          key: _draggableKey,
                           height: 100,
                           width: 100,
                           child: Image.file(File(elements[0].path)),
                         ),
                         onDoubleTap: () {},
                         onSave: (m4, str) {
+                          bool isVisible = _IsOutsideParent(_draggableKey);
+                          print(isVisible);
+
                           _updateCollectionElement(
                               'saved', elements[0].path, m4, index);
                           print(str);
                         },
-                      ),
-                    ),
+                      );
+                    }),
                   ),
                 ),
               ),
@@ -205,8 +212,45 @@ class _CollectionPageState extends State<CollectionPage> {
     _keyboardVisibilitySubscription.cancel();
     super.dispose();
   }
-}
 
+  bool _IsOutsideParent(GlobalKey key) {
+    //pobiera dane kontenera
+    RenderBox? contaiterBox =
+        containerKey.currentContext?.findRenderObject() as RenderBox;
+    Offset containerPisition = contaiterBox.localToGlobal(Offset.zero);
+    double containerMaxX = containerPisition.dx;
+    double containerMinX = containerPisition.dx + contaiterBox.size.width;
+    double containerMaxY = containerPisition.dy;
+    double containerMinY = containerPisition.dy + contaiterBox.size.height;
+
+    // pobiera dane konkretnego dragablebox
+    RenderBox? draggableBox =
+        key.currentContext?.findRenderObject() as RenderBox?;
+    if (draggableBox == null) return false;
+    List<Offset> vertices = [
+      Offset(0, 0),
+      Offset(draggableBox.size.width, 0),
+      Offset(draggableBox.size.width, draggableBox.size.height),
+      Offset(0, draggableBox.size.height),
+    ];
+
+    List<Offset> globalVertices =
+        vertices.map((vertex) => draggableBox.localToGlobal(vertex)).toList();
+
+    // sprawdza, czy dany wierzchołek znaduje sięwewnątrz kontenera
+    for (Offset vertex in globalVertices) {
+      if (vertex.dx < containerMaxX ||
+          vertex.dx > containerMinX ||
+          vertex.dy < containerMaxY ||
+          vertex.dy > containerMinY) {
+        return false;
+      } else {
+        print('jest poza obsarem $vertex');
+      }
+    }
+    return true;
+  }
+}
 // final List<Widget> _dummyWidgets = [
 //   Text("🙂", style: TextStyle(fontSize: 120)),
 //   Icon(
