@@ -4,12 +4,14 @@ class Header extends StatefulWidget {
   final int index;
   final Function(String, int) onTextChange;
   final Function(int) onPressed;
+  final int length;
 
   const Header({
     Key? key,
     required this.index,
     required this.onTextChange,
     required this.onPressed,
+    required this.length,
   }) : super(key: key);
 
   @override
@@ -42,7 +44,14 @@ class _HeaderState extends State<Header> {
         children: [
           // lewo
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              int index = widget.index;
+              index--;
+              if (index <= 0) {
+                index = 0;
+              }
+              widget.onPressed(index);
+            },
             icon: Icon(
               Icons.chevron_left_rounded,
               size: 45,
@@ -78,9 +87,19 @@ class _HeaderState extends State<Header> {
           ),
 
           //prewo
-          const Icon(
-            Icons.chevron_right_rounded,
-            size: 45,
+          IconButton(
+            onPressed: () {
+              int index = widget.index;
+              index++;
+              if (index >= widget.length - 1) {
+                index = widget.length - 1;
+              }
+              widget.onPressed(index);
+            },
+            icon: Icon(
+              Icons.chevron_right_rounded,
+              size: 45,
+            ),
           ),
         ],
       ),

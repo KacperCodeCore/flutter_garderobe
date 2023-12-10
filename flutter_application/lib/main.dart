@@ -27,6 +27,7 @@ void main() async {
   await Hive.openBox<Collection>('collectionBox');
   // await Hive.deleteBoxFromDisk('collectionBox');
   await Hive.openBox<ApplicationData>('applicationDataBox');
+  // await Hive.deleteBoxFromDisk('applicationDataBox');
 
   // Run your app
   runApp(MyApp());

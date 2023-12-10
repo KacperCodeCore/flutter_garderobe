@@ -8,13 +8,14 @@ import 'package:flutter_application/data/collection.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'package:flutter_application/pages/collection/botton_buttons.dart';
 import 'package:flutter_application/pages/collection/draggable_widget.dart';
-import 'package:flutter_application/pages/collection/header.dart';
+
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
 import '../../data/application_data.dart';
 import '../../data/boxes.dart';
+import 'header.dart';
 
 class CollectionPage extends StatefulWidget {
   const CollectionPage({Key? key}) : super(key: key);
@@ -26,7 +27,8 @@ class CollectionPage extends StatefulWidget {
 class _CollectionPageState extends State<CollectionPage> {
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
   var collections = Boxes.getCollection().values.toList().cast<Collection>();
-  var appData = Boxes.getAppData() as ApplicationData;
+  var appData = Boxes.getAppData().values.toList().cast<ApplicationData>();
+  late int collectionIndex;
 
   ScreenshotController screenshotController = ScreenshotController();
   bool showButton = true;
@@ -36,12 +38,13 @@ class _CollectionPageState extends State<CollectionPage> {
   @override
   void initState() {
     super.initState();
-    _keyboardVisibilitySubscription =
-        KeyboardVisibilityController().onChange.listen((visible) {
+
+    if (appData.isEmpty) {
       setState(() {
-        showHideButton(visible);
+        Boxes.getAppData().add(ApplicationData());
       });
-    });
+    }
+    collectionIndex = appData[0].collectionIndex;
 
     if (collections.isEmpty) {
       Collection newCollection = Collection(
@@ -55,6 +58,13 @@ class _CollectionPageState extends State<CollectionPage> {
         collections = Boxes.getCollection().values.toList();
       });
     }
+
+    _keyboardVisibilitySubscription =
+        KeyboardVisibilityController().onChange.listen((visible) {
+      setState(() {
+        showHideButton(visible);
+      });
+    });
   }
 
   void showHideButton(bool isKeyboardVisible) {
@@ -104,7 +114,6 @@ class _CollectionPageState extends State<CollectionPage> {
     });
   }
 
-  /// dodanie nowego elementu do hive
   void _deleteCollectionElement(int index) {
     Collection collection = Boxes.getCollection().getAt(0)!;
     collection.elements.removeAt(index);
@@ -186,6 +195,13 @@ class _CollectionPageState extends State<CollectionPage> {
     return true;
   }
 
+  void _ShowIndexCollection(int index) {
+    appData[0].collectionIndex = index;
+    setState(() {
+      Boxes.getAppData().putAt(0, appData[0]);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // bool _isVisible = true;
@@ -201,9 +217,13 @@ class _CollectionPageState extends State<CollectionPage> {
           children: [
             SizedBox(height: 30),
             Header(
-              index: appData.collectionIndex,
+              index: appData[0].collectionIndex,
+              length: collections.length,
               onTextChange: (String name, int index) {},
-              onPressed: (int) {},
+              onPressed: (index) {
+                _ShowIndexCollection(index);
+                print('collectionIndex $index');
+              },
             ),
             Screenshot(
               controller: screenshotController,
@@ -243,7 +263,9 @@ class _CollectionPageState extends State<CollectionPage> {
               ),
             ),
             SizedBox(height: 10),
-            BottonButtons(),
+            BottonButtons(
+              onDelete: () {},
+            ),
           ],
         ),
       ),

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_application/data/application_data.dart';
 import 'package:flutter_application/data/collection.dart';
 import 'package:hive/hive.dart';
