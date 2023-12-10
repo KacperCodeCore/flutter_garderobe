@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'dart:typed_data';
 import 'dart:async';
 
@@ -169,13 +170,15 @@ class _CollectionPageState extends State<CollectionPage> {
                           child: Image.file(File(elements[0].path)),
                         ),
                         onDoubleTap: () {},
-                        onSave: (m4, str) {
-                          bool isVisible = _IsOutsideParent(_draggableKey);
-                          print(isVisible);
-
-                          _updateCollectionElement(
-                              'saved', elements[0].path, m4, index);
-                          print(str);
+                        onSave: (m4) {
+                          if (_OverlaosParent(_draggableKey)) {
+                            print('isVisible true');
+                            _updateCollectionElement(
+                                'saved', elements[0].path, m4, index);
+                          } else {
+                            // delete()
+                            print('isVisible false');
+                          }
                         },
                       );
                     }),
@@ -213,7 +216,7 @@ class _CollectionPageState extends State<CollectionPage> {
     super.dispose();
   }
 
-  bool _IsOutsideParent(GlobalKey key) {
+  bool _OverlaosParent(GlobalKey key) {
     //pobiera dane kontenera
     RenderBox? contaiterBox =
         containerKey.currentContext?.findRenderObject() as RenderBox;
@@ -226,6 +229,7 @@ class _CollectionPageState extends State<CollectionPage> {
     // pobiera dane konkretnego dragablebox
     RenderBox? draggableBox =
         key.currentContext?.findRenderObject() as RenderBox?;
+
     if (draggableBox == null) return false;
     List<Offset> vertices = [
       Offset(0, 0),
@@ -237,15 +241,57 @@ class _CollectionPageState extends State<CollectionPage> {
     List<Offset> globalVertices =
         vertices.map((vertex) => draggableBox.localToGlobal(vertex)).toList();
 
-    // sprawdza, czy dany wierzchołek znaduje sięwewnątrz kontenera
+    // poniższe 4 pętle sprawdzają, czy wszystkie wierzchołki są z jednej strony poza rodzicem
+    // 1
+    int counter = 0;
     for (Offset vertex in globalVertices) {
-      if (vertex.dx < containerMaxX ||
-          vertex.dx > containerMinX ||
-          vertex.dy < containerMaxY ||
-          vertex.dy > containerMinY) {
+      if (vertex.dx > containerMaxX) {
+        print('1 $counter $vertex');
+        break;
+      }
+      counter++;
+      if (counter >= 4) {
+        print('poza!!!!!!!!!!!!!!!1');
         return false;
-      } else {
-        print('jest poza obsarem $vertex');
+      }
+    }
+    // 2
+    counter = 0;
+    for (Offset vertex in globalVertices) {
+      if (vertex.dx < containerMinX) {
+        print('1 $counter $vertex');
+        break;
+      }
+      counter++;
+      if (counter >= 4) {
+        print('poza!!!!!!!!!!!!!!!1');
+        return false;
+      }
+    }
+    // 3
+    counter = 0;
+    for (Offset vertex in globalVertices) {
+      if (vertex.dy > containerMaxY) {
+        print('1 $counter $vertex');
+        break;
+      }
+      counter++;
+      if (counter >= 4) {
+        print('poza!!!!!!!!!!!!!!!1');
+        return false;
+      }
+    }
+    // 4
+    counter = 0;
+    for (Offset vertex in globalVertices) {
+      if (vertex.dy < containerMinY) {
+        print('1 $counter $vertex');
+        break;
+      }
+      counter++;
+      if (counter >= 4) {
+        print('poza!!!!!!!!!!!!!!!1');
+        return false;
       }
     }
     return true;

@@ -11,7 +11,7 @@ class DraggableWidget extends StatefulWidget {
   final double initRotation;
   final Matrix4? initMatrix4;
   final Function onDoubleTap;
-  final Function(Matrix4, String) onSave;
+  final Function(Matrix4) onSave;
 
   DraggableWidget({
     Key? key,
@@ -90,7 +90,7 @@ class _DraggableWidgetState extends State<DraggableWidget> {
           Duration(milliseconds: 100),
           () {
             isBeingUsed = false;
-            widget.onSave(notifier.value, 'onSave was initiated!!!!!!!!!');
+            widget.onSave(notifier.value);
           },
         );
 
