@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/data/application_data.dart';
 import 'package:flutter_application/data/collection.dart';
 import 'package:hive/hive.dart';
 import 'my_element.dart';
@@ -9,5 +10,7 @@ class Boxes {
       Hive.box<CollectionElement>('collectionElementBox');
   static Box<Collection> getCollection() =>
       Hive.box<Collection>('collectionBox');
-  static Matrix4 m4 = Matrix4.identity();
+  // static Matrix4 m4 = Matrix4.identity();
+  static Box<ApplicationData> getAppData() =>
+      Hive.box<ApplicationData>('applicationDataBox');
 }

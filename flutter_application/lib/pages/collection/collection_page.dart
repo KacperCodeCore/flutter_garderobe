@@ -13,6 +13,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
+import '../../data/application_data.dart';
 import '../../data/boxes.dart';
 
 class CollectionPage extends StatefulWidget {
@@ -25,6 +26,8 @@ class CollectionPage extends StatefulWidget {
 class _CollectionPageState extends State<CollectionPage> {
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
   var collections = Boxes.getCollection().values.toList().cast<Collection>();
+  var appData = Boxes.getAppData() as ApplicationData;
+
   ScreenshotController screenshotController = ScreenshotController();
   bool showButton = true;
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
@@ -33,7 +36,6 @@ class _CollectionPageState extends State<CollectionPage> {
   @override
   void initState() {
     super.initState();
-
     _keyboardVisibilitySubscription =
         KeyboardVisibilityController().onChange.listen((visible) {
       setState(() {
@@ -198,7 +200,11 @@ class _CollectionPageState extends State<CollectionPage> {
         child: Column(
           children: [
             SizedBox(height: 30),
-            Header(index: 0, onTextChange: (String name, int index) {}),
+            Header(
+              index: appData.collectionIndex,
+              onTextChange: (String name, int index) {},
+              onPressed: (int) {},
+            ),
             Screenshot(
               controller: screenshotController,
               child: Center(

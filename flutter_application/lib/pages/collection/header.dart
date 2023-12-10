@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class Header extends StatefulWidget {
   final int index;
   final Function(String, int) onTextChange;
+  final Function(int) onPressed;
 
   const Header({
     Key? key,
     required this.index,
     required this.onTextChange,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -16,6 +18,10 @@ class Header extends StatefulWidget {
 
 class _HeaderState extends State<Header> {
   TextEditingController _controller = TextEditingController();
+
+  // int onPressed(int index) {
+  //   return 1;
+  // }
 
   @override
   void initState() {
@@ -35,9 +41,12 @@ class _HeaderState extends State<Header> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // lewo
-          const Icon(
-            Icons.chevron_left_rounded,
-            size: 45,
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.chevron_left_rounded,
+              size: 45,
+            ),
           ),
 
           // Text('Collection name', style: TextStyle(fontSize: 35)),
