@@ -135,6 +135,58 @@ class _CollectionPageState extends State<CollectionPage> {
     return await filePath;
   }
 
+  bool _OverlaosParent(GlobalKey key) {
+    //pobiera dane kontenera
+    RenderBox? contaiterBox =
+        containerKey.currentContext?.findRenderObject() as RenderBox;
+    Offset containerPisition = contaiterBox.localToGlobal(Offset.zero);
+    double containerMaxX = containerPisition.dx;
+    double containerMinX = containerPisition.dx + contaiterBox.size.width;
+    double containerMaxY = containerPisition.dy;
+    double containerMinY = containerPisition.dy + contaiterBox.size.height;
+
+    // pobiera dane konkretnego dragablebox
+    RenderBox? draggableBox =
+        key.currentContext?.findRenderObject() as RenderBox?;
+
+    if (draggableBox == null) return false;
+    List<Offset> vertices = [
+      Offset(0, 0),
+      Offset(draggableBox.size.width, 0),
+      Offset(draggableBox.size.width, draggableBox.size.height),
+      Offset(0, draggableBox.size.height),
+    ];
+
+    List<Offset> globalVertices =
+        vertices.map((vertex) => draggableBox.localToGlobal(vertex)).toList();
+
+    // lista warunków do spełnienia
+    List<bool Function(Offset)> checkVertexBounds = [
+      (Offset vertex) => vertex.dx > containerMaxX,
+      (Offset vertex) => vertex.dx < containerMinX,
+      (Offset vertex) => vertex.dy > containerMaxY,
+      (Offset vertex) => vertex.dy < containerMinY,
+    ];
+
+    // sprawdza, czy wszystkie wierzchołki są po tej samej stronie poza rodzicem
+    for (var item in checkVertexBounds) {
+      int counter = 0;
+
+      for (Offset vertex in globalVertices) {
+        if (item(vertex)) {
+          print('1 $counter $vertex');
+          break;
+        }
+        counter++;
+        if (counter >= 4) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     // bool _isVisible = true;
@@ -214,87 +266,6 @@ class _CollectionPageState extends State<CollectionPage> {
   void dispose() {
     _keyboardVisibilitySubscription.cancel();
     super.dispose();
-  }
-
-  bool _OverlaosParent(GlobalKey key) {
-    //pobiera dane kontenera
-    RenderBox? contaiterBox =
-        containerKey.currentContext?.findRenderObject() as RenderBox;
-    Offset containerPisition = contaiterBox.localToGlobal(Offset.zero);
-    double containerMaxX = containerPisition.dx;
-    double containerMinX = containerPisition.dx + contaiterBox.size.width;
-    double containerMaxY = containerPisition.dy;
-    double containerMinY = containerPisition.dy + contaiterBox.size.height;
-
-    // pobiera dane konkretnego dragablebox
-    RenderBox? draggableBox =
-        key.currentContext?.findRenderObject() as RenderBox?;
-
-    if (draggableBox == null) return false;
-    List<Offset> vertices = [
-      Offset(0, 0),
-      Offset(draggableBox.size.width, 0),
-      Offset(draggableBox.size.width, draggableBox.size.height),
-      Offset(0, draggableBox.size.height),
-    ];
-
-    List<Offset> globalVertices =
-        vertices.map((vertex) => draggableBox.localToGlobal(vertex)).toList();
-
-    // poniższe 4 pętle sprawdzają, czy wszystkie wierzchołki są z jednej strony poza rodzicem
-    // 1
-    int counter = 0;
-    for (Offset vertex in globalVertices) {
-      if (vertex.dx > containerMaxX) {
-        print('1 $counter $vertex');
-        break;
-      }
-      counter++;
-      if (counter >= 4) {
-        print('poza!!!!!!!!!!!!!!!1');
-        return false;
-      }
-    }
-    // 2
-    counter = 0;
-    for (Offset vertex in globalVertices) {
-      if (vertex.dx < containerMinX) {
-        print('1 $counter $vertex');
-        break;
-      }
-      counter++;
-      if (counter >= 4) {
-        print('poza!!!!!!!!!!!!!!!1');
-        return false;
-      }
-    }
-    // 3
-    counter = 0;
-    for (Offset vertex in globalVertices) {
-      if (vertex.dy > containerMaxY) {
-        print('1 $counter $vertex');
-        break;
-      }
-      counter++;
-      if (counter >= 4) {
-        print('poza!!!!!!!!!!!!!!!1');
-        return false;
-      }
-    }
-    // 4
-    counter = 0;
-    for (Offset vertex in globalVertices) {
-      if (vertex.dy < containerMinY) {
-        print('1 $counter $vertex');
-        break;
-      }
-      counter++;
-      if (counter >= 4) {
-        print('poza!!!!!!!!!!!!!!!1');
-        return false;
-      }
-    }
-    return true;
   }
 }
 // final List<Widget> _dummyWidgets = [
