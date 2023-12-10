@@ -104,11 +104,10 @@ class _CollectionPageState extends State<CollectionPage> {
 
   /// dodanie nowego elementu do hive
   void _deleteCollectionElement(int index) {
-    // var tempElement =
-    //     collection.elements.singleWhere((e) => e.id == element.id);
-
+    Collection collection = Boxes.getCollection().getAt(0)!;
+    collection.elements.removeAt(index);
     setState(() {
-      Boxes.getCollection().deleteAt(index);
+      Boxes.getCollection().putAt(0, collection);
     });
   }
 
@@ -135,7 +134,7 @@ class _CollectionPageState extends State<CollectionPage> {
     return await filePath;
   }
 
-  bool _OverlaosParent(GlobalKey key) {
+  bool _OverlapsParent(GlobalKey key) {
     //pobiera dane kontenera
     RenderBox? contaiterBox =
         containerKey.currentContext?.findRenderObject() as RenderBox;
@@ -174,7 +173,6 @@ class _CollectionPageState extends State<CollectionPage> {
 
       for (Offset vertex in globalVertices) {
         if (item(vertex)) {
-          print('1 $counter $vertex');
           break;
         }
         counter++;
@@ -183,7 +181,6 @@ class _CollectionPageState extends State<CollectionPage> {
         }
       }
     }
-
     return true;
   }
 
@@ -223,14 +220,15 @@ class _CollectionPageState extends State<CollectionPage> {
                         ),
                         onDoubleTap: () {},
                         onSave: (m4) {
-                          if (_OverlaosParent(_draggableKey)) {
+                          if (_OverlapsParent(_draggableKey)) {
                             print('isVisible true');
                             _updateCollectionElement(
                                 'saved', elements[0].path, m4, index);
                           } else {
-                            // delete()
                             print('isVisible false');
+                            _deleteCollectionElement(index);
                           }
+                          print(collections[0].elements.length);
                         },
                       );
                     }),
