@@ -111,14 +111,19 @@ class _CollectionPageState extends State<CollectionPage> {
     collection.screenshotPath = _screenshotPath;
     setState(() {
       Boxes.getCollection().putAt(0, collection);
+      collections = Boxes.getCollection().values.toList();
     });
   }
 
-  void _deleteCollectionElement(int index) {
+  void _deleteCollectionElement(int index, Key _draggableKey) {
+    print('$index deleted');
     Collection collection = Boxes.getCollection().getAt(0)!;
+    // collection.elements.removeAt(index);
     collection.elements.removeAt(index);
+
     setState(() {
       Boxes.getCollection().putAt(0, collection);
+      collections = Boxes.getCollection().values.toList();
     });
   }
 
@@ -153,7 +158,9 @@ class _CollectionPageState extends State<CollectionPage> {
     double containerMaxX = containerPisition.dx;
     double containerMinX = containerPisition.dx + contaiterBox.size.width;
     double containerMaxY = containerPisition.dy;
-    double containerMinY = containerPisition.dy + contaiterBox.size.height;
+    double containerMinY =
+        containerPisition.dy + contaiterBox.size.height - 200;
+    //todo=================================================================================================
 
     // pobiera dane konkretnego dragablebox
     RenderBox? draggableBox =
@@ -192,6 +199,7 @@ class _CollectionPageState extends State<CollectionPage> {
         }
       }
     }
+
     return true;
   }
 
@@ -235,26 +243,32 @@ class _CollectionPageState extends State<CollectionPage> {
                   child: Stack(
                     children:
                         List.generate(collections[0].elements.length, (index) {
+                      final GlobalKey _sizeBoxKey = GlobalKey();
                       final GlobalKey _draggableKey = GlobalKey();
                       return DraggableWidget(
+                        key: _draggableKey,
                         initMatrix4: collections[0].elements[index].matrix4,
                         child: SizedBox(
-                          key: _draggableKey,
+                          key: _sizeBoxKey,
                           height: 100,
                           width: 100,
                           child: Image.file(File(elements[0].path)),
                         ),
                         onDoubleTap: () {},
                         onSave: (m4) {
-                          if (_OverlapsParent(_draggableKey)) {
+                          print('$index send');
+                          if (_OverlapsParent(_sizeBoxKey)) {
                             print('isVisible true');
                             _updateCollectionElement(
                                 'saved', elements[0].path, m4, index);
+                            print('$index saved');
                           } else {
                             print('isVisible false');
-                            _deleteCollectionElement(index);
+                            print('$index send2');
+                            _deleteCollectionElement(index, _draggableKey);
                           }
-                          print(collections[0].elements.length);
+                          print(
+                              'collectionx length ${collections[0].elements.length}');
                         },
                       );
                     }),
