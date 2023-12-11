@@ -93,9 +93,9 @@ class _CollectionPageState extends State<CollectionPage> {
 
     setState(() {
       // aktualizacjia kolekcji w Hive, aby zapisac zmiany.
-      Boxes.getCollection().getAt(0)!.elements.add(collectionElement);
+      Boxes.getCollection().getAt(cIndex)!.elements.add(collectionElement);
       // jest to konieczne, aby Hive śledził i zapisywał zmiany.
-      Boxes.getCollection().putAt(0, Boxes.getCollection().getAt(0)!);
+      Boxes.getCollection().putAt(cIndex, Boxes.getCollection().getAt(0)!);
     });
   }
 
