@@ -120,12 +120,12 @@ class _CollectionPageState extends State<CollectionPage> {
   }
 
   void _deleteCollectionElement(String id) {
-    Collection collection = Boxes.getCollection().getAt(0)!;
+    Collection collection = Boxes.getCollection().getAt(cIndex)!;
     // collection.elements.removeAt(index);
     collection.elements.removeWhere((e) => e.id == id);
 
     setState(() {
-      Boxes.getCollection().putAt(0, collection);
+      Boxes.getCollection().putAt(cIndex, collection);
       collections = Boxes.getCollection().values.toList();
     });
   }
@@ -161,7 +161,8 @@ class _CollectionPageState extends State<CollectionPage> {
     double containerMaxX = containerPisition.dx;
     double containerMinX = containerPisition.dx + contaiterBox.size.width;
     double containerMaxY = containerPisition.dy;
-    double containerMinY = containerPisition.dy + contaiterBox.size.height;
+    double containerMinY =
+        containerPisition.dy + contaiterBox.size.height - 200;
 
     // pobiera dane konkretnego dragablebox
     RenderBox? draggableBox =
