@@ -110,11 +110,11 @@ class _CollectionPageState extends State<CollectionPage> {
       matrix4: m4,
     );
 
-    Collection collection = Boxes.getCollection().getAt(0)!;
+    Collection collection = Boxes.getCollection().getAt(cIndex)!;
     collection.elements[index] = element;
     collection.screenshotPath = _screenshotPath;
     setState(() {
-      Boxes.getCollection().putAt(0, collection);
+      Boxes.getCollection().putAt(cIndex, collection);
       collections = Boxes.getCollection().values.toList();
     });
   }
