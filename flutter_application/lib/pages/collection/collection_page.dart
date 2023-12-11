@@ -255,20 +255,13 @@ class _CollectionPageState extends State<CollectionPage> {
                         ),
                         onDoubleTap: () {},
                         onSave: (m4) {
-                          print('$index send');
                           if (_OverlapsParent(_sizeBoxKey)) {
-                            print('isVisible true');
                             _updateCollectionElement(
                                 'saved', elements[0].path, m4, index);
-                            print('$index saved');
                           } else {
-                            print('isVisible false');
-                            print('$index send2');
                             _deleteCollectionElement(
                                 collections[0].elements[index].id);
                           }
-                          print(
-                              'collectionx length ${collections[0].elements.length}');
                         },
                       );
                     }),
