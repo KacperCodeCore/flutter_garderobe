@@ -101,7 +101,7 @@ class _CollectionPageState extends State<CollectionPage> {
 
   Future<void> _updateCollectionElement(
       String name, String path, Matrix4 m4, int index) async {
-    String? _screenshotPath = await _TakeScreenshotPath(path);
+    String? _screenshotPath = await _TakeScreenshotPath();
 
     if (_screenshotPath == null) return;
     CollectionElement element = CollectionElement(
@@ -130,7 +130,20 @@ class _CollectionPageState extends State<CollectionPage> {
     });
   }
 
-  Future<String?> _TakeScreenshotPath(String oldPath) async {
+  Future<void> _SaveScreenshot() async {
+    String? _screenshotPath = await _TakeScreenshotPath();
+    if (_screenshotPath == null) return;
+
+    Collection collection = Boxes.getCollection().getAt(cIndex)!;
+    collection.screenshotPath = _screenshotPath;
+    setState(() {
+      Boxes.getCollection().putAt(cIndex, collection);
+      collections = Boxes.getCollection().values.toList();
+    });
+  }
+
+  Future<String?> _TakeScreenshotPath() async {
+    String oldPath = collections[cIndex].screenshotPath;
     final Uint8List? image = await screenshotController.capture(
         delay: const Duration(milliseconds: 10));
     if (image == null) return null;
@@ -270,6 +283,7 @@ class _CollectionPageState extends State<CollectionPage> {
                           } else {
                             _deleteCollectionElement(
                                 collections[cIndex].elements[index].id);
+                            _SaveScreenshot();
                           }
                         },
                       );
@@ -293,9 +307,8 @@ class _CollectionPageState extends State<CollectionPage> {
           padding: EdgeInsets.only(bottom: 100),
           child: FloatingActionButton(
             onPressed: () {
-              setState(() {
-                _addElement('test name1', elements[0].path);
-              });
+              _addElement('test name1', elements[0].path);
+              _SaveScreenshot();
             },
             child: Icon(Icons.add),
           ),
