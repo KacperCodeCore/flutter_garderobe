@@ -587,11 +587,12 @@ packages:
   matrix_gesture_detector:
     dependency: "direct main"
     description:
-      name: matrix_gesture_detector
-      sha256: ed891802e7f018b9fe9ef2e126d361814994c98f0ba86bc17aaaaddc2b55f466
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.0-nullsafety.1"
+      path: "."
+      ref: HEAD
+      resolved-ref: "29a1bf818434c1f8051892c9b537ac6ef217d45d"
+      url: "https://github.com/besttechguru/matrix_gesture_detector.git"
+    source: git
+    version: "0.2.0-nullsafety"
   meta:
     dependency: transitive
     description:

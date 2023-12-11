@@ -1,4 +1,4 @@
-import 'dart:async';
+// import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:matrix_gesture_detector/matrix_gesture_detector.dart';
@@ -37,7 +37,7 @@ class _DraggableWidgetState extends State<DraggableWidget> {
   Matrix4 initialMatrix = Matrix4.identity();
   Matrix4 currentMatrix = Matrix4.identity();
   bool isBeingUsed = false;
-  late Timer timer;
+  // late Timer timer;
   late bool canUseOnce;
 
   late ValueNotifier<Matrix4> notifier;
@@ -66,7 +66,7 @@ class _DraggableWidgetState extends State<DraggableWidget> {
         ..rotateZ(widget.initRotation);
     }
     notifier = ValueNotifier(initialMatrix);
-    timer = Timer(Duration.zero, () {});
+    // timer = Timer(Duration.zero, () {});
 
     canUseOnce = true;
   }
@@ -83,18 +83,22 @@ class _DraggableWidgetState extends State<DraggableWidget> {
         notifier.value = m;
 
         // chwilę po przestaniu korzystana z widgetu następuje onSave
-        if (timer.isActive) {
-          timer.cancel();
-        }
-        timer = Timer(
-          Duration(milliseconds: 100),
-          () {
-            isBeingUsed = false;
-            widget.onSave(notifier.value);
-          },
-        );
+        // if (timer.isActive) {
+        //   timer.cancel();
+        // }
+        // timer = Timer(
+        //   Duration(milliseconds: 50),
+        //   () {
+        //     isBeingUsed = false;
+        //     widget.onSave(notifier.value);
+        //   },
+        // );
 
         isBeingUsed = true;
+      },
+      onScaleStart: () {},
+      onScaleEnd: () {
+        widget.onSave(notifier.value);
       },
       child: AnimatedBuilder(
         animation: notifier,
@@ -120,7 +124,7 @@ class _DraggableWidgetState extends State<DraggableWidget> {
 
   @override
   void dispose() {
-    timer.cancel(); // Dodaj tę linię
+    // timer.cancel(); // Dodaj tę linię
     // Boxes.m4 = notifier.value;
     notifier.dispose();
     super.dispose();
