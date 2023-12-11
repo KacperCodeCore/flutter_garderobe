@@ -91,9 +91,9 @@ class _HeaderState extends State<Header> {
             onPressed: () {
               int index = widget.index;
               index++;
-              if (index >= widget.length - 1) {
-                index = widget.length - 1;
-              }
+              // if (index >= widget.length - 1) {
+              //   index = widget.length - 1;
+              // }
               widget.onPressed(index);
             },
             icon: Icon(

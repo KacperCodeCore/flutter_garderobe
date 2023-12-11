@@ -47,27 +47,31 @@ class _CollectionPageState extends State<CollectionPage> {
     collectionIndex = appData[0].collectionIndex;
 
     if (collections.isEmpty) {
-      Collection newCollection = Collection(
-        name: 'name',
-        elements: [],
-        lastEdited: DateTime.now(),
-        screenshotPath: '',
-      );
-      Boxes.getCollection().add(newCollection);
-      setState(() {
-        collections = Boxes.getCollection().values.toList();
-      });
+      _addEmptyCollection();
     }
 
     _keyboardVisibilitySubscription =
         KeyboardVisibilityController().onChange.listen((visible) {
       setState(() {
-        showHideButton(visible);
+        _showHideButton(visible);
       });
     });
   }
 
-  void showHideButton(bool isKeyboardVisible) {
+  void _addEmptyCollection() {
+    Collection newCollection = Collection(
+      name: 'name',
+      elements: [],
+      lastEdited: DateTime.now(),
+      screenshotPath: '',
+    );
+    Boxes.getCollection().add(newCollection);
+    setState(() {
+      collections = Boxes.getCollection().values.toList();
+    });
+  }
+
+  void _showHideButton(bool isKeyboardVisible) {
     if (isKeyboardVisible) {
       showButton = false;
     } else {
@@ -157,9 +161,7 @@ class _CollectionPageState extends State<CollectionPage> {
     double containerMaxX = containerPisition.dx;
     double containerMinX = containerPisition.dx + contaiterBox.size.width;
     double containerMaxY = containerPisition.dy;
-    double containerMinY =
-        containerPisition.dy + contaiterBox.size.height - 200;
-    //todo=================================================================================================
+    double containerMinY = containerPisition.dy + contaiterBox.size.height;
 
     // pobiera dane konkretnego dragablebox
     RenderBox? draggableBox =
@@ -228,6 +230,9 @@ class _CollectionPageState extends State<CollectionPage> {
               length: collections.length,
               onTextChange: (String name, int index) {},
               onPressed: (index) {
+                if (index > collections.length - 1) {
+                  _addEmptyCollection();
+                }
                 _ShowIndexCollection(index);
                 print('collectionIndex $index');
               },
