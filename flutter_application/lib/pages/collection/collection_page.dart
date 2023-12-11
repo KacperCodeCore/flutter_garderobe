@@ -28,7 +28,7 @@ class _CollectionPageState extends State<CollectionPage> {
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
   var collections = Boxes.getCollection().values.toList().cast<Collection>();
   var appData = Boxes.getAppData().values.toList().cast<ApplicationData>();
-  late int collectionIndex;
+  late int cIndex;
 
   ScreenshotController screenshotController = ScreenshotController();
   bool showButton = true;
@@ -44,7 +44,7 @@ class _CollectionPageState extends State<CollectionPage> {
         Boxes.getAppData().add(ApplicationData());
       });
     }
-    collectionIndex = appData[0].collectionIndex;
+    cIndex = appData[0].collectionIndex;
 
     if (collections.isEmpty) {
       _addEmptyCollection();
@@ -208,7 +208,9 @@ class _CollectionPageState extends State<CollectionPage> {
     appData[0].collectionIndex = index;
     setState(() {
       Boxes.getAppData().putAt(0, appData[0]);
+      cIndex = appData[0].collectionIndex;
     });
+    print(cIndex);
   }
 
   @override
@@ -245,13 +247,14 @@ class _CollectionPageState extends State<CollectionPage> {
                   height: 500,
                   color: Colors.brown,
                   child: Stack(
-                    children:
-                        List.generate(collections[0].elements.length, (index) {
+                    children: List.generate(collections[cIndex].elements.length,
+                        (index) {
                       final GlobalKey _sizeBoxKey = GlobalKey();
                       final GlobalKey _draggableKey = GlobalKey();
                       return DraggableWidget(
                         key: _draggableKey,
-                        initMatrix4: collections[0].elements[index].matrix4,
+                        initMatrix4:
+                            collections[cIndex].elements[index].matrix4,
                         child: SizedBox(
                           key: _sizeBoxKey,
                           height: 100,
@@ -265,7 +268,7 @@ class _CollectionPageState extends State<CollectionPage> {
                                 'saved', elements[0].path, m4, index);
                           } else {
                             _deleteCollectionElement(
-                                collections[0].elements[index].id);
+                                collections[cIndex].elements[index].id);
                           }
                         },
                       );
