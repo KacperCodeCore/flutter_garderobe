@@ -115,11 +115,10 @@ class _CollectionPageState extends State<CollectionPage> {
     });
   }
 
-  void _deleteCollectionElement(int index, Key _draggableKey) {
-    print('$index deleted');
+  void _deleteCollectionElement(String id) {
     Collection collection = Boxes.getCollection().getAt(0)!;
     // collection.elements.removeAt(index);
-    collection.elements.removeAt(index);
+    collection.elements.removeWhere((e) => e.id == id);
 
     setState(() {
       Boxes.getCollection().putAt(0, collection);
@@ -265,7 +264,8 @@ class _CollectionPageState extends State<CollectionPage> {
                           } else {
                             print('isVisible false');
                             print('$index send2');
-                            _deleteCollectionElement(index, _draggableKey);
+                            _deleteCollectionElement(
+                                collections[0].elements[index].id);
                           }
                           print(
                               'collectionx length ${collections[0].elements.length}');
