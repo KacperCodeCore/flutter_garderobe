@@ -6,7 +6,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_application/data/colection.dart';
 import 'package:flutter_application/data/my_element.dart';
+import 'package:flutter_application/pages/colection/colection_creator.dart';
+import 'package:flutter_application/pages/colection/colection_footer.dart';
 import 'package:flutter_application/pages/colection/draggable_widget.dart';
+import 'package:flutter_application/pages/home/user_post.dart';
 
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:path_provider/path_provider.dart';
@@ -31,7 +34,7 @@ class _ColectionPageState extends State<ColectionPage> {
   bool showButton = true;
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
 
-  ScreenshotController screenshotController = ScreenshotController();
+  // ScreenshotController screenshotController = ScreenshotController();
   final PageController _pageController = PageController();
 
   @override
@@ -103,9 +106,9 @@ class _ColectionPageState extends State<ColectionPage> {
     });
   }
 
-  Future<void> _updateColectionElement(
-      String name, String path, Matrix4 m4, int index) async {
-    String? _screenshotPath = await _TakeScreenshotPath();
+  Future<void> _updateColectionElement(String name, String path, Matrix4 m4,
+      int index, ScreenshotController screenshotController) async {
+    String? _screenshotPath = await _TakeScreenshotPath(screenshotController);
     // String? _screenshotPath = '';
 
     if (_screenshotPath == null) return;
@@ -136,10 +139,11 @@ class _ColectionPageState extends State<ColectionPage> {
     });
   }
 
-  Future<void> _SaveScreenshot() async {
+  Future<void> _SaveScreenshot(
+      ScreenshotController screenshotController) async {
     int colectionIndex = _pageController.page!.round();
     print('_SaveScreenshot');
-    String? _screenshotPath = await _TakeScreenshotPath();
+    String? _screenshotPath = await _TakeScreenshotPath(screenshotController);
     if (_screenshotPath == null) return;
 
     Colection colection = Boxes.getColection().getAt(colectionIndex)!;
@@ -150,7 +154,8 @@ class _ColectionPageState extends State<ColectionPage> {
     });
   }
 
-  Future<String?> _TakeScreenshotPath() async {
+  Future<String?> _TakeScreenshotPath(
+      ScreenshotController screenshotController) async {
     int index = _pageController.page!.round();
     String oldPath = colections[index].screenshotPath;
     final Uint8List? image = await screenshotController.capture(
@@ -258,71 +263,73 @@ class _ColectionPageState extends State<ColectionPage> {
 
       body: Column(
         children: [
-          SizedBox(height: 30),
-          Screenshot(
-            controller: screenshotController,
-            child: Container(
-              height: 500,
-              child: PageView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                controller: _pageController,
-                itemCount: colections.length,
-                itemBuilder: (context, ColectionIndex) {
-                  final containerKey = GlobalKey();
-                  return Container(
-                    decoration: BoxDecoration(border: Border.all(width: 2)),
-                    child: Column(
-                      children: [
-                        Text('name'),
-                        Center(
-                          child: Container(
-                            key: containerKey,
-                            height: 500,
-                            color: Colors.brown,
-                            child: Stack(
-                              children: List.generate(
-                                colections[ColectionIndex].elements.length,
-                                (index) {
-                                  final GlobalKey _sizeBoxKey = GlobalKey();
-                                  final GlobalKey _draggableKey = GlobalKey();
-                                  return DraggableWidget(
-                                    key: _draggableKey,
-                                    initMatrix4: colections[ColectionIndex]
-                                        .elements[index]
-                                        .matrix4,
-                                    child: SizedBox(
-                                      key: _sizeBoxKey,
-                                      height: 100,
-                                      width: 100,
-                                      child: Image.file(File(elements[0].path)),
-                                    ),
-                                    onDoubleTap: () {},
-                                    onSave: (m4) {
-                                      if (_OverlapsParent(
-                                          _sizeBoxKey, containerKey)) {
-                                        _updateColectionElement('saved',
-                                            elements[0].path, m4, index);
-                                      } else {
-                                        _deleteColectionElement(
-                                            colections[ColectionIndex]
-                                                .elements[index]
-                                                .id);
-                                        // _SaveScreenshot();
-                                      }
-                                    },
-                                  );
+          SizedBox(height: 25),
+          Container(
+            height: 550,
+            child: PageView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              controller: _pageController,
+              itemCount: colections.length,
+              itemBuilder: (context, ColectionIndex) {
+                ScreenshotController screenshotController =
+                    ScreenshotController();
+                final containerKey = GlobalKey();
+                return ColectionCreator(
+                  name: 'name',
+                  child: Center(
+                    child: Screenshot(
+                      controller: screenshotController,
+                      child: Container(
+                        key: containerKey,
+                        height: 500,
+                        color: Colors.brown,
+                        child: Stack(
+                          children: List.generate(
+                            colections[ColectionIndex].elements.length,
+                            (index) {
+                              final GlobalKey _sizeBoxKey = GlobalKey();
+                              final GlobalKey _draggableKey = GlobalKey();
+                              return DraggableWidget(
+                                key: _draggableKey,
+                                initMatrix4: colections[ColectionIndex]
+                                    .elements[index]
+                                    .matrix4,
+                                child: SizedBox(
+                                  key: _sizeBoxKey,
+                                  height: 100,
+                                  width: 100,
+                                  child: Image.file(File(elements[0].path)),
+                                ),
+                                onDoubleTap: () {},
+                                onSave: (m4) {
+                                  if (_OverlapsParent(
+                                      _sizeBoxKey, containerKey)) {
+                                    _updateColectionElement(
+                                        'saved',
+                                        elements[0].path,
+                                        m4,
+                                        index,
+                                        screenshotController);
+                                  } else {
+                                    _deleteColectionElement(
+                                        colections[ColectionIndex]
+                                            .elements[index]
+                                            .id);
+                                    // _SaveScreenshot();
+                                  }
                                 },
-                              ),
-                            ),
+                              );
+                            },
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ),
+          ColectionFooter(),
           Row(
             children: [
               ElevatedButton(

@@ -44,7 +44,7 @@ class UserPost extends StatelessWidget {
         //Post
         Container(
           // width: screenWidth,
-          height: 498,
+          height: 500,
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
