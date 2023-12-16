@@ -27,7 +27,6 @@ class _ColectionPageState extends State<ColectionPage> {
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
   var colections = Boxes.getColection().values.toList().cast<Colection>();
   var appData = Boxes.getAppData().values.toList().cast<ApplicationData>();
-  // late int cIndex;
 
   bool showButton = true;
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
@@ -44,8 +43,6 @@ class _ColectionPageState extends State<ColectionPage> {
         Boxes.getAppData().add(ApplicationData());
       });
     }
-    // cIndex = appData[0].colectionIndex;
-    // cIndex = 0;
 
     if (colections.isEmpty) {
       _addEmptyColection();
@@ -230,15 +227,6 @@ class _ColectionPageState extends State<ColectionPage> {
     return true;
   }
 
-  // void _ShowIndexColection(int index) {
-  //   appData[0].colectionIndex = index;
-  //   setState(() {
-  //     Boxes.getAppData().putAt(0, appData[0]);
-  //     cIndex = appData[0].colectionIndex;
-  //   });
-  //   print(cIndex);
-  // }
-
   void _removeCurrentColection() {
     if (colections.isNotEmpty) {
       int currentPageIndex = _pageController.page!.round();
@@ -274,7 +262,7 @@ class _ColectionPageState extends State<ColectionPage> {
           Screenshot(
             controller: screenshotController,
             child: Container(
-              height: 600,
+              height: 500,
               child: PageView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 controller: _pageController,
@@ -282,6 +270,7 @@ class _ColectionPageState extends State<ColectionPage> {
                 itemBuilder: (context, ColectionIndex) {
                   final containerKey = GlobalKey();
                   return Container(
+                    decoration: BoxDecoration(border: Border.all(width: 2)),
                     child: Column(
                       children: [
                         Text('name'),
@@ -387,70 +376,6 @@ class _ColectionPageState extends State<ColectionPage> {
         ),
       ),
     );
-
-    // SingleChildScrollView(
-    //   physics: NeverScrollableScrollPhysics(),
-    //   child: Column(
-    //     children: [
-    //       SizedBox(height: 30),
-    //       Header(
-    //         index: appData[0].colectionIndex,
-    //         length: colections.length,
-    //         onTextChange: (String name, int index) {},
-    //         onPressed: (index) {
-    //           if (index > colections.length - 1) {
-    //             _addEmptyColection();
-    //           }
-    //           _ShowIndexColection(index);
-    //           print('colectionIndex $index');
-    //         },
-    //       ),
-    //       Screenshot(
-    //         controller: screenshotController,
-    //         child: Center(
-    //           child: Container(
-    //             key: containerKey,
-    //             height: 500,
-    //             color: Colors.brown,
-    //             child: Stack(
-    //               children: List.generate(ections[cIndex].elements.length,
-    //                   (index) {
-    //                 final GlobalKey _sizeBoxKey = GlobalKey();
-    //                 final GlobalKey _draggableKey = GlobalKey();
-    //                 return DraggableWidget(
-    //                   key: _draggableKey,
-    //                   initMatrix4:
-    //                       colections[cIndex].elements[index].matrix4,
-    //                   child: SizedBox(
-    //                     key: _sizeBoxKey,
-    //                     height: 100,
-    //                     width: 100,
-    //                     child: Image.file(File(elements[0].path)),
-    //                   ),
-    //                   onDoubleTap: () {},
-    //                   onSave: (m4) {
-    //                     if (_OverlapsParent(_sizeBoxKey)) {
-    //                       _updateColectionElement(
-    //                           'saved', elements[0].path, m4, index);
-    //                     } else {
-    //                       _deleteColectionElement(
-    //                           colections[cIndex].elements[index].id);
-    //                       _SaveScreenshot();
-    //                     }
-    //                   },
-    //                 );
-    //               }),
-    //             ),
-    //           ),
-    //         ),
-    //       ),
-    //       SizedBox(height: 10),
-    //       BottonButtons(
-    //         onDelete: () {},
-    //       ),
-    //     ],
-    //   ),
-    // ),
   }
 
   @override
