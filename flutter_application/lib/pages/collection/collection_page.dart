@@ -30,10 +30,11 @@ class _CollectionPageState extends State<CollectionPage> {
   var appData = Boxes.getAppData().values.toList().cast<ApplicationData>();
   late int cIndex;
 
-  ScreenshotController screenshotController = ScreenshotController();
+  // ScreenshotController screenshotController = ScreenshotController();
   bool showButton = true;
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
-  final containerKey = GlobalKey();
+
+  final PageController _pageController = PageController();
 
   @override
   void initState() {
@@ -45,6 +46,7 @@ class _CollectionPageState extends State<CollectionPage> {
       });
     }
     cIndex = appData[0].collectionIndex;
+    cIndex = 0;
 
     if (collections.isEmpty) {
       _addEmptyCollection();
@@ -101,7 +103,8 @@ class _CollectionPageState extends State<CollectionPage> {
 
   Future<void> _updateCollectionElement(
       String name, String path, Matrix4 m4, int index) async {
-    String? _screenshotPath = await _TakeScreenshotPath();
+    // String? _screenshotPath = await _TakeScreenshotPath();
+    String? _screenshotPath = '';
 
     if (_screenshotPath == null) return;
     CollectionElement element = CollectionElement(
@@ -130,43 +133,43 @@ class _CollectionPageState extends State<CollectionPage> {
     });
   }
 
-  Future<void> _SaveScreenshot() async {
-    String? _screenshotPath = await _TakeScreenshotPath();
-    if (_screenshotPath == null) return;
+  // Future<void> _SaveScreenshot() async {
+  //   String? _screenshotPath = await _TakeScreenshotPath();
+  //   if (_screenshotPath == null) return;
 
-    Collection collection = Boxes.getCollection().getAt(cIndex)!;
-    collection.screenshotPath = _screenshotPath;
-    setState(() {
-      Boxes.getCollection().putAt(cIndex, collection);
-      collections = Boxes.getCollection().values.toList();
-    });
-  }
+  //   Collection collection = Boxes.getCollection().getAt(cIndex)!;
+  //   collection.screenshotPath = _screenshotPath;
+  //   setState(() {
+  //     Boxes.getCollection().putAt(cIndex, collection);
+  //     collections = Boxes.getCollection().values.toList();
+  //   });
+  // }
 
-  Future<String?> _TakeScreenshotPath() async {
-    String oldPath = collections[cIndex].screenshotPath;
-    final Uint8List? image = await screenshotController.capture(
-        delay: const Duration(milliseconds: 10));
-    if (image == null) return null;
+  // Future<String?> _TakeScreenshotPath() async {
+  //   String oldPath = collections[cIndex].screenshotPath;
+  //   final Uint8List? image = await screenshotController.capture(
+  //       delay: const Duration(milliseconds: 10));
+  //   if (image == null) return null;
 
-    final time = DateTime.now()
-        .toIso8601String()
-        .replaceAll('.', '-')
-        .replaceAll(':', '-');
-    final name = "Screenshoot$time";
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    String appDocPath = appDocDir.path;
-    String filePath = '$appDocPath/$name';
+  //   final time = DateTime.now()
+  //       .toIso8601String()
+  //       .replaceAll('.', '-')
+  //       .replaceAll(':', '-');
+  //   final name = "Screenshoot$time";
+  //   Directory appDocDir = await getApplicationDocumentsDirectory();
+  //   String appDocPath = appDocDir.path;
+  //   String filePath = '$appDocPath/$name';
 
-    if (await File(oldPath).exists()) {
-    } else {
-      File(oldPath).delete();
-    }
-    File file = File(filePath);
-    await file.writeAsBytes(image);
-    return await filePath;
-  }
+  //   if (await File(oldPath).exists()) {
+  //   } else {
+  //     File(oldPath).delete();
+  //   }
+  //   File file = File(filePath);
+  //   await file.writeAsBytes(image);
+  //   return await filePath;
+  // }
 
-  bool _OverlapsParent(GlobalKey key) {
+  bool _OverlapsParent(GlobalKey key, GlobalKey containerKey) {
     //pobiera dane kontenera
     RenderBox? contaiterBox =
         containerKey.currentContext?.findRenderObject() as RenderBox;
@@ -227,6 +230,26 @@ class _CollectionPageState extends State<CollectionPage> {
     print(cIndex);
   }
 
+  void _removeCurrentCollection() {
+    if (collections.isNotEmpty) {
+      int currentPage = _pageController.page!.round();
+      _removeCollection(currentPage);
+      if (currentPage >= collections.length) {
+        _pageController.jumpTo(collections.length - 1);
+      }
+      setState(() {});
+    }
+  }
+
+  void _removeCollection(int index) {
+    Boxes.getCollection().deleteAt(index);
+    collections = Boxes.getCollection().values.toList().cast<Collection>();
+  }
+
+  void _addCollectionAndGoTo() {
+    _addEmptyCollection();
+  }
+
   @override
   Widget build(BuildContext context) {
     // bool _isVisible = true;
@@ -236,68 +259,109 @@ class _CollectionPageState extends State<CollectionPage> {
       // backgroundColor: Colors.brown.shade300,
       resizeToAvoidBottomInset: false,
 
-      body: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            SizedBox(height: 30),
-            Header(
-              index: appData[0].collectionIndex,
-              length: collections.length,
-              onTextChange: (String name, int index) {},
-              onPressed: (index) {
-                if (index > collections.length - 1) {
-                  _addEmptyCollection();
-                }
-                _ShowIndexCollection(index);
-                print('collectionIndex $index');
+      body: Column(
+        children: [
+          SizedBox(height: 30),
+          Container(
+            height: 600,
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: collections.length,
+              itemBuilder: (context, CollectionIndex) {
+                ScreenshotController screenshotController =
+                    ScreenshotController();
+                final containerKey = GlobalKey();
+                return Container(
+                  child: Column(
+                    children: [
+                      Text('name'),
+                      Screenshot(
+                        controller: screenshotController,
+                        child: Center(
+                          child: Container(
+                            key: containerKey,
+                            height: 500,
+                            color: Colors.brown,
+                            child: Stack(
+                              children: List.generate(
+                                collections[CollectionIndex].elements.length,
+                                (index) {
+                                  final GlobalKey _sizeBoxKey = GlobalKey();
+                                  final GlobalKey _draggableKey = GlobalKey();
+                                  return DraggableWidget(
+                                    key: _draggableKey,
+                                    initMatrix4: collections[CollectionIndex]
+                                        .elements[index]
+                                        .matrix4,
+                                    child: SizedBox(
+                                      key: _sizeBoxKey,
+                                      height: 100,
+                                      width: 100,
+                                      child: Image.file(File(elements[0].path)),
+                                    ),
+                                    onDoubleTap: () {},
+                                    onSave: (m4) {
+                                      if (_OverlapsParent(
+                                          _sizeBoxKey, containerKey)) {
+                                        _updateCollectionElement('saved',
+                                            elements[0].path, m4, index);
+                                      } else {
+                                        _deleteCollectionElement(
+                                            collections[CollectionIndex]
+                                                .elements[index]
+                                                .id);
+                                        // _SaveScreenshot();
+                                      }
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
               },
             ),
-            Screenshot(
-              controller: screenshotController,
-              child: Center(
-                child: Container(
-                  key: containerKey,
-                  height: 500,
-                  color: Colors.brown,
-                  child: Stack(
-                    children: List.generate(collections[cIndex].elements.length,
-                        (index) {
-                      final GlobalKey _sizeBoxKey = GlobalKey();
-                      final GlobalKey _draggableKey = GlobalKey();
-                      return DraggableWidget(
-                        key: _draggableKey,
-                        initMatrix4:
-                            collections[cIndex].elements[index].matrix4,
-                        child: SizedBox(
-                          key: _sizeBoxKey,
-                          height: 100,
-                          width: 100,
-                          child: Image.file(File(elements[0].path)),
-                        ),
-                        onDoubleTap: () {},
-                        onSave: (m4) {
-                          if (_OverlapsParent(_sizeBoxKey)) {
-                            _updateCollectionElement(
-                                'saved', elements[0].path, m4, index);
-                          } else {
-                            _deleteCollectionElement(
-                                collections[cIndex].elements[index].id);
-                            _SaveScreenshot();
-                          }
-                        },
-                      );
-                    }),
-                  ),
-                ),
+          ),
+          Row(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  _pageController.previousPage(
+                    duration: Duration(milliseconds: 500),
+                    //todo sprawdzić jak są inne opcje
+                    curve: Curves.easeInOut,
+                  );
+                },
+                child: Icon(Icons.navigate_next_rounded),
               ),
-            ),
-            SizedBox(height: 10),
-            BottonButtons(
-              onDelete: () {},
-            ),
-          ],
-        ),
+              ElevatedButton(
+                onPressed: () {
+                  _pageController.nextPage(
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                  );
+                },
+                child: Icon(Icons.navigate_next_rounded),
+              ),
+              ElevatedButton(
+                onPressed: _removeCurrentCollection,
+                child: Icon(Icons.delete_forever),
+              ),
+              SizedBox(
+                width: 50,
+                child: Center(
+                    child: ElevatedButton(
+                  onPressed: _addCollectionAndGoTo,
+                  child: Icon(Icons.add_photo_alternate_outlined),
+                )),
+              ),
+            ],
+          )
+        ],
       ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -308,13 +372,77 @@ class _CollectionPageState extends State<CollectionPage> {
           child: FloatingActionButton(
             onPressed: () {
               _addElement('test name1', elements[0].path);
-              _SaveScreenshot();
+              // _SaveScreenshot();
             },
             child: Icon(Icons.add),
           ),
         ),
       ),
     );
+
+    // SingleChildScrollView(
+    //   physics: NeverScrollableScrollPhysics(),
+    //   child: Column(
+    //     children: [
+    //       SizedBox(height: 30),
+    //       Header(
+    //         index: appData[0].collectionIndex,
+    //         length: collections.length,
+    //         onTextChange: (String name, int index) {},
+    //         onPressed: (index) {
+    //           if (index > collections.length - 1) {
+    //             _addEmptyCollection();
+    //           }
+    //           _ShowIndexCollection(index);
+    //           print('collectionIndex $index');
+    //         },
+    //       ),
+    //       Screenshot(
+    //         controller: screenshotController,
+    //         child: Center(
+    //           child: Container(
+    //             key: containerKey,
+    //             height: 500,
+    //             color: Colors.brown,
+    //             child: Stack(
+    //               children: List.generate(collections[cIndex].elements.length,
+    //                   (index) {
+    //                 final GlobalKey _sizeBoxKey = GlobalKey();
+    //                 final GlobalKey _draggableKey = GlobalKey();
+    //                 return DraggableWidget(
+    //                   key: _draggableKey,
+    //                   initMatrix4:
+    //                       collections[cIndex].elements[index].matrix4,
+    //                   child: SizedBox(
+    //                     key: _sizeBoxKey,
+    //                     height: 100,
+    //                     width: 100,
+    //                     child: Image.file(File(elements[0].path)),
+    //                   ),
+    //                   onDoubleTap: () {},
+    //                   onSave: (m4) {
+    //                     if (_OverlapsParent(_sizeBoxKey)) {
+    //                       _updateCollectionElement(
+    //                           'saved', elements[0].path, m4, index);
+    //                     } else {
+    //                       _deleteCollectionElement(
+    //                           collections[cIndex].elements[index].id);
+    //                       _SaveScreenshot();
+    //                     }
+    //                   },
+    //                 );
+    //               }),
+    //             ),
+    //           ),
+    //         ),
+    //       ),
+    //       SizedBox(height: 10),
+    //       BottonButtons(
+    //         onDelete: () {},
+    //       ),
+    //     ],
+    //   ),
+    // ),
   }
 
   @override

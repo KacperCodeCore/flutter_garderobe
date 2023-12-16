@@ -1,5 +1,5 @@
 {
-    "dartimportsorter.sortOnSave": false,
+    "dartimportsorter.sortOnSave": true,
     "editor.formatOnSave": true,
     "dart.formatOnSave": true
 }
