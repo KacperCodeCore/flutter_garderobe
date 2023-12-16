@@ -87,17 +87,20 @@ class _CollectionPageState extends State<CollectionPage> {
   }
 
   Future<void> _addElement(String name, String path) async {
+    if (collections.isEmpty) return;
     var collectionElement = CollectionElement(
       name: 'new',
       path: path,
       matrix4: Matrix4.identity(),
     );
 
+    int currentPageIndex = _pageController.page!.round();
     setState(() {
       // aktualizacjia kolekcji w Hive, aby zapisac zmiany.
       Boxes.getCollection().getAt(cIndex)!.elements.add(collectionElement);
       // jest to konieczne, aby Hive śledził i zapisywał zmiany.
-      Boxes.getCollection().putAt(cIndex, Boxes.getCollection().getAt(0)!);
+      Boxes.getCollection()
+          .putAt(cIndex, Boxes.getCollection().getAt(currentPageIndex)!);
     });
   }
 
@@ -133,41 +136,43 @@ class _CollectionPageState extends State<CollectionPage> {
     });
   }
 
-  // Future<void> _SaveScreenshot() async {
-  //   String? _screenshotPath = await _TakeScreenshotPath();
-  //   if (_screenshotPath == null) return;
+  Future<void> _SaveScreenshot(
+      ScreenshotController screenshotController) async {
+    String? _screenshotPath = await _TakeScreenshotPath(screenshotController);
+    if (_screenshotPath == null) return;
 
-  //   Collection collection = Boxes.getCollection().getAt(cIndex)!;
-  //   collection.screenshotPath = _screenshotPath;
-  //   setState(() {
-  //     Boxes.getCollection().putAt(cIndex, collection);
-  //     collections = Boxes.getCollection().values.toList();
-  //   });
-  // }
+    Collection collection = Boxes.getCollection().getAt(cIndex)!;
+    collection.screenshotPath = _screenshotPath;
+    setState(() {
+      Boxes.getCollection().putAt(cIndex, collection);
+      collections = Boxes.getCollection().values.toList();
+    });
+  }
 
-  // Future<String?> _TakeScreenshotPath() async {
-  //   String oldPath = collections[cIndex].screenshotPath;
-  //   final Uint8List? image = await screenshotController.capture(
-  //       delay: const Duration(milliseconds: 10));
-  //   if (image == null) return null;
+  Future<String?> _TakeScreenshotPath(
+      ScreenshotController screenshotController) async {
+    String oldPath = collections[cIndex].screenshotPath;
+    final Uint8List? image = await screenshotController.capture(
+        delay: const Duration(milliseconds: 10));
+    if (image == null) return null;
 
-  //   final time = DateTime.now()
-  //       .toIso8601String()
-  //       .replaceAll('.', '-')
-  //       .replaceAll(':', '-');
-  //   final name = "Screenshoot$time";
-  //   Directory appDocDir = await getApplicationDocumentsDirectory();
-  //   String appDocPath = appDocDir.path;
-  //   String filePath = '$appDocPath/$name';
+    final time = DateTime.now()
+        .toIso8601String()
+        .replaceAll('.', '-')
+        .replaceAll(':', '-');
+    final name = "Screenshoot$time";
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
+    String filePath = '$appDocPath/$name';
 
-  //   if (await File(oldPath).exists()) {
-  //   } else {
-  //     File(oldPath).delete();
-  //   }
-  //   File file = File(filePath);
-  //   await file.writeAsBytes(image);
-  //   return await filePath;
-  // }
+    if (await File(oldPath).exists()) {
+    } else {
+      File(oldPath).delete();
+    }
+    File file = File(filePath);
+    await file.writeAsBytes(image);
+    return await filePath;
+  }
 
   bool _OverlapsParent(GlobalKey key, GlobalKey containerKey) {
     //pobiera dane kontenera
@@ -232,9 +237,9 @@ class _CollectionPageState extends State<CollectionPage> {
 
   void _removeCurrentCollection() {
     if (collections.isNotEmpty) {
-      int currentPage = _pageController.page!.round();
-      _removeCollection(currentPage);
-      if (currentPage >= collections.length) {
+      int currentPageIndex = _pageController.page!.round();
+      _removeCollection(currentPageIndex);
+      if (currentPageIndex >= collections.length) {
         _pageController.jumpTo(collections.length - 1);
       }
       setState(() {});
@@ -265,6 +270,7 @@ class _CollectionPageState extends State<CollectionPage> {
           Container(
             height: 600,
             child: PageView.builder(
+              physics: NeverScrollableScrollPhysics(),
               controller: _pageController,
               itemCount: collections.length,
               itemBuilder: (context, CollectionIndex) {
@@ -310,7 +316,7 @@ class _CollectionPageState extends State<CollectionPage> {
                                             collections[CollectionIndex]
                                                 .elements[index]
                                                 .id);
-                                        // _SaveScreenshot();
+                                        _SaveScreenshot(screenshotController);
                                       }
                                     },
                                   );
