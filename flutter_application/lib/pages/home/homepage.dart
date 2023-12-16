@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 
 import '../../data/boxes.dart';
-import '../../data/collection.dart';
+import '../../data/colection.dart';
 import 'user_post.dart';
 
 class UserHome extends StatelessWidget {
-  var collections = Boxes.getCollection().values.toList().cast<Collection>();
+  // var colections = Boxes.getColection().values.toList().cast<Colection>();
+  var colections;
 
   @override
   Widget build(BuildContext context) {
+    colections = Boxes.getColection().values.toList().cast<Colection>();
     return Scaffold(
       body: ListView.builder(
-        itemCount: collections.length,
+        itemCount: colections.length,
         itemBuilder: (context, index) {
           return UserPost(
-            name: collections[index].name,
-            path: collections[index].screenshotPath,
+            name: colections[index].name,
+            path: colections[index].screenshotPath,
           );
         },
       ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application/data/application_data.dart';
-import 'package:flutter_application/data/collection.dart';
+import 'package:flutter_application/data/colection.dart';
 import 'package:flutter_application/data/matrix4_adapter.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'pages/home.dart';
@@ -17,15 +17,15 @@ void main() async {
   // Register adapters for your models
   Hive.registerAdapter(Matrix4Adapter());
   Hive.registerAdapter(MyElementAdapter());
-  Hive.registerAdapter(CollectionElementAdapter());
-  Hive.registerAdapter(CollectionAdapter());
+  Hive.registerAdapter(ColectionElementAdapter());
+  Hive.registerAdapter(ColectionAdapter());
   Hive.registerAdapter(ApplicationDataAdapter());
 
   // Open boxes
   await Hive.openBox<MyElement>('myElementBox');
-  // await Hive.openBox<CollectionElement>('collectionElementBox');
-  await Hive.openBox<Collection>('collectionBox');
-  // await Hive.deleteBoxFromDisk('collectionBox');
+  // await Hive.openBox<ColectionElement>('colectionElementBox');
+  await Hive.openBox<Colection>('colectionBox');
+  // await Hive.deleteBoxFromDisk('colectionBox');
   await Hive.openBox<ApplicationData>('applicationDataBox');
   // await Hive.deleteBoxFromDisk('applicationDataBox');
 

@@ -17,7 +17,7 @@ class ApplicationDataAdapter extends TypeAdapter<ApplicationData> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ApplicationData(
-      collectionIndex: fields[0] as int,
+      colectionIndex: fields[0] as int,
     );
   }
 
@@ -26,7 +26,7 @@ class ApplicationDataAdapter extends TypeAdapter<ApplicationData> {
     writer
       ..writeByte(1)
       ..writeByte(0)
-      ..write(obj.collectionIndex);
+      ..write(obj.colectionIndex);
   }
 
   @override
