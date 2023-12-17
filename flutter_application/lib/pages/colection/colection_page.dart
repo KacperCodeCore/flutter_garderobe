@@ -107,10 +107,9 @@ class _ColectionPageState extends State<ColectionPage> {
 
   Future<void> _updateColectionElement(String name, String path, Matrix4 m4,
       int index, ScreenshotController screenshotController) async {
-    String? _screenshotPath = await _TakeScreenshotPath(screenshotController);
-    // String? _screenshotPath = '';
+    String? screenshotPath = await _TakeScreenshotPath(screenshotController);
+    if (screenshotPath == null) return;
 
-    if (_screenshotPath == null) return;
     ColectionElement element = ColectionElement(
       name: name,
       path: path,
@@ -119,7 +118,7 @@ class _ColectionPageState extends State<ColectionPage> {
     int colectionIndex = _pageController.page!.round();
     Colection colection = Boxes.getColection().getAt(colectionIndex)!;
     colection.elements[index] = element;
-    colection.screenshotPath = _screenshotPath;
+    colection.screenshotPath = screenshotPath;
     setState(() {
       Boxes.getColection().putAt(colectionIndex, colection);
       colections = Boxes.getColection().values.toList();
@@ -156,27 +155,36 @@ class _ColectionPageState extends State<ColectionPage> {
   Future<String?> _TakeScreenshotPath(
       ScreenshotController screenshotController) async {
     int index = _pageController.page!.round();
-    String? oldPath = colections[index].screenshotPath;
-    final Uint8List? image = await screenshotController.capture(
-        delay: const Duration(milliseconds: 10));
+    // String? oldPath = colections[index].screenshotPath;
+    final Uint8List? image = await screenshotController.capture();
     if (image == null) return null;
 
-    final time = DateTime.now()
-        .toIso8601String()
-        .replaceAll('.', '-')
-        .replaceAll(':', '-');
-    final name = "Screenshoot$time";
-    // final name = "Screenshoot";
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String appDocPath = appDocDir.path;
-    String filePath = '$appDocPath/$name';
 
-    if (oldPath != null && !await File(oldPath).exists()) {
-      File(oldPath!).delete();
+    String currentFilePath = colections[index].screenshotPath;
+    String filePath1 = '$appDocPath/Screenshoot${index}v1';
+    String filePath2 = '$appDocPath/Screenshoot${index}v2';
+
+    String newFilePath;
+    if (currentFilePath == filePath1) {
+      if (await File(filePath1).exists()) {
+        print("Deleting File: $filePath1");
+        await File(filePath1).delete();
+      }
+      newFilePath = filePath2;
+    } else {
+      if (await File(filePath2).exists()) {
+        print("Deleting File: $filePath2");
+        await File(filePath2).delete();
+      }
+      newFilePath = filePath1;
     }
-    File file = File(filePath);
+
+    // nowy plik
+    File file = File(newFilePath);
     await file.writeAsBytes(image);
-    return await filePath;
+    return await newFilePath;
   }
 
   bool _OverlapsParent(GlobalKey key, GlobalKey containerKey) {
