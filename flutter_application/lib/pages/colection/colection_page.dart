@@ -64,7 +64,6 @@ class _ColectionPageState extends State<ColectionPage> {
       name: 'name',
       elements: [],
       lastEdited: DateTime.now(),
-      screenshotPath: '',
     );
     Boxes.getColection().add(newColection);
     setState(() {
@@ -157,7 +156,7 @@ class _ColectionPageState extends State<ColectionPage> {
   Future<String?> _TakeScreenshotPath(
       ScreenshotController screenshotController) async {
     int index = _pageController.page!.round();
-    String oldPath = colections[index].screenshotPath;
+    String? oldPath = colections[index].screenshotPath;
     final Uint8List? image = await screenshotController.capture(
         delay: const Duration(milliseconds: 10));
     if (image == null) return null;
@@ -167,13 +166,13 @@ class _ColectionPageState extends State<ColectionPage> {
         .replaceAll('.', '-')
         .replaceAll(':', '-');
     final name = "Screenshoot$time";
+    // final name = "Screenshoot";
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String appDocPath = appDocDir.path;
     String filePath = '$appDocPath/$name';
 
-    if (await File(oldPath).exists()) {
-    } else {
-      File(oldPath).delete();
+    if (oldPath != null && !await File(oldPath).exists()) {
+      File(oldPath!).delete();
     }
     File file = File(filePath);
     await file.writeAsBytes(image);
@@ -236,9 +235,6 @@ class _ColectionPageState extends State<ColectionPage> {
     if (colections.isNotEmpty) {
       int currentPageIndex = _pageController.page!.round();
       _removeColection(currentPageIndex);
-      if (currentPageIndex >= colections.length) {
-        _pageController.jumpTo(colections.length - 1);
-      }
       setState(() {});
     }
   }
@@ -250,6 +246,7 @@ class _ColectionPageState extends State<ColectionPage> {
 
   void _addColectionAndGoTo() {
     _addEmptyColection();
+    _pageController.jumpToPage(colections.length - 1);
   }
 
   @override
@@ -303,7 +300,10 @@ class _ColectionPageState extends State<ColectionPage> {
                                 onDoubleTap: () {},
                                 onSave: (m4) {
                                   if (_OverlapsParent(
-                                      _sizeBoxKey, containerKey)) {
+                                    _sizeBoxKey,
+                                    containerKey,
+                                  )) {
+                                    print('saving');
                                     _updateColectionElement(
                                         'saved',
                                         elements[0].path,
@@ -329,42 +329,23 @@ class _ColectionPageState extends State<ColectionPage> {
               },
             ),
           ),
-          ColectionFooter(),
-          Row(
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  _pageController.previousPage(
-                    duration: Duration(milliseconds: 500),
-                    //todo sprawdzić jak są inne opcje
-                    curve: Curves.easeInOut,
-                  );
-                },
-                child: Icon(Icons.navigate_before_rounded),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  _pageController.nextPage(
-                    duration: Duration(milliseconds: 500),
-                    curve: Curves.easeInOut,
-                  );
-                },
-                child: Icon(Icons.navigate_next_rounded),
-              ),
-              ElevatedButton(
-                onPressed: _removeCurrentColection,
-                child: Icon(Icons.delete_forever),
-              ),
-              SizedBox(
-                width: 50,
-                child: Center(
-                    child: ElevatedButton(
-                  onPressed: _addColectionAndGoTo,
-                  child: Icon(Icons.add_photo_alternate_outlined),
-                )),
-              ),
-            ],
-          )
+          ColectionFooter(
+            previousPage: () {
+              _pageController.previousPage(
+                duration: Duration(milliseconds: 500),
+                //todo sprawdzić jak są inne opcje
+                curve: Curves.easeInOut,
+              );
+            },
+            nextPage: () {
+              _pageController.nextPage(
+                duration: Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+              );
+            },
+            deletePage: _removeCurrentColection,
+            addPage: _addColectionAndGoTo,
+          ),
         ],
       ),
 

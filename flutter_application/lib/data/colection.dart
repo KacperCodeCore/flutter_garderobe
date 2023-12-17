@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 
 part 'colection.g.dart';
 
-@HiveType(typeId: 1, adapterName: 'CollectionElementAdapter')
+@HiveType(typeId: 1, adapterName: 'ColectionElementAdapter')
 class ColectionElement {
   @HiveField(0)
   String id = Uuid().v4();
@@ -25,7 +25,7 @@ class ColectionElement {
   });
 }
 
-@HiveType(typeId: 2, adapterName: 'CollectionAdapter')
+@HiveType(typeId: 2, adapterName: 'ColectionAdapter')
 class Colection {
   @HiveField(0)
   String id = Uuid().v4();
@@ -40,12 +40,12 @@ class Colection {
   DateTime lastEdited;
 
   @HiveField(4)
-  String screenshotPath;
+  String? screenshotPath;
 
   Colection({
     required this.name,
     required this.elements,
     required this.lastEdited,
-    required this.screenshotPath,
+    this.screenshotPath,
   });
 }

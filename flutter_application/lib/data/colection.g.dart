@@ -62,7 +62,7 @@ class ColectionAdapter extends TypeAdapter<Colection> {
       name: fields[1] as String,
       elements: (fields[2] as List).cast<ColectionElement>(),
       lastEdited: fields[3] as DateTime,
-      screenshotPath: fields[4] as String,
+      screenshotPath: fields[4] as String?,
     )..id = fields[0] as String;
   }
 

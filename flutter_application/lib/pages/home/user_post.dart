@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class UserPost extends StatelessWidget {
   final String name;
-  final String path;
+  final String? path;
 
   UserPost({
     required this.name,
@@ -61,7 +61,7 @@ class UserPost extends StatelessWidget {
               ),
             ),
           ),
-          child: Image.file(File(path)),
+          child: path != null ? Image.file(File(path!)) : null,
         ),
 
         // below the post
