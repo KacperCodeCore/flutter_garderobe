@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'dart:typed_data';
@@ -107,8 +108,7 @@ class _ColectionPageState extends State<ColectionPage> {
 
   Future<void> _updateColectionElement(String name, String path, Matrix4 m4,
       int index, ScreenshotController screenshotController) async {
-    String? screenshotPath = await _TakeScreenshotPath(screenshotController);
-    if (screenshotPath == null) return;
+    // String? screenshotPath = await _TakeScreenshotPath(screenshotController);
 
     ColectionElement element = ColectionElement(
       name: name,
@@ -118,7 +118,12 @@ class _ColectionPageState extends State<ColectionPage> {
     int colectionIndex = _pageController.page!.round();
     Colection colection = Boxes.getColection().getAt(colectionIndex)!;
     colection.elements[index] = element;
-    colection.screenshotPath = screenshotPath;
+
+    // if (screenshotPath != null) {
+    //   colection.screenshotPath = screenshotPath;
+    // } else {
+    //   print('screenshotPath != null');
+    // }
     setState(() {
       Boxes.getColection().putAt(colectionIndex, colection);
       colections = Boxes.getColection().values.toList();
@@ -137,55 +142,82 @@ class _ColectionPageState extends State<ColectionPage> {
     });
   }
 
-  Future<void> _SaveScreenshot(
-      ScreenshotController screenshotController) async {
-    int colectionIndex = _pageController.page!.round();
-    print('_SaveScreenshot');
-    String? _screenshotPath = await _TakeScreenshotPath(screenshotController);
-    if (_screenshotPath == null) return;
+  // Future<void> _SaveScreenshot(
+  //     ScreenshotController screenshotController) async {
+  //   int colectionIndex = _pageController.page!.round();
+  //   print('_SaveScreenshot');
+  //   String? _screenshotPath = await _TakeScreenshotPath(screenshotController);
+  //   if (_screenshotPath == null) return;
 
-    Colection colection = Boxes.getColection().getAt(colectionIndex)!;
-    colection.screenshotPath = _screenshotPath;
-    setState(() {
-      Boxes.getColection().putAt(colectionIndex, colection);
-      colections = Boxes.getColection().values.toList();
-    });
+  //   Colection colection = Boxes.getColection().getAt(colectionIndex)!;
+  //   colection.screenshotPath = _screenshotPath;
+  //   setState(() {
+  //     Boxes.getColection().putAt(colectionIndex, colection);
+  //     colections = Boxes.getColection().values.toList();
+  //   });
+  // }
+
+  void _TakeScreenshot(ScreenshotController screenshotController) {
+    screenshotController.capture().then(
+      (Uint8List? image) {
+        if (image == null) {
+          print('image is null');
+        } else
+          (_SaveScreenshot(image));
+      },
+    );
   }
 
-  Future<String?> _TakeScreenshotPath(
-      ScreenshotController screenshotController) async {
-    int index = _pageController.page!.round();
-    // String? oldPath = colections[index].screenshotPath;
-    final Uint8List? image = await screenshotController.capture();
-    if (image == null) return null;
+  void _SaveScreenshot(Uint8List image) async {
+    final time = DateTime.now()
+        .toIso8601String()
+        .replaceAll('.', '-')
+        .replaceAll(':', '-');
 
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String appDocPath = appDocDir.path;
+    String newFilePath = '$appDocPath/Screenshoot$time';
 
-    String currentFilePath = colections[index].screenshotPath;
-    String filePath1 = '$appDocPath/Screenshoot${index}v1';
-    String filePath2 = '$appDocPath/Screenshoot${index}v2';
+    int colectionIndex = _pageController.page!.round();
+    String? oldFilePath = colections[colectionIndex].screenshotPath;
 
-    String newFilePath;
-    if (currentFilePath == filePath1) {
-      if (await File(filePath1).exists()) {
-        print("Deleting File: $filePath1");
-        await File(filePath1).delete();
-      }
-      newFilePath = filePath2;
-    } else {
-      if (await File(filePath2).exists()) {
-        print("Deleting File: $filePath2");
-        await File(filePath2).delete();
-      }
-      newFilePath = filePath1;
+    if (oldFilePath != null && !(await File(oldFilePath).exists())) {
+      File(oldFilePath).delete();
     }
-
-    // nowy plik
     File file = File(newFilePath);
     await file.writeAsBytes(image);
-    return await newFilePath;
+
+    Colection colection = Boxes.getColection().getAt(colectionIndex)!;
+    colection.screenshotPath = newFilePath;
+    // setState(() {
+    Boxes.getColection().putAt(colectionIndex, colection);
+    // colections = Boxes.getColection().values.toList();
+    // });
   }
+
+  // Future<String?> _TakeScreenshotPath(
+  //     ScreenshotController screenshotController) async {
+  //   Uint8List? image;
+
+  //   // // String? oldPath = colections[index].screenshotPath;
+  //   // final Uint8List? image = await screenshotController.capture(
+  //   //     delay: const Duration(milliseconds: 10));
+  //   // if (image == null) {
+  //   //   return null;
+  //   // }
+
+  //   print('prepare toreturn');
+
+  //   int collectionIndex = _pageController.page!.round();
+  //   String? oldFilePath = colections[collectionIndex].screenshotPath;
+
+  //   if (oldFilePath != null && !(await File(oldFilePath!).exists())) {
+  //     File(oldFilePath!).delete();
+  //   }
+  //   File file = File(newFilePath);
+  //   await file.writeAsBytes(image);
+  //   return await newFilePath;
+  // }
 
   bool _OverlapsParent(GlobalKey key, GlobalKey containerKey) {
     //pobiera dane kontenera
@@ -195,8 +227,7 @@ class _ColectionPageState extends State<ColectionPage> {
     double containerMaxX = containerPisition.dx;
     double containerMinX = containerPisition.dx + contaiterBox.size.width;
     double containerMaxY = containerPisition.dy;
-    double containerMinY =
-        containerPisition.dy + contaiterBox.size.height - 200;
+    double containerMinY = containerPisition.dy + contaiterBox.size.height;
 
     // pobiera dane konkretnego dragablebox
     RenderBox? draggableBox =
@@ -312,6 +343,7 @@ class _ColectionPageState extends State<ColectionPage> {
                                     containerKey,
                                   )) {
                                     print('saving');
+                                    _TakeScreenshot(screenshotController);
                                     _updateColectionElement(
                                         'saved',
                                         elements[0].path,

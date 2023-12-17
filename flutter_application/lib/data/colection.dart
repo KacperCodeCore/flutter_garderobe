@@ -40,12 +40,12 @@ class Colection {
   DateTime lastEdited;
 
   @HiveField(4)
-  String screenshotPath;
+  String? screenshotPath;
 
   Colection({
     required this.name,
     required this.elements,
     required this.lastEdited,
-    this.screenshotPath = '',
+    this.screenshotPath,
   });
 }
