@@ -3,7 +3,7 @@ import 'package:flutter_application/pages/element/element_page.dart';
 
 import 'package:flutter_application/pages/home/homepage.dart';
 
-import 'collection/collection_page.dart';
+import 'colection/colection_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _children = [
       UserHome(),
-      CollectionPage(),
+      ColectionPage(),
       ElementPage(),
     ];
   }

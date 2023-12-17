@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 
-part 'collection.g.dart';
+part 'colection.g.dart';
 
-@HiveType(typeId: 1, adapterName: 'CollectionElementAdapter')
-class CollectionElement {
+@HiveType(typeId: 1, adapterName: 'ColectionElementAdapter')
+class ColectionElement {
   @HiveField(0)
   String id = Uuid().v4();
 
@@ -18,15 +18,15 @@ class CollectionElement {
   @HiveField(3)
   Matrix4 matrix4;
 
-  CollectionElement({
+  ColectionElement({
     required this.name,
     required this.path,
     required this.matrix4,
   });
 }
 
-@HiveType(typeId: 2, adapterName: 'CollectionAdapter')
-class Collection {
+@HiveType(typeId: 2, adapterName: 'ColectionAdapter')
+class Colection {
   @HiveField(0)
   String id = Uuid().v4();
 
@@ -34,18 +34,18 @@ class Collection {
   String name;
 
   @HiveField(2)
-  List<CollectionElement> elements;
+  List<ColectionElement> elements;
 
   @HiveField(3)
   DateTime lastEdited;
 
   @HiveField(4)
-  String screenshotPath;
+  String? screenshotPath;
 
-  Collection({
+  Colection({
     required this.name,
     required this.elements,
     required this.lastEdited,
-    required this.screenshotPath,
+    this.screenshotPath,
   });
 }
