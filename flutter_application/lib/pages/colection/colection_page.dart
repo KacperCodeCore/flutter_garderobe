@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'dart:typed_data';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_application/data/colection.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'package:flutter_application/pages/colection/colection_creator.dart';
@@ -35,7 +35,8 @@ class _ColectionPageState extends State<ColectionPage> {
   bool showButton = true;
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
 
-  // ScreenshotController screenshotController = ScreenshotController();
+  ScreenshotController screenshotController = ScreenshotController();
+  late List<ScreenshotController> _screenshotControllers;
   final PageController _pageController = PageController();
 
   @override
@@ -59,6 +60,13 @@ class _ColectionPageState extends State<ColectionPage> {
       });
     });
   }
+
+  // void _updateScreenshotControllers() {
+  //   _screenshotControllers = List.generate(
+  //     colections.length,
+  //     (_) => ScreenshotController(),
+  //   );
+  // }
 
   void _addEmptyColection() {
     Colection newColection = Colection(
@@ -108,8 +116,6 @@ class _ColectionPageState extends State<ColectionPage> {
 
   Future<void> _updateColectionElement(String name, String path, Matrix4 m4,
       int index, ScreenshotController screenshotController) async {
-    // String? screenshotPath = await _TakeScreenshotPath(screenshotController);
-
     ColectionElement element = ColectionElement(
       name: name,
       path: path,
@@ -119,11 +125,6 @@ class _ColectionPageState extends State<ColectionPage> {
     Colection colection = Boxes.getColection().getAt(colectionIndex)!;
     colection.elements[index] = element;
 
-    // if (screenshotPath != null) {
-    //   colection.screenshotPath = screenshotPath;
-    // } else {
-    //   print('screenshotPath != null');
-    // }
     setState(() {
       Boxes.getColection().putAt(colectionIndex, colection);
       colections = Boxes.getColection().values.toList();
@@ -142,30 +143,13 @@ class _ColectionPageState extends State<ColectionPage> {
     });
   }
 
-  // Future<void> _SaveScreenshot(
-  //     ScreenshotController screenshotController) async {
-  //   int colectionIndex = _pageController.page!.round();
-  //   print('_SaveScreenshot');
-  //   String? _screenshotPath = await _TakeScreenshotPath(screenshotController);
-  //   if (_screenshotPath == null) return;
-
-  //   Colection colection = Boxes.getColection().getAt(colectionIndex)!;
-  //   colection.screenshotPath = _screenshotPath;
-  //   setState(() {
-  //     Boxes.getColection().putAt(colectionIndex, colection);
-  //     colections = Boxes.getColection().values.toList();
-  //   });
-  // }
-
-  void _TakeScreenshot(ScreenshotController screenshotController) {
-    screenshotController.capture().then(
-      (Uint8List? image) {
-        if (image == null) {
-          print('image is null');
-        } else
-          (_SaveScreenshot(image));
-      },
-    );
+  void _TakeScreenshot(ScreenshotController screenshotController) async {
+    screenshotController.capture().then((Uint8List? image) {
+      _SaveScreenshot(image!);
+    });
+    // ).catchError((error) {
+    //   print(error);
+    // });
   }
 
   void _SaveScreenshot(Uint8List image) async {
@@ -174,13 +158,13 @@ class _ColectionPageState extends State<ColectionPage> {
         .replaceAll('.', '-')
         .replaceAll(':', '-');
 
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    String appDocPath = appDocDir.path;
-    String newFilePath = '$appDocPath/Screenshoot$time';
+    // Directory appDocDir = await getApplicationDocumentsDirectory();
+    // String appDocPath = appDocDir.path;
+
+    String newFilePath = '${Boxes.appDir}/Screenshoot$time';
 
     int colectionIndex = _pageController.page!.round();
     String? oldFilePath = colections[colectionIndex].screenshotPath;
-
     if (oldFilePath != null && !(await File(oldFilePath).exists())) {
       File(oldFilePath).delete();
     }
@@ -189,35 +173,9 @@ class _ColectionPageState extends State<ColectionPage> {
 
     Colection colection = Boxes.getColection().getAt(colectionIndex)!;
     colection.screenshotPath = newFilePath;
-    // setState(() {
+
     Boxes.getColection().putAt(colectionIndex, colection);
-    // colections = Boxes.getColection().values.toList();
-    // });
   }
-
-  // Future<String?> _TakeScreenshotPath(
-  //     ScreenshotController screenshotController) async {
-  //   Uint8List? image;
-
-  //   // // String? oldPath = colections[index].screenshotPath;
-  //   // final Uint8List? image = await screenshotController.capture(
-  //   //     delay: const Duration(milliseconds: 10));
-  //   // if (image == null) {
-  //   //   return null;
-  //   // }
-
-  //   print('prepare toreturn');
-
-  //   int collectionIndex = _pageController.page!.round();
-  //   String? oldFilePath = colections[collectionIndex].screenshotPath;
-
-  //   if (oldFilePath != null && !(await File(oldFilePath!).exists())) {
-  //     File(oldFilePath!).delete();
-  //   }
-  //   File file = File(newFilePath);
-  //   await file.writeAsBytes(image);
-  //   return await newFilePath;
-  // }
 
   bool _OverlapsParent(GlobalKey key, GlobalKey containerKey) {
     //pobiera dane kontenera
@@ -302,19 +260,17 @@ class _ColectionPageState extends State<ColectionPage> {
           SizedBox(height: 25),
           Container(
             height: 550,
-            child: PageView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              controller: _pageController,
-              itemCount: colections.length,
-              itemBuilder: (context, ColectionIndex) {
-                ScreenshotController screenshotController =
-                    ScreenshotController();
-                final containerKey = GlobalKey();
-                return ColectionCreator(
-                  name: 'name',
-                  child: Center(
-                    child: Screenshot(
-                      controller: screenshotController,
+            child: Screenshot(
+              controller: screenshotController,
+              child: PageView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                controller: _pageController,
+                itemCount: colections.length,
+                itemBuilder: (context, ColectionIndex) {
+                  final containerKey = GlobalKey();
+                  return ColectionCreator(
+                    name: 'name',
+                    child: Center(
                       child: Container(
                         key: containerKey,
                         height: 500,
@@ -343,13 +299,13 @@ class _ColectionPageState extends State<ColectionPage> {
                                     containerKey,
                                   )) {
                                     print('saving');
-                                    _TakeScreenshot(screenshotController);
                                     _updateColectionElement(
                                         'saved',
                                         elements[0].path,
                                         m4,
                                         index,
                                         screenshotController);
+                                    _TakeScreenshot(screenshotController);
                                   } else {
                                     _deleteColectionElement(
                                         colections[ColectionIndex]
@@ -364,9 +320,9 @@ class _ColectionPageState extends State<ColectionPage> {
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
           ColectionFooter(
@@ -409,25 +365,7 @@ class _ColectionPageState extends State<ColectionPage> {
   @override
   void dispose() {
     _keyboardVisibilitySubscription.cancel();
+    // _TakeScreenshot();
     super.dispose();
   }
 }
-// final List<Widget> _dummyWidgets = [
-//   Text("🙂", style: TextStyle(fontSize: 120)),
-//   Icon(
-//     Icons.favorite,
-//     size: 120,
-//     color: Colors.red,
-//   ),
-//   ClipRRect(
-//     borderRadius: BorderRadius.circular(10),
-//     child: Container(
-//       color: Colors.white,
-//       padding: const EdgeInsets.all(8),
-//       child: Text(
-//         'Test text ♥️',
-//         style: TextStyle(fontSize: 18, color: Colors.black),
-//       ),
-//     ),
-//   ),
-// ];

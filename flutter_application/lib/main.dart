@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application/data/application_data.dart';
+import 'package:flutter_application/data/boxes.dart';
 import 'package:flutter_application/data/colection.dart';
 import 'package:flutter_application/data/matrix4_adapter.dart';
 import 'package:flutter_application/data/my_element.dart';
+import 'package:path_provider/path_provider.dart';
 import 'pages/home.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -28,8 +32,8 @@ void main() async {
   // await Hive.deleteBoxFromDisk('colectionBox');
   await Hive.openBox<ApplicationData>('applicationDataBox');
   // await Hive.deleteBoxFromDisk('applicationDataBox');
-
-  // Run your app
+  Directory myDir = await getApplicationDocumentsDirectory();
+  Boxes.appDir = myDir.path;
   runApp(MyApp());
 }
 

@@ -11,4 +11,5 @@ class Boxes {
   // static Matrix4 m4 = Matrix4.identity();
   static Box<ApplicationData> getAppData() =>
       Hive.box<ApplicationData>('applicationDataBox');
+  static String appDir = '';
 }
