@@ -17,10 +17,14 @@ class MyElement {
   @HiveField(3)
   double height;
 
+  @HiveField(4)
+  double width;
+
   MyElement({
     required this.name,
     required this.path,
     required this.height,
+    required this.width,
   });
 }
 

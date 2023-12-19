@@ -17,11 +17,13 @@ class ElementPage extends StatefulWidget {
 class _ElementPageState extends State<ElementPage> {
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
 
-  Future<void> _addMyElement(String name, String path, double height) async {
+  Future<void> _addMyElement(
+      String name, String path, double height, double width) async {
     var newElement = MyElement(
       name: name,
       path: path,
       height: height,
+      width: width,
     );
     Boxes.getMyElements().add(newElement);
 
@@ -42,13 +44,15 @@ class _ElementPageState extends State<ElementPage> {
     );
   }
 
-  void updateElement(String name, String path, double height, int index) {
+  void updateElement(
+      String name, String path, double height, double widht, int index) {
     final myElement = elements[index];
 
     setState(() {
       elements[index].name = name;
       elements[index].path = path;
       elements[index].height = height;
+      elements[index].width = widht;
     });
     Boxes.getMyElements().put(myElement.id, myElement);
   }
@@ -68,9 +72,10 @@ class _ElementPageState extends State<ElementPage> {
                 builder: (context) => ElementCreator(
                     name: 'New Element',
                     imagePath: 'path',
-                    height: 100,
-                    onSave: (name, path, height) =>
-                        _addMyElement(name, path, height),
+                    height: 200,
+                    width: 200,
+                    onSave: (name, path, height, width) =>
+                        _addMyElement(name, path, height, width),
                     onDelete: () {}),
               ),
             ),
@@ -94,8 +99,9 @@ class _ElementPageState extends State<ElementPage> {
                         name: elements[index].name,
                         imagePath: elements[index].path,
                         height: elements[index].height,
-                        onSave: (name, path, height) =>
-                            updateElement(name, path, height, index),
+                        width: elements[index].width,
+                        onSave: (name, path, height, width) =>
+                            updateElement(name, path, height, width, index),
                         onDelete: () => {
                               _deleteElement(elements[index]),
                             }),

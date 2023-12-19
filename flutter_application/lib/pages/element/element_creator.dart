@@ -7,7 +7,8 @@ class ElementCreator extends StatefulWidget {
   final String name;
   final String imagePath;
   final double height;
-  final Function(String, String, double) onSave;
+  final double width;
+  final Function(String, String, double, double) onSave;
   final Function() onDelete;
 
   ElementCreator({
@@ -15,6 +16,7 @@ class ElementCreator extends StatefulWidget {
     required this.name,
     required this.imagePath,
     required this.height,
+    required this.width,
     required this.onSave,
     required this.onDelete,
   }) : super(key: key);
@@ -27,6 +29,7 @@ class _ElementCreatorState extends State<ElementCreator> {
   late TextEditingController _controller;
   late String _imagePath = widget.imagePath;
   late double _height = widget.height;
+  late double _width;
 
   @override
   void initState() {
@@ -70,6 +73,7 @@ class _ElementCreatorState extends State<ElementCreator> {
 
     setState(() {
       _height = screenWidth * scale;
+      _width = width;
     });
   }
 
@@ -133,7 +137,7 @@ class _ElementCreatorState extends State<ElementCreator> {
               heroTag: 'TagSavePicture',
               backgroundColor: Colors.blue,
               onPressed: () {
-                widget.onSave(_controller.text, _imagePath, _height);
+                widget.onSave(_controller.text, _imagePath, _height, _width);
                 Navigator.of(context).pop();
               },
               icon: Icon(Icons.save),

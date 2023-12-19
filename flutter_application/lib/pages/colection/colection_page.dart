@@ -35,8 +35,7 @@ class _ColectionPageState extends State<ColectionPage> {
   bool showButton = true;
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
 
-  ScreenshotController screenshotController = ScreenshotController();
-  late List<ScreenshotController> _screenshotControllers;
+  ScreenshotController _screenshotController = ScreenshotController();
   final PageController _pageController = PageController();
 
   @override
@@ -60,13 +59,6 @@ class _ColectionPageState extends State<ColectionPage> {
       });
     });
   }
-
-  // void _updateScreenshotControllers() {
-  //   _screenshotControllers = List.generate(
-  //     colections.length,
-  //     (_) => ScreenshotController(),
-  //   );
-  // }
 
   void _addEmptyColection() {
     Colection newColection = Colection(
@@ -114,8 +106,8 @@ class _ColectionPageState extends State<ColectionPage> {
     });
   }
 
-  Future<void> _updateColectionElement(String name, String path, Matrix4 m4,
-      int index, ScreenshotController screenshotController) async {
+  Future<void> _updateColectionElement(
+      String name, String path, Matrix4 m4, int index) async {
     ColectionElement element = ColectionElement(
       name: name,
       path: path,
@@ -143,16 +135,15 @@ class _ColectionPageState extends State<ColectionPage> {
     });
   }
 
-  void _TakeScreenshot(ScreenshotController screenshotController) async {
-    screenshotController.capture().then((Uint8List? image) {
-      _SaveScreenshot(image!);
+  void _TakeScreenshot() async {
+    _screenshotController.capture().then((Uint8List? image) {
+      _saveScreenshot(image!);
+    }).catchError((error) {
+      print(error);
     });
-    // ).catchError((error) {
-    //   print(error);
-    // });
   }
 
-  void _SaveScreenshot(Uint8List image) async {
+  void _saveScreenshot(Uint8List image) async {
     final time = DateTime.now()
         .toIso8601String()
         .replaceAll('.', '-')
@@ -177,7 +168,7 @@ class _ColectionPageState extends State<ColectionPage> {
     Boxes.getColection().putAt(colectionIndex, colection);
   }
 
-  bool _OverlapsParent(GlobalKey key, GlobalKey containerKey) {
+  bool _overlapsParent(GlobalKey key, GlobalKey containerKey) {
     //pobiera dane kontenera
     RenderBox? contaiterBox =
         containerKey.currentContext?.findRenderObject() as RenderBox;
@@ -261,7 +252,7 @@ class _ColectionPageState extends State<ColectionPage> {
           Container(
             height: 550,
             child: Screenshot(
-              controller: screenshotController,
+              controller: _screenshotController,
               child: PageView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 controller: _pageController,
@@ -289,23 +280,19 @@ class _ColectionPageState extends State<ColectionPage> {
                                 child: SizedBox(
                                   key: _sizeBoxKey,
                                   height: 100,
-                                  width: 100,
+                                  width: 100, //todo
                                   child: Image.file(File(elements[0].path)),
                                 ),
                                 onDoubleTap: () {},
                                 onSave: (m4) {
-                                  if (_OverlapsParent(
+                                  if (_overlapsParent(
                                     _sizeBoxKey,
                                     containerKey,
                                   )) {
                                     print('saving');
                                     _updateColectionElement(
-                                        'saved',
-                                        elements[0].path,
-                                        m4,
-                                        index,
-                                        screenshotController);
-                                    _TakeScreenshot(screenshotController);
+                                        'saved', elements[0].path, m4, index);
+                                    _TakeScreenshot();
                                   } else {
                                     _deleteColectionElement(
                                         colections[ColectionIndex]
