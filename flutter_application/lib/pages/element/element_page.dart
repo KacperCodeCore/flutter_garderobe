@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_application/data/boxes.dart';
+import 'package:flutter_application/data/clother_type_adapter.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'package:flutter_application/pages/element/single_element.dart';
 import 'package:flutter_application/pages/element/element_creator.dart';
@@ -17,13 +18,14 @@ class ElementPage extends StatefulWidget {
 class _ElementPageState extends State<ElementPage> {
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
 
-  Future<void> _addMyElement(
-      String name, String path, double height, double width) async {
+  Future<void> _addMyElement(String name, String path, double height,
+      double width, ClotherType type) async {
     var newElement = MyElement(
       name: name,
       path: path,
       height: height,
       width: width,
+      type: type,
     );
     Boxes.getMyElements().add(newElement);
 
@@ -44,8 +46,8 @@ class _ElementPageState extends State<ElementPage> {
     );
   }
 
-  void updateElement(
-      String name, String path, double height, double widht, int index) {
+  void updateElement(String name, String path, double height, double widht,
+      ClotherType type, int index) {
     final myElement = elements[index];
 
     setState(() {
@@ -53,6 +55,7 @@ class _ElementPageState extends State<ElementPage> {
       elements[index].path = path;
       elements[index].height = height;
       elements[index].width = widht;
+      elements[index].type = type;
     });
     Boxes.getMyElements().put(myElement.id, myElement);
   }
@@ -70,13 +73,15 @@ class _ElementPageState extends State<ElementPage> {
               MaterialPageRoute(
                 // todo dwa razy korzystam z ElementCreator() i działa to delikatnie ineczej, czy można to naprawić?
                 builder: (context) => ElementCreator(
-                    name: 'New Element',
-                    imagePath: 'path',
-                    height: 200,
-                    width: 200,
-                    onSave: (name, path, height, width) =>
-                        _addMyElement(name, path, height, width),
-                    onDelete: () {}),
+                  name: 'New Element',
+                  imagePath: 'path',
+                  height: 200,
+                  width: 200,
+                  type: ClotherType.none,
+                  onSave: (name, path, height, width, type) =>
+                      _addMyElement(name, path, height, width, type),
+                  onDelete: () {},
+                ),
               ),
             ),
           },
@@ -100,8 +105,10 @@ class _ElementPageState extends State<ElementPage> {
                         imagePath: elements[index].path,
                         height: elements[index].height,
                         width: elements[index].width,
-                        onSave: (name, path, height, width) =>
-                            updateElement(name, path, height, width, index),
+                        type: elements[index].type,
+                        onSave: (name, path, height, width, type) =>
+                            updateElement(
+                                name, path, height, width, type, index),
                         onDelete: () => {
                               _deleteElement(elements[index]),
                             }),

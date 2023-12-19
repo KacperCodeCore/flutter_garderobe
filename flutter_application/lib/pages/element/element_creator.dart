@@ -1,14 +1,18 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application/data/my_element.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../data/clother_type_adapter.dart';
 
 class ElementCreator extends StatefulWidget {
   final String name;
   final String imagePath;
   final double height;
   final double width;
-  final Function(String, String, double, double) onSave;
+  final ClotherType type;
+  final Function(String, String, double, double, ClotherType) onSave;
   final Function() onDelete;
 
   ElementCreator({
@@ -17,6 +21,7 @@ class ElementCreator extends StatefulWidget {
     required this.imagePath,
     required this.height,
     required this.width,
+    required this.type,
     required this.onSave,
     required this.onDelete,
   }) : super(key: key);
@@ -137,7 +142,8 @@ class _ElementCreatorState extends State<ElementCreator> {
               heroTag: 'TagSavePicture',
               backgroundColor: Colors.blue,
               onPressed: () {
-                widget.onSave(_controller.text, _imagePath, _height, _width);
+                widget.onSave(
+                    _controller.text, _imagePath, _height, _width, widget.type);
                 Navigator.of(context).pop();
               },
               icon: Icon(Icons.save),

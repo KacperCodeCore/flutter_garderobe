@@ -8,6 +8,7 @@ import 'package:flutter_application/data/colection.dart';
 import 'package:flutter_application/data/matrix4_adapter.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'package:path_provider/path_provider.dart';
+import 'data/clother_type_adapter.dart';
 import 'pages/home.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -20,6 +21,7 @@ void main() async {
 
   // Register adapters for your models
   Hive.registerAdapter(Matrix4Adapter());
+  Hive.registerAdapter(ClotherTypeAdapter());
   Hive.registerAdapter(MyElementAdapter());
   Hive.registerAdapter(ColectionElementAdapter());
   Hive.registerAdapter(ColectionAdapter());

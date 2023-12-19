@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application/data/colection.dart';
 import 'package:flutter_application/data/my_element.dart';
+import 'package:flutter_application/pages/colection/colection_bottom_sheet.dart';
 import 'package:flutter_application/pages/colection/colection_creator.dart';
 import 'package:flutter_application/pages/colection/colection_footer.dart';
 import 'package:flutter_application/pages/colection/draggable_widget.dart';
@@ -272,15 +273,17 @@ class _ColectionPageState extends State<ColectionPage> {
                             (index) {
                               final GlobalKey _sizeBoxKey = GlobalKey();
                               final GlobalKey _draggableKey = GlobalKey();
+                              final element =
+                                  colections[ColectionIndex].elements[index];
                               return DraggableWidget(
                                 key: _draggableKey,
-                                initMatrix4: colections[ColectionIndex]
-                                    .elements[index]
-                                    .matrix4,
+                                initMatrix4: element.matrix4,
                                 child: SizedBox(
                                   key: _sizeBoxKey,
                                   height: 100,
-                                  width: 100, //todo
+                                  // todo ustawić szerokość obazu pixtureH/ 100 * pstureW
+                                  width: 50,
+                                  //todo dodać element null jeśli niema obrazu i zmienić na id nie index
                                   child: Image.file(File(elements[0].path)),
                                 ),
                                 onDoubleTap: () {},
@@ -339,8 +342,13 @@ class _ColectionPageState extends State<ColectionPage> {
           padding: EdgeInsets.only(bottom: 100),
           child: FloatingActionButton(
             onPressed: () {
-              _addElement('test name1', elements[0].path);
-              // _SaveScreenshot();
+              showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return ColectionBottomSheet();
+                  });
+              // _addElement('test name1', elements[0].path);
+              // _TakeScreenshot();
             },
             child: Icon(Icons.add),
           ),
@@ -352,7 +360,7 @@ class _ColectionPageState extends State<ColectionPage> {
   @override
   void dispose() {
     _keyboardVisibilitySubscription.cancel();
-    // _TakeScreenshot();
+    _TakeScreenshot();
     super.dispose();
   }
 }
