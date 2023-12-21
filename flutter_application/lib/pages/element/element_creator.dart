@@ -35,12 +35,14 @@ class _ElementCreatorState extends State<ElementCreator> {
   late String _imagePath = widget.imagePath;
   late double _height = widget.height;
   late double _width;
+  late ClotherType _type = widget.type;
 
   @override
   void initState() {
     _controller = TextEditingController(text: '$widget.name $_height');
     _imagePath = widget.imagePath;
     _height = widget.height;
+    _type = widget.type;
     super.initState();
   }
 
@@ -108,6 +110,24 @@ class _ElementCreatorState extends State<ElementCreator> {
           // mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            // type1
+            FloatingActionButton.extended(
+              heroTag: 'type1',
+              onPressed: () {
+                _type = ClotherType.dress;
+              },
+              label: Text(''),
+              icon: Icon(Icons.change_circle),
+            ),
+            //type2
+            FloatingActionButton.extended(
+              heroTag: 'type2',
+              onPressed: () {
+                _type = ClotherType.hat;
+              },
+              label: Text(''),
+              icon: Icon(Icons.change_circle_outlined),
+            ),
             // camera button
             FloatingActionButton.extended(
               heroTag: 'takePicture',
@@ -143,7 +163,7 @@ class _ElementCreatorState extends State<ElementCreator> {
               backgroundColor: Colors.blue,
               onPressed: () {
                 widget.onSave(
-                    _controller.text, _imagePath, _height, _width, widget.type);
+                    _controller.text, _imagePath, _height, _width, _type);
                 Navigator.of(context).pop();
               },
               icon: Icon(Icons.save),

@@ -86,14 +86,12 @@ class _ColectionPageState extends State<ColectionPage> {
     print('showButton $showButton');
   }
 
-  Future<void> _addElement(String name, String path) async {
+  Future<void> _addElement(MyElement myElement) async {
     if (colections.isEmpty) return;
-    if (_pageController.page == null) {
-      print('_pageController');
-    }
+
     var colectionElement = ColectionElement(
-      name: 'new',
-      path: path,
+      name: myElement.name,
+      path: myElement.path,
       matrix4: Matrix4.identity(),
     );
 
@@ -345,7 +343,11 @@ class _ColectionPageState extends State<ColectionPage> {
               showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
-                    return ColectionBottomSheet();
+                    return ColectionBottomSheet(
+                      onTap: (myElement) {
+                        _addElement(myElement);
+                      },
+                    );
                   });
               // _addElement('test name1', elements[0].path);
               // _TakeScreenshot();
