@@ -20,6 +20,7 @@ class ColectionBottomSheet extends StatefulWidget {
 }
 
 class _ColectionBottomSheetState extends State<ColectionBottomSheet> {
+  Color _color1 = Colors.brown.shade600;
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
   var uniquetype =
       Boxes.getMyElements().values.map((element) => element.type).toSet();
@@ -34,42 +35,108 @@ class _ColectionBottomSheetState extends State<ColectionBottomSheet> {
     super.initState();
   }
 
+  // Color _color2 = Colors.brown.shade300;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.brown.shade900,
-      child: Column(children: [
-        for (var type in groupedElements.keys)
-          SizedBox(
-            height: 100,
+      height: 300,
+      // color: Colors.brown.shade900,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: _color1,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              height: 4,
+              width: 200,
+            ),
+          ),
+          Expanded(
             child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: groupedElements[type]!.length,
-              itemBuilder: (BuildContext context, int index) {
-                var element = groupedElements[type]![index];
-                return Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 10),
-                  child: SizedBox(
-                    height: 90,
-                    width: 90,
-                    child: GestureDetector(
-                      onTap: () {
-                        widget.onTap(element);
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        child: Image.file(
-                          File(element.path),
-                          fit: BoxFit.cover,
+              itemCount: groupedElements.length,
+              itemBuilder: (BuildContext context, int typeIndex) {
+                var type = groupedElements.keys.toList()[typeIndex];
+
+                return SizedBox(
+                  height: 100,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: groupedElements[type]!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var element = groupedElements[type]![index];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10, left: 10),
+                        child: SizedBox(
+                          height: 90,
+                          width: 90,
+                          child: GestureDetector(
+                            onTap: () {
+                              widget.onTap(element);
+                            },
+                            child: ClipRRect(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                              child: Image.file(
+                                File(element.path),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
+                      );
+                    },
                   ),
                 );
               },
             ),
           ),
-      ]),
+        ],
+      ),
     );
   }
 }
+
+//  Widget build(BuildContext context) {
+//     return Container(
+//       color: Colors.brown.shade900,
+//       child: Column(children: [
+//         for (var type in groupedElements.keys)
+//           SizedBox(
+//             height: 100,
+//             child: ListView.builder(
+//               scrollDirection: Axis.horizontal,
+//               itemCount: groupedElements[type]!.length,
+//               itemBuilder: (BuildContext context, int index) {
+//                 var element = groupedElements[type]![index];
+//                 return Padding(
+//                   padding: const EdgeInsets.only(top: 10, left: 10),
+//                   child: SizedBox(
+//                     height: 90,
+//                     width: 90,
+//                     child: GestureDetector(
+//                       onTap: () {
+//                         widget.onTap(element);
+//                       },
+//                       child: ClipRRect(
+//                         borderRadius: BorderRadius.all(Radius.circular(15)),
+//                         child: Image.file(
+//                           File(element.path),
+//                           fit: BoxFit.cover,
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 );
+//               },
+//             ),
+//           ),
+//       ]),
+//     );
+//   }
+// }

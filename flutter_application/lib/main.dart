@@ -53,12 +53,11 @@ class MyApp extends StatelessWidget {
 
     //transparent bacground for system buttons
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      // systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarColor: Color.fromARGB(0, 155, 53, 53),
+      systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: null,
       systemNavigationBarIconBrightness: Brightness.light,
       statusBarIconBrightness: Brightness.dark,
-      // statusBarColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
     ));
     // Setting SystemUIMode // from transparent
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
@@ -71,7 +70,7 @@ class MyApp extends StatelessWidget {
       title: 'flutter_garderobe',
       debugShowCheckedModeBanner: false,
       home: HomePage(),
-      theme: ThemeData(scaffoldBackgroundColor: Colors.brown.shade300),
+      theme: ThemeData(scaffoldBackgroundColor: Colors.brown.shade400),
       // theme: ThemeData(primarySwatch: Colors.brown)
     );
   }

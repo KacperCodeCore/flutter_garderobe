@@ -114,7 +114,7 @@ class _ElementCreatorState extends State<ElementCreator> {
             FloatingActionButton.extended(
               heroTag: 'type1',
               onPressed: () {
-                _type = ClotherType.dress;
+                _type = ClotherType.shorts;
               },
               label: Text(''),
               icon: Icon(Icons.change_circle),
@@ -123,7 +123,7 @@ class _ElementCreatorState extends State<ElementCreator> {
             FloatingActionButton.extended(
               heroTag: 'type2',
               onPressed: () {
-                _type = ClotherType.hat;
+                _type = ClotherType.sneakers;
               },
               label: Text(''),
               icon: Icon(Icons.change_circle_outlined),

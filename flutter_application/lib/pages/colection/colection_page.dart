@@ -247,7 +247,7 @@ class _ColectionPageState extends State<ColectionPage> {
 
       body: Column(
         children: [
-          SizedBox(height: 25),
+          SizedBox(height: 35),
           Container(
             height: 550,
             child: Screenshot(
@@ -264,7 +264,7 @@ class _ColectionPageState extends State<ColectionPage> {
                       child: Container(
                         key: containerKey,
                         height: 500,
-                        color: Colors.brown,
+                        color: Colors.brown.shade100,
                         child: Stack(
                           children: List.generate(
                             colections[ColectionIndex].elements.length,
@@ -341,6 +341,8 @@ class _ColectionPageState extends State<ColectionPage> {
           child: FloatingActionButton(
             onPressed: () {
               showModalBottomSheet(
+                  isDismissible: true,
+                  backgroundColor: Colors.brown.shade400,
                   context: context,
                   builder: (BuildContext context) {
                     return ColectionBottomSheet(

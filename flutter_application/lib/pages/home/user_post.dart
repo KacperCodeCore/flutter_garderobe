@@ -16,6 +16,9 @@ class UserPost extends StatelessWidget {
     // double screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
+        SizedBox(
+          height: 8,
+        ),
         Container(
           height: 550,
           child: path != null ? Image.file(File(path!)) : null,
