@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application/data/application_data.dart';
+import 'package:flutter_application/data/asset_exporter.dart';
 import 'package:flutter_application/data/boxes.dart';
 import 'package:flutter_application/data/colection.dart';
 import 'package:flutter_application/data/matrix4_adapter.dart';
@@ -37,6 +38,10 @@ void main() async {
   // await Hive.deleteBoxFromDisk('applicationDataBox');
   Directory myDir = await getApplicationDocumentsDirectory();
   Boxes.appDir = myDir.path;
+
+  AssetExporter assetExporter = AssetExporter();
+  await assetExporter.copyAssetToFile('lib/assets/images', 'null.png');
+
   runApp(MyApp());
 }
 

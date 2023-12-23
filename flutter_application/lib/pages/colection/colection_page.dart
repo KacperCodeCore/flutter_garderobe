@@ -356,17 +356,18 @@ class _ColectionPageState extends State<ColectionPage> {
               if (colections.length == 0) return;
               //todo sometime error when app is clear of data
               showModalBottomSheet(
-                  isDismissible: true,
-                  backgroundColor: Colors.brown.shade400,
-                  context: context,
-                  builder: (BuildContext context) {
-                    return ColectionBottomSheet(
-                      onTap: (myElement) {
-                        _addElement(myElement);
-                        _TakeScreenshot();
-                      },
-                    );
-                  });
+                backgroundColor: Colors.brown.shade400,
+                isScrollControlled: true,
+                context: context,
+                builder: (BuildContext context) {
+                  return ColectionBottomSheet(
+                    onTap: (myElement) {
+                      _addElement(myElement);
+                      _TakeScreenshot();
+                    },
+                  );
+                },
+              );
             },
             child: Icon(Icons.add),
           ),

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/data/boxes.dart';
 import 'package:flutter_application/data/clother_type_adapter.dart';
 import 'package:flutter_application/data/my_element.dart';
+import 'package:flutter_application/pages/element/element_bottom_sheet.dart';
+
 import 'package:flutter_application/pages/element/single_element.dart';
 import 'package:flutter_application/pages/element/element_creator.dart';
 
@@ -28,6 +30,14 @@ class _ElementPageState extends State<ElementPage> {
       type: type,
     );
     Boxes.getMyElements().add(newElement);
+
+    setState(() {
+      elements = Boxes.getMyElements().values.toList().cast<MyElement>();
+    });
+  }
+
+  Future<void> _addMyElement1(MyElement myElement) async {
+    Boxes.getMyElements().add(myElement);
 
     setState(() {
       elements = Boxes.getMyElements().values.toList().cast<MyElement>();
@@ -60,33 +70,35 @@ class _ElementPageState extends State<ElementPage> {
     Boxes.getMyElements().put(myElement.id, myElement);
   }
 
+  void _updateElement1(MyElement myElement) {
+    Boxes.getMyElements().put(myElement.id, myElement);
+  }
+
+  void _showBottomSheet(MyElement? myElement) {
+    showModalBottomSheet(
+      backgroundColor: Colors.brown.shade400,
+      context: context,
+      builder: (BuildContext context) {
+        return ElementBottomSheet(
+          myElement: myElement,
+          add: (e) {
+            _addMyElement1(e);
+          },
+          // update: (e) => _updateElement1(e),
+          update: (e) {
+            _updateElement1(e);
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // resizeToAvoidBottomInset: false,
       backgroundColor: Colors.brown.shade300,
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 65),
-        child: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () => {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                // todo dwa razy korzystam z ElementCreator() i działa to delikatnie ineczej, czy można to naprawić?
-                builder: (context) => ElementCreator(
-                  name: 'New Element',
-                  imagePath: 'path',
-                  height: 200,
-                  width: 200,
-                  type: ClotherType.none,
-                  onSave: (name, path, height, width, type) =>
-                      _addMyElement(name, path, height, width, type),
-                  onDelete: () {},
-                ),
-              ),
-            ),
-          },
-        ),
-      ),
+
       body: Center(
         child: ListView.builder(
           itemCount: elements.length,
@@ -116,6 +128,15 @@ class _ElementPageState extends State<ElementPage> {
                 ),
               },
             );
+          },
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 65),
+        child: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            _showBottomSheet(null);
           },
         ),
       ),

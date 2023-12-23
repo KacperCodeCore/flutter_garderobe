@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application/data/clother_type_adapter.dart';
+import '../../../assets/widgets/sheet_holder.dart';
 
 import '../../data/boxes.dart';
 import '../../data/my_element.dart';
@@ -20,6 +21,8 @@ class ColectionBottomSheet extends StatefulWidget {
 
 class _ColectionBottomSheetState extends State<ColectionBottomSheet> {
   Color _color1 = Colors.brown.shade600;
+  double _height = 100;
+  double _fullHight = 100;
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
   var uniquetype =
       Boxes.getMyElements().values.map((element) => element.type).toSet();
@@ -31,31 +34,19 @@ class _ColectionBottomSheetState extends State<ColectionBottomSheet> {
       groupedElements[type] =
           elements.where((element) => element.type == type).toList();
 
+    _fullHight = _height * groupedElements.length.toDouble() + 60;
+    _fullHight > 400 ? 400 : _fullHight;
     super.initState();
   }
-
-  // Color _color2 = Colors.brown.shade300;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: _fullHight,
       // color: Colors.brown.shade900,
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: _color1,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(10),
-                ),
-              ),
-              height: 4,
-              width: 200,
-            ),
-          ),
+          SheetHolder(),
           Expanded(
             child: ListView.builder(
               itemCount: groupedElements.length,
@@ -63,7 +54,7 @@ class _ColectionBottomSheetState extends State<ColectionBottomSheet> {
                 var type = groupedElements.keys.toList()[typeIndex];
 
                 return SizedBox(
-                  height: 100,
+                  height: _height,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: groupedElements[type]!.length,
@@ -72,8 +63,8 @@ class _ColectionBottomSheetState extends State<ColectionBottomSheet> {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10, left: 10),
                         child: SizedBox(
-                          height: 90,
-                          width: 90,
+                          height: _height - 10,
+                          width: _height - 10,
                           child: GestureDetector(
                             onTap: () {
                               widget.onTap(element);

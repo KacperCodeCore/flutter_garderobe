@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application/data/my_element.dart';
+
 import 'package:image_picker/image_picker.dart';
 
 import '../../data/clother_type_adapter.dart';
