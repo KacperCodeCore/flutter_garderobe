@@ -85,6 +85,8 @@ class _ColectionPageState extends State<ColectionPage> {
 
   Future<void> _addElement(MyElement myElement) async {
     if (colections.isEmpty) return;
+    print('added h ${myElement.height}, w ${myElement.width}');
+
     double width = 100.0;
     double height = width * myElement.height / myElement.width;
 
@@ -281,14 +283,16 @@ class _ColectionPageState extends State<ColectionPage> {
                                 initMatrix4: element.matrix4,
                                 child: SizedBox(
                                   key: _sizeBoxKey,
-                                  height: 100,
+                                  height: element.height,
                                   // todo ustawić szerokość obazu pixtureH/ 100 * pstureW
-                                  width: 50,
+                                  width: element.width,
                                   //todo dodać element null jeśli niema obrazu i zmienić na id nie index
                                   child: Image.file(File(element.path)),
                                 ),
                                 onDoubleTap: () {},
                                 onSave: (m4) {
+                                  print(
+                                      'h ${element.height} w ${element.width}');
                                   if (_overlapsParent(
                                     _sizeBoxKey,
                                     containerKey,
@@ -349,6 +353,7 @@ class _ColectionPageState extends State<ColectionPage> {
           padding: EdgeInsets.only(bottom: 80),
           child: FloatingActionButton(
             onPressed: () {
+              if (colections.length == 0) return;
               //todo sometime error when app is clear of data
               showModalBottomSheet(
                   isDismissible: true,

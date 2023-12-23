@@ -42,6 +42,7 @@ class _ElementCreatorState extends State<ElementCreator> {
     _controller = TextEditingController(text: '$widget.name $_height');
     _imagePath = widget.imagePath;
     _height = widget.height;
+    _width = widget.width;
     _type = widget.type;
     super.initState();
   }
@@ -80,12 +81,13 @@ class _ElementCreatorState extends State<ElementCreator> {
 
     setState(() {
       _height = screenWidth * scale;
-      _width = width;
+      _width = screenWidth;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    print('added h ${_height}, w ${_width}');
     return Scaffold(
       backgroundColor: Colors.amber,
       body: Column(
