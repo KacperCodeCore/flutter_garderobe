@@ -18,10 +18,18 @@ class ColectionElement {
   @HiveField(3)
   Matrix4 matrix4;
 
+  @HiveField(4)
+  double height;
+
+  @HiveField(5)
+  double width;
+
   ColectionElement({
     required this.name,
     required this.path,
     required this.matrix4,
+    required this.height,
+    required this.width,
   });
 }
 

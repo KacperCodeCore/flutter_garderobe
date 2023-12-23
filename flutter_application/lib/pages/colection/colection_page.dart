@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'dart:async';
@@ -11,10 +10,8 @@ import 'package:flutter_application/pages/colection/colection_bottom_sheet.dart'
 import 'package:flutter_application/pages/colection/colection_creator.dart';
 import 'package:flutter_application/pages/colection/colection_footer.dart';
 import 'package:flutter_application/pages/colection/draggable_widget.dart';
-import 'package:flutter_application/pages/home/user_post.dart';
 
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 
 import '../../data/application_data.dart';
@@ -88,11 +85,15 @@ class _ColectionPageState extends State<ColectionPage> {
 
   Future<void> _addElement(MyElement myElement) async {
     if (colections.isEmpty) return;
+    double width = 100.0;
+    double height = width * myElement.height / myElement.width;
 
     var colectionElement = ColectionElement(
       name: myElement.name,
       path: myElement.path,
       matrix4: Matrix4.identity(),
+      height: height,
+      width: width,
     );
 
     int index = _pageController.page!.round();
@@ -105,12 +106,14 @@ class _ColectionPageState extends State<ColectionPage> {
     });
   }
 
-  Future<void> _updateColectionElement(
-      String name, String path, Matrix4 m4, int index) async {
+  Future<void> _updateColectionElement(String name, String path, Matrix4 m4,
+      int index, double height, double width) async {
     ColectionElement element = ColectionElement(
       name: name,
       path: path,
       matrix4: m4,
+      height: height,
+      width: width,
     );
     int colectionIndex = _pageController.page!.round();
     Colection colection = Boxes.getColection().getAt(colectionIndex)!;
@@ -282,7 +285,7 @@ class _ColectionPageState extends State<ColectionPage> {
                                   // todo ustawić szerokość obazu pixtureH/ 100 * pstureW
                                   width: 50,
                                   //todo dodać element null jeśli niema obrazu i zmienić na id nie index
-                                  child: Image.file(File(elements[0].path)),
+                                  child: Image.file(File(element.path)),
                                 ),
                                 onDoubleTap: () {},
                                 onSave: (m4) {
@@ -292,14 +295,20 @@ class _ColectionPageState extends State<ColectionPage> {
                                   )) {
                                     print('saving');
                                     _updateColectionElement(
-                                        'saved', elements[0].path, m4, index);
+                                      'saved',
+                                      element.path,
+                                      m4,
+                                      index,
+                                      element.height,
+                                      element.width,
+                                    );
                                     _TakeScreenshot();
                                   } else {
                                     _deleteColectionElement(
                                         colections[ColectionIndex]
                                             .elements[index]
                                             .id);
-                                    // _SaveScreenshot();
+                                    _TakeScreenshot();
                                   }
                                 },
                               );
@@ -337,9 +346,10 @@ class _ColectionPageState extends State<ColectionPage> {
       floatingActionButton: Visibility(
         visible: showButton,
         child: Padding(
-          padding: EdgeInsets.only(bottom: 100),
+          padding: EdgeInsets.only(bottom: 80),
           child: FloatingActionButton(
             onPressed: () {
+              //todo sometime error when app is clear of data
               showModalBottomSheet(
                   isDismissible: true,
                   backgroundColor: Colors.brown.shade400,
@@ -348,11 +358,10 @@ class _ColectionPageState extends State<ColectionPage> {
                     return ColectionBottomSheet(
                       onTap: (myElement) {
                         _addElement(myElement);
+                        _TakeScreenshot();
                       },
                     );
                   });
-              // _addElement('test name1', elements[0].path);
-              // _TakeScreenshot();
             },
             child: Icon(Icons.add),
           ),

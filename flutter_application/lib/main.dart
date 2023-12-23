@@ -30,7 +30,7 @@ void main() async {
   // Open boxes
   await Hive.openBox<MyElement>('myElementBox');
   // await Hive.deleteBoxFromDisk('myElementBox');
-  // await Hive.openBox<ColectionElement>('colectionElementBox');
+  await Hive.openBox<ColectionElement>('colectionElementBox');
   await Hive.openBox<Colection>('colectionBox');
   // await Hive.deleteBoxFromDisk('colectionBox');
   await Hive.openBox<ApplicationData>('applicationDataBox');
@@ -70,7 +70,12 @@ class MyApp extends StatelessWidget {
       title: 'flutter_garderobe',
       debugShowCheckedModeBanner: false,
       home: HomePage(),
-      theme: ThemeData(scaffoldBackgroundColor: Colors.brown.shade400),
+      theme: ThemeData(
+          scaffoldBackgroundColor: Colors.brown.shade400,
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: Colors.brown.shade200,
+            foregroundColor: Colors.brown.shade500,
+          )),
       // theme: ThemeData(primarySwatch: Colors.brown)
     );
   }

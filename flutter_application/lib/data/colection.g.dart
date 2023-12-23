@@ -20,13 +20,15 @@ class ColectionElementAdapter extends TypeAdapter<ColectionElement> {
       name: fields[1] as String,
       path: fields[2] as String,
       matrix4: fields[3] as Matrix4,
+      height: fields[4] as double,
+      width: fields[5] as double,
     )..id = fields[0] as String;
   }
 
   @override
   void write(BinaryWriter writer, ColectionElement obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -34,7 +36,11 @@ class ColectionElementAdapter extends TypeAdapter<ColectionElement> {
       ..writeByte(2)
       ..write(obj.path)
       ..writeByte(3)
-      ..write(obj.matrix4);
+      ..write(obj.matrix4)
+      ..writeByte(4)
+      ..write(obj.height)
+      ..writeByte(5)
+      ..write(obj.width);
   }
 
   @override
