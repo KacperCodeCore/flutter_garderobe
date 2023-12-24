@@ -91,6 +91,10 @@ class _ElementPageState extends State<ElementPage> {
           update: (e) {
             _updateElement1(e);
           },
+          delete: (e) {
+            _deleteElement(e);
+            Navigator.of(context).pop();
+          },
         );
       },
     );

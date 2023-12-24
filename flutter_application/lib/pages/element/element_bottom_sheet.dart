@@ -12,12 +12,14 @@ class ElementBottomSheet extends StatefulWidget {
   final MyElement? myElement;
   final Function(MyElement) add;
   final Function(MyElement) update;
+  final Function(MyElement) delete;
 
   ElementBottomSheet({
     this.myElement,
     super.key,
     required this.add,
     required this.update,
+    required this.delete,
   });
 
   @override
@@ -125,74 +127,78 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return IntrinsicHeight(
-      child: Column(
-        children: [
-          SheetHolder(),
-          Image.file(File(_myElement.path)),
-          Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // IconButton(
-                //   icon: Icon(
-                //     Icons.add,
-                //     size: iconSize,
-                //   ),
-                //   onPressed: () {
-                //     widget.add(_myElement);
-                //   },
-                // ),
-                // IconButton(
-                //   icon: Icon(
-                //     Icons.add,
-                //     size: iconSize,
-                //   ),
-                //   onPressed: () {
-                //     widget.add(_myElement);
-                //   },
-                // ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SheetHolder(),
+            Image.file(File(_myElement.path)),
+            Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // IconButton(
+                  //   icon: Icon(
+                  //     Icons.add,
+                  //     size: iconSize,
+                  //   ),
+                  //   onPressed: () {
+                  //     widget.add(_myElement);
+                  //   },
+                  // ),
+                  // IconButton(
+                  //   icon: Icon(
+                  //     Icons.add,
+                  //     size: iconSize,
+                  //   ),
+                  //   onPressed: () {
+                  //     widget.add(_myElement);
+                  //   },
+                  // ),
 
-                //_choseImage
-                IconButton(
-                  icon: Icon(
-                    Icons.add_photo_alternate_outlined,
-                    size: iconSize,
+                  //_choseImage
+                  IconButton(
+                    icon: Icon(
+                      Icons.add_photo_alternate_outlined,
+                      size: iconSize,
+                    ),
+                    onPressed: () {
+                      _showBottomSheetImage();
+                    },
                   ),
-                  onPressed: () {
-                    _showBottomSheetImage();
-                  },
-                ),
-                //category
-                IconButton(
-                  icon: Icon(
-                    Icons.category_outlined,
-                    size: iconSize,
+                  //category
+                  IconButton(
+                    icon: Icon(
+                      Icons.category_outlined,
+                      size: iconSize,
+                    ),
+                    onPressed: () {},
                   ),
-                  onPressed: () {},
-                ),
-                //remove
-                IconButton(
-                  icon: Icon(
-                    Icons.delete_outline_rounded,
-                    size: iconSize,
+                  //remove
+                  IconButton(
+                    icon: Icon(
+                      Icons.delete_outline_rounded,
+                      size: iconSize,
+                    ),
+                    onPressed: () {
+                      widget.delete(_myElement);
+                    },
                   ),
-                  onPressed: () {},
-                ),
-                // add
-                IconButton(
-                  icon: Icon(
-                    Icons.check_box_outlined,
-                    size: iconSize,
+                  // add
+                  IconButton(
+                    icon: Icon(
+                      Icons.check_box_outlined,
+                      size: iconSize,
+                    ),
+                    onPressed: () {
+                      widget.add(_myElement);
+                    },
                   ),
-                  onPressed: () {
-                    widget.add(_myElement);
-                  },
-                ),
-              ],
-            ),
-          )
-        ],
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
