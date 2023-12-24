@@ -233,6 +233,7 @@ class _ColectionPageState extends State<ColectionPage> {
 
   void _removeColection(int index) {
     Boxes.getColection().deleteAt(index);
+    //todo rename collection
     colections = Boxes.getColection().values.toList().cast<Colection>();
   }
 
@@ -354,7 +355,7 @@ class _ColectionPageState extends State<ColectionPage> {
           child: FloatingActionButton(
             onPressed: () {
               if (colections.length == 0) return;
-              //todo sometime error when app is clear of data
+              //todo DraggableScrollable
               showModalBottomSheet(
                 backgroundColor: Colors.brown.shade400,
                 isScrollControlled: true,

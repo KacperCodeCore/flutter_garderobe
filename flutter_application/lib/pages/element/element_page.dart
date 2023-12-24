@@ -76,6 +76,8 @@ class _ElementPageState extends State<ElementPage> {
 
   void _showBottomSheet(MyElement? myElement) {
     showModalBottomSheet(
+      // scrollControlDisabledMaxHeightRatio: ,
+      isScrollControlled: true,
       backgroundColor: Colors.brown.shade400,
       context: context,
       builder: (BuildContext context) {
@@ -83,6 +85,7 @@ class _ElementPageState extends State<ElementPage> {
           myElement: myElement,
           add: (e) {
             _addMyElement1(e);
+            Navigator.of(context).pop();
           },
           // update: (e) => _updateElement1(e),
           update: (e) {
@@ -110,22 +113,23 @@ class _ElementPageState extends State<ElementPage> {
                 height: elements[index].height,
               ),
               onTap: () => {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ElementCreator(
-                        name: elements[index].name,
-                        imagePath: elements[index].path,
-                        height: elements[index].height,
-                        width: elements[index].width,
-                        type: elements[index].type,
-                        onSave: (name, path, height, width, type) =>
-                            updateElement(
-                                name, path, height, width, type, index),
-                        onDelete: () => {
-                              _deleteElement(elements[index]),
-                            }),
-                  ),
-                ),
+                _showBottomSheet(elements[index])
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (context) => ElementCreator(
+                //       name: elements[index].name,
+                //       imagePath: elements[index].path,
+                //       height: elements[index].height,
+                //       width: elements[index].width,
+                //       type: elements[index].type,
+                //       onSave: (name, path, height, width, type) =>
+                //           updateElement(name, path, height, width, type, index),
+                //       onDelete: () => {
+                //         _deleteElement(elements[index]),
+                //       },
+                //     ),
+                //   ),
+                // ),
               },
             );
           },
