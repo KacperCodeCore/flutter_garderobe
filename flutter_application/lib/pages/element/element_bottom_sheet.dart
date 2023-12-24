@@ -10,6 +10,7 @@ import '../../../assets/widgets/sheet_holder.dart';
 
 class ElementBottomSheet extends StatefulWidget {
   final MyElement? myElement;
+  final bool isEdited;
   final Function(MyElement) add;
   final Function(MyElement) update;
   final Function(MyElement) delete;
@@ -20,6 +21,7 @@ class ElementBottomSheet extends StatefulWidget {
     required this.add,
     required this.update,
     required this.delete,
+    required this.isEdited,
   });
 
   @override
@@ -137,25 +139,6 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // IconButton(
-                  //   icon: Icon(
-                  //     Icons.add,
-                  //     size: iconSize,
-                  //   ),
-                  //   onPressed: () {
-                  //     widget.add(_myElement);
-                  //   },
-                  // ),
-                  // IconButton(
-                  //   icon: Icon(
-                  //     Icons.add,
-                  //     size: iconSize,
-                  //   ),
-                  //   onPressed: () {
-                  //     widget.add(_myElement);
-                  //   },
-                  // ),
-
                   //_choseImage
                   IconButton(
                     icon: Icon(
@@ -184,14 +167,18 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
                       widget.delete(_myElement);
                     },
                   ),
-                  // add
+                  // add/ update
                   IconButton(
                     icon: Icon(
                       Icons.check_box_outlined,
                       size: iconSize,
                     ),
                     onPressed: () {
-                      widget.add(_myElement);
+                      if (widget.isEdited) {
+                        widget.update(_myElement);
+                      } else {
+                        widget.add(_myElement);
+                      }
                     },
                   ),
                 ],

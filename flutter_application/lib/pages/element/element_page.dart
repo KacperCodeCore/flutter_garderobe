@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_application/data/boxes.dart';
 import 'package:flutter_application/data/clother_type_adapter.dart';
+import 'package:flutter_application/data/colection.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'package:flutter_application/pages/element/element_bottom_sheet.dart';
 
@@ -20,26 +21,9 @@ class ElementPage extends StatefulWidget {
 class _ElementPageState extends State<ElementPage> {
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
 
-  Future<void> _addMyElement(String name, String path, double height,
-      double width, ClotherType type) async {
-    var newElement = MyElement(
-      name: name,
-      path: path,
-      height: height,
-      width: width,
-      type: type,
-    );
-    Boxes.getMyElements().add(newElement);
-
+  Future<void> _addMyElement(MyElement myElement) async {
     setState(() {
-      elements = Boxes.getMyElements().values.toList().cast<MyElement>();
-    });
-  }
-
-  Future<void> _addMyElement1(MyElement myElement) async {
-    Boxes.getMyElements().add(myElement);
-
-    setState(() {
+      Boxes.getMyElements().add(myElement);
       elements = Boxes.getMyElements().values.toList().cast<MyElement>();
     });
   }
@@ -52,29 +36,19 @@ class _ElementPageState extends State<ElementPage> {
       () {
         box.deleteAt(index);
         elements = box.values.toList().cast<MyElement>();
+        // ..sort((a, b) => a.id.compareTo(b.id));
       },
     );
   }
 
-  void updateElement(String name, String path, double height, double widht,
-      ClotherType type, int index) {
-    final myElement = elements[index];
-
+  void _updateElement(MyElement myElement) {
+    Boxes.getMyElements().put(myElement.id, myElement);
     setState(() {
-      elements[index].name = name;
-      elements[index].path = path;
-      elements[index].height = height;
-      elements[index].width = widht;
-      elements[index].type = type;
+      elements = Boxes.getMyElements().values.toList();
     });
-    Boxes.getMyElements().put(myElement.id, myElement);
   }
 
-  void _updateElement1(MyElement myElement) {
-    Boxes.getMyElements().put(myElement.id, myElement);
-  }
-
-  void _showBottomSheet(MyElement? myElement) {
+  void _showBottomSheet(MyElement? myElement, bool isEdited) {
     showModalBottomSheet(
       // scrollControlDisabledMaxHeightRatio: ,
       isScrollControlled: true,
@@ -83,13 +57,15 @@ class _ElementPageState extends State<ElementPage> {
       builder: (BuildContext context) {
         return ElementBottomSheet(
           myElement: myElement,
+          isEdited: isEdited,
           add: (e) {
-            _addMyElement1(e);
+            _addMyElement(e);
             Navigator.of(context).pop();
           },
           // update: (e) => _updateElement1(e),
           update: (e) {
-            _updateElement1(e);
+            _updateElement(e);
+            Navigator.of(context).pop();
           },
           delete: (e) {
             _deleteElement(e);
@@ -116,25 +92,7 @@ class _ElementPageState extends State<ElementPage> {
                 path: elements[index].path,
                 height: elements[index].height,
               ),
-              onTap: () => {
-                _showBottomSheet(elements[index])
-                // Navigator.of(context).push(
-                //   MaterialPageRoute(
-                //     builder: (context) => ElementCreator(
-                //       name: elements[index].name,
-                //       imagePath: elements[index].path,
-                //       height: elements[index].height,
-                //       width: elements[index].width,
-                //       type: elements[index].type,
-                //       onSave: (name, path, height, width, type) =>
-                //           updateElement(name, path, height, width, type, index),
-                //       onDelete: () => {
-                //         _deleteElement(elements[index]),
-                //       },
-                //     ),
-                //   ),
-                // ),
-              },
+              onTap: () => {_showBottomSheet(elements[index], true)},
             );
           },
         ),
@@ -144,7 +102,7 @@ class _ElementPageState extends State<ElementPage> {
         child: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () {
-            _showBottomSheet(null);
+            _showBottomSheet(null, false);
           },
         ),
       ),
