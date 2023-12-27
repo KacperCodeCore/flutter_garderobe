@@ -126,6 +126,49 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
     );
   }
 
+  // void _showBottomSheetEnums() {
+  //   List<ClotherType> clotherTypes = ClotherType.values;
+  //   showModalBottomSheet(
+  //     backgroundColor: Colors.brown.shade400,
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return Container(
+  //         height: 500,
+  //         child: Column(
+  //           children: clotherTypes.map((type) {
+  //             return Container(
+  //               height: 50,
+  //               child: Text(type.toString()),
+  //             );
+  //           }).toList(),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
+
+  void _showBottomSheetEnums() {
+    showModalBottomSheet(
+      backgroundColor: Colors.brown.shade400,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          child: Column(
+            children: ClotherType.values.map((type) {
+              return Container(
+                height: 50,
+                child: Text(
+                  type.toString(),
+                  style: TextStyle(fontSize: 25),
+                ),
+              );
+            }).toList(),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return IntrinsicHeight(
@@ -155,7 +198,9 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
                       Icons.category_outlined,
                       size: iconSize,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      _showBottomSheetEnums();
+                    },
                   ),
                   //remove
                   IconButton(
