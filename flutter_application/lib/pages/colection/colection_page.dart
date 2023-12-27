@@ -255,7 +255,7 @@ class _ColectionPageState extends State<ColectionPage> {
         children: [
           SizedBox(height: 35),
           Container(
-            height: 550,
+            height: 600,
             child: Screenshot(
               controller: _screenshotController,
               child: PageView.builder(
@@ -265,11 +265,11 @@ class _ColectionPageState extends State<ColectionPage> {
                 itemBuilder: (context, ColectionIndex) {
                   final containerKey = GlobalKey();
                   return ColectionCreator(
-                    name: 'name',
-                    child: Center(
+                    name: 'Name',
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(25)),
                       child: Container(
                         key: containerKey,
-                        height: 500,
                         color: Colors.brown.shade100,
                         child: Stack(
                           children: List.generate(
