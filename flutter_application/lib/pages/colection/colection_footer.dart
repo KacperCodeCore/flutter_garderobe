@@ -16,11 +16,12 @@ class ColectionFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color _color1 = Colors.brown.shade700;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             children: [
               IconButton(
@@ -28,7 +29,7 @@ class ColectionFooter extends StatelessWidget {
                 icon: Icon(
                   Icons.keyboard_arrow_left_rounded,
                   size: 30,
-                  color: Colors.black,
+                  color: _color1,
                 ),
               ),
               IconButton(
@@ -36,7 +37,7 @@ class ColectionFooter extends StatelessWidget {
                 icon: Icon(
                   Icons.keyboard_arrow_right_rounded,
                   size: 30,
-                  color: Colors.black,
+                  color: _color1,
                 ),
               ),
               IconButton(
@@ -44,7 +45,7 @@ class ColectionFooter extends StatelessWidget {
                 icon: Icon(
                   Icons.add_photo_alternate_rounded,
                   size: 30,
-                  color: Colors.black,
+                  color: _color1,
                 ),
               ),
               IconButton(
@@ -52,7 +53,7 @@ class ColectionFooter extends StatelessWidget {
                 icon: Icon(
                   Icons.delete_forever,
                   size: 30,
-                  color: Colors.black,
+                  color: _color1,
                 ),
               ),
             ],

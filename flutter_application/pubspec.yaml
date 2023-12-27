@@ -99,6 +99,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+
+  fonts:
+    - family: Kalam-Bold
+      fonts:
+        - asset: lib\assets\fonts\Kalam\Kalam-Bold.ttf
+    - family: Kalam-Light
+      fonts:
+        - asset: lib\assets\fonts\Kalam\Kalam-Light.ttf
+    - family: Kalam-Regular
+      fonts:
+        - asset: lib\assets\fonts\Kalam\Kalam-Regular.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:

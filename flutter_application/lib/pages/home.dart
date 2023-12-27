@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
         margin: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
         decoration: BoxDecoration(
           color: Colors.brown[200],
-          borderRadius: BorderRadius.all(Radius.circular(30)),
+          borderRadius: BorderRadius.all(Radius.circular(28)),
           border: Border.all(
             color: _selectedIconColor,
             width: 3,

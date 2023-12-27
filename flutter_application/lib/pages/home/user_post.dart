@@ -20,7 +20,7 @@ class UserPost extends StatelessWidget {
           height: 8,
         ),
         Container(
-          height: 550,
+          height: 700,
           child: path != null ? Image.file(File(path!)) : null,
         ),
         // if (path != null) Image(image: FileImage(File(path!))),
