@@ -16,12 +16,12 @@ class ColectionFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color _color1 = Colors.brown.shade700;
+    Color _color1 = Colors.brown.shade800;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.only(left: 10),
           child: Row(
             children: [
               IconButton(

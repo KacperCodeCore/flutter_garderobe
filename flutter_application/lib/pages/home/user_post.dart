@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application/pages/home/post_footer.dart';
 
 class UserPost extends StatelessWidget {
   final String name;
@@ -16,37 +17,13 @@ class UserPost extends StatelessWidget {
     // double screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
-        SizedBox(
-          height: 8,
-        ),
+        // post
         Container(
-          height: 700,
+          height: 630,
           child: path != null ? Image.file(File(path!)) : null,
         ),
-        // if (path != null) Image(image: FileImage(File(path!))),
-
-        // below the post
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Row(
-                children: [
-                  Icon(Icons.favorite),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Icon(Icons.chat),
-                  ),
-                  Icon(Icons.share),
-                ],
-              ),
-              // Spacer(),
-              Icon(Icons.bookmark)
-            ],
-          ),
-        ),
-        SizedBox(height: 20),
+        // padding
+        PostFooter(likeIt: () {}, comment: () {}, edit: () {})
       ],
     );
   }

@@ -21,19 +21,6 @@ class UserHome extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 80),
-        child: FloatingActionButton(onPressed: () {
-          showModalBottomSheet(
-              backgroundColor: Colors.brown.shade400,
-              context: context,
-              builder: (BuildContext context) {
-                return Container(
-                  height: 400,
-                );
-              });
-        }),
-      ),
     );
   }
 }

@@ -253,91 +253,96 @@ class _ColectionPageState extends State<ColectionPage> {
 
       body: Column(
         children: [
+          SizedBox(
+            height: 20,
+          ),
           Container(
-            height: 650,
-            child: Screenshot(
-              controller: _screenshotController,
-              child: PageView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                controller: _pageController,
-                itemCount: colections.length,
-                itemBuilder: (context, ColectionIndex) {
-                  final containerKey = GlobalKey();
-                  return ColectionCreator(
-                    name: 'Name',
-                    child: Container(
-                      height: 600,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.brown),
-                        borderRadius: BorderRadius.all(Radius.circular(25)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(25)),
-                        child: Container(
-                          key: containerKey,
-                          color: Colors.brown.shade100,
-                          child: Stack(
-                            children: List.generate(
-                              colections[ColectionIndex].elements.length,
-                              (index) {
-                                final GlobalKey _sizeBoxKey = GlobalKey();
-                                final GlobalKey _draggableKey = GlobalKey();
-                                final element =
-                                    colections[ColectionIndex].elements[index];
-                                return DraggableWidget(
-                                  key: _draggableKey,
-                                  initMatrix4: element.matrix4,
-                                  child: SizedBox(
-                                    key: _sizeBoxKey,
-                                    height: element.height,
-                                    // todo ustawić szerokość obazu pixtureH/ 100 * pstureW
-                                    width: element.width,
-                                    //todo dodać element null jeśli niema obrazu i zmienić na id nie index
-                                    child: Image.file(File(element.path)),
-                                  ),
-                                  onDoubleTap: () {},
-                                  onSave: (m4) {
-                                    print(
-                                        'h ${element.height} w ${element.width}');
-                                    if (_overlapsParent(
-                                      _sizeBoxKey,
-                                      containerKey,
-                                    )) {
-                                      print('saving');
-                                      _updateColectionElement(
-                                        'saved',
-                                        element.path,
-                                        m4,
-                                        index,
-                                        element.height,
-                                        element.width,
-                                      );
-                                      _TakeScreenshot();
-                                    } else {
-                                      _deleteColectionElement(
-                                          colections[ColectionIndex]
-                                              .elements[index]
-                                              .id);
-                                      _TakeScreenshot();
-                                    }
-                                  },
-                                );
-                              },
+            height: 630,
+            child: Center(
+              child: Screenshot(
+                controller: _screenshotController,
+                child: PageView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  controller: _pageController,
+                  itemCount: colections.length,
+                  itemBuilder: (context, ColectionIndex) {
+                    final containerKey = GlobalKey();
+                    return ColectionCreator(
+                      name: 'Name',
+                      child: Container(
+                        height: 600,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.brown),
+                          borderRadius: BorderRadius.all(Radius.circular(25)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(25)),
+                          child: Container(
+                            key: containerKey,
+                            color: Colors.brown.shade100,
+                            child: Stack(
+                              children: List.generate(
+                                colections[ColectionIndex].elements.length,
+                                (index) {
+                                  final GlobalKey _sizeBoxKey = GlobalKey();
+                                  final GlobalKey _draggableKey = GlobalKey();
+                                  final element = colections[ColectionIndex]
+                                      .elements[index];
+                                  return DraggableWidget(
+                                    key: _draggableKey,
+                                    initMatrix4: element.matrix4,
+                                    child: SizedBox(
+                                      key: _sizeBoxKey,
+                                      height: element.height,
+                                      // todo ustawić szerokość obazu pixtureH/ 100 * pstureW
+                                      width: element.width,
+                                      //todo dodać element null jeśli niema obrazu i zmienić na id nie index
+                                      child: Image.file(File(element.path)),
+                                    ),
+                                    onDoubleTap: () {},
+                                    onSave: (m4) {
+                                      print(
+                                          'h ${element.height} w ${element.width}');
+                                      if (_overlapsParent(
+                                        _sizeBoxKey,
+                                        containerKey,
+                                      )) {
+                                        print('saving');
+                                        _updateColectionElement(
+                                          'saved',
+                                          element.path,
+                                          m4,
+                                          index,
+                                          element.height,
+                                          element.width,
+                                        );
+                                        _TakeScreenshot();
+                                      } else {
+                                        _deleteColectionElement(
+                                            colections[ColectionIndex]
+                                                .elements[index]
+                                                .id);
+                                        _TakeScreenshot();
+                                      }
+                                    },
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ),
           ),
