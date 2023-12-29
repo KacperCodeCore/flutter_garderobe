@@ -73,6 +73,10 @@ class _DraggableWidgetState extends State<DraggableWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Color _borderColorOn = Color.fromARGB(255, 0, 255, 174);
+    Color _borderColorOff = Color.fromARGB(0, 0, 0, 0);
+    bool _useingDraggalbe = false;
+
     return MatrixGestureDetector(
       onMatrixUpdate: (m, tm, sm, rm) {
         //służy do init matrix4 tylko raz przy utworzeniu
@@ -82,22 +86,13 @@ class _DraggableWidgetState extends State<DraggableWidget> {
         }
         notifier.value = m;
 
-        // chwilę po przestaniu korzystana z widgetu następuje onSave
-        // if (timer.isActive) {
-        //   timer.cancel();
-        // }
-        // timer = Timer(
-        //   Duration(milliseconds: 50),
-        //   () {
-        //     isBeingUsed = false;
-        //     widget.onSave(notifier.value);
-        //   },
-        // );
-
         isBeingUsed = true;
       },
-      onScaleStart: () {},
+      onScaleStart: () {
+        _useingDraggalbe = true;
+      },
       onScaleEnd: () {
+        _useingDraggalbe = false;
         widget.onSave(notifier.value);
       },
       child: AnimatedBuilder(
@@ -112,7 +107,17 @@ class _DraggableWidgetState extends State<DraggableWidget> {
                 alignment: Alignment.center,
                 child: FittedBox(
                   fit: BoxFit.contain,
-                  child: widget.child,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      border: Border.all(
+                        color:
+                            _useingDraggalbe ? _borderColorOn : _borderColorOff,
+                        width: 2.0,
+                      ),
+                    ),
+                    child: widget.child,
+                  ),
                 ),
               ),
             ),
