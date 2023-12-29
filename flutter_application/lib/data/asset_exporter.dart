@@ -13,11 +13,11 @@ class AssetExporter {
 
       File targetFile = File('$appDir/$fileName');
 
-      // czy plik istnieje przed zapisem
-      if (await targetFile.exists()) {
-        print('file exists: $fileName');
-        return;
-      }
+      // // czy plik istnieje przed zapisem
+      // if (await targetFile.exists()) {
+      //   print('file exists: $fileName');
+      //   return;
+      // }
 
       await targetFile.writeAsBytes(bytes);
     } catch (e) {

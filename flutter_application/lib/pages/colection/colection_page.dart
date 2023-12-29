@@ -297,6 +297,7 @@ class _ColectionPageState extends State<ColectionPage> {
 
                                   final GlobalKey _sizeBoxKey = GlobalKey();
                                   final GlobalKey _draggableKey = GlobalKey();
+
                                   return DraggableWidget(
                                     key: _draggableKey,
                                     initMatrix4: element.matrix4,
@@ -309,9 +310,11 @@ class _ColectionPageState extends State<ColectionPage> {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
                                         child: Image.file(
-                                            File(File(element.path).existsSync()
-                                                ? element.path
-                                                : '${Boxes.appDir}/null.png'),
+                                            File(
+                                              File(element.path).existsSync()
+                                                  ? element.path
+                                                  : '${Boxes.appDir}/null.png',
+                                            ),
                                             fit: BoxFit.fitWidth),
                                       ),
                                     ),
