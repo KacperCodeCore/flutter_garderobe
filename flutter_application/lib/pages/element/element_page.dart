@@ -17,7 +17,7 @@ class ElementPage extends StatefulWidget {
 class _ElementPageState extends State<ElementPage> {
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
 
-  Future<void> _addMyElement(MyElement myElement) async {
+  void _addMyElement(MyElement myElement) async {
     setState(() {
       Boxes.getMyElements().add(myElement);
       elements = Boxes.getMyElements().values.toList().cast<MyElement>();
@@ -37,7 +37,7 @@ class _ElementPageState extends State<ElementPage> {
     );
   }
 
-  Future<void> _deleteImage(String path) async {
+  void _deleteImage(String path) async {
     try {
       File imageFile = File(path);
       if (imageFile.existsSync()) {

@@ -6,10 +6,14 @@ import 'package:flutter_application/pages/home/post_footer.dart';
 class UserPost extends StatelessWidget {
   final String name;
   final String? path;
+  final bool likeIt;
+  final VoidCallback onLikeItPress;
 
   UserPost({
     required this.name,
     required this.path,
+    required this.onLikeItPress,
+    required this.likeIt,
   });
 
   @override
@@ -23,7 +27,12 @@ class UserPost extends StatelessWidget {
           child: path != null ? Image.file(File(path!)) : null,
         ),
         // padding
-        PostFooter(likeIt: () {}, comment: () {}, edit: () {})
+        PostFooter(
+          likeIt: likeIt,
+          comment: () {},
+          edit: () {},
+          onLikeItPress: onLikeItPress,
+        )
       ],
     );
   }

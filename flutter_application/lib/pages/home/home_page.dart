@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../data/boxes.dart';
 import '../../data/colection.dart';
@@ -12,9 +13,19 @@ class UserHome extends StatefulWidget {
 }
 
 class _UserHomeState extends State<UserHome> {
+  var colections = Boxes.getColection().values.toList().cast<Colection>();
+
+  void _onLikeitPress(int index, Colection collection) async {
+    collection.likeIt = !collection.likeIt;
+
+    Boxes.getColection().putAt(index, collection);
+    setState(() {
+      colections = Boxes.getColection().values.toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final colections = Boxes.getColection().values.toList().cast<Colection>();
     return Scaffold(
       body: ListView.builder(
         itemCount: colections.length,
@@ -22,6 +33,10 @@ class _UserHomeState extends State<UserHome> {
           return UserPost(
             name: colections[index].name,
             path: colections[index].screenshotPath,
+            likeIt: colections[index].likeIt,
+            onLikeItPress: () {
+              _onLikeitPress(index, colections[index]);
+            },
           );
         },
       ),

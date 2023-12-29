@@ -69,13 +69,16 @@ class ColectionAdapter extends TypeAdapter<Colection> {
       elements: (fields[2] as List).cast<ColectionElement>(),
       lastEdited: fields[3] as DateTime,
       screenshotPath: fields[4] as String?,
-    )..id = fields[0] as String;
+    )
+      ..id = fields[0] as String
+      ..likeIt = fields[5] as bool
+      ..comment = fields[6] as String;
   }
 
   @override
   void write(BinaryWriter writer, Colection obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -85,7 +88,11 @@ class ColectionAdapter extends TypeAdapter<Colection> {
       ..writeByte(3)
       ..write(obj.lastEdited)
       ..writeByte(4)
-      ..write(obj.screenshotPath);
+      ..write(obj.screenshotPath)
+      ..writeByte(5)
+      ..write(obj.likeIt)
+      ..writeByte(6)
+      ..write(obj.comment);
   }
 
   @override

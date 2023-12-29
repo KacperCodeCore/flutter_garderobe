@@ -50,6 +50,12 @@ class Colection {
   @HiveField(4)
   String? screenshotPath;
 
+  @HiveField(5)
+  bool likeIt = false;
+
+  @HiveField(6)
+  String comment = '';
+
   Colection({
     required this.name,
     required this.elements,
