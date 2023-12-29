@@ -16,7 +16,6 @@ import 'package:screenshot/screenshot.dart';
 
 import '../../data/application_data.dart';
 import '../../data/boxes.dart';
-import 'header.dart';
 
 class ColectionPage extends StatefulWidget {
   const ColectionPage({Key? key}) : super(key: key);
@@ -38,8 +37,6 @@ class _ColectionPageState extends State<ColectionPage> {
 
   @override
   void initState() {
-    super.initState();
-
     if (appData.isEmpty) {
       setState(() {
         Boxes.getAppData().add(ApplicationData());
@@ -50,12 +47,15 @@ class _ColectionPageState extends State<ColectionPage> {
       _addEmptyColection();
     }
 
+    // todo
     _keyboardVisibilitySubscription =
         KeyboardVisibilityController().onChange.listen((visible) {
       setState(() {
         _showHideButton(visible);
       });
     });
+
+    super.initState();
   }
 
   void _addEmptyColection() {
@@ -223,15 +223,15 @@ class _ColectionPageState extends State<ColectionPage> {
     return true;
   }
 
-  void _removeCurrentColection() {
+  void _deleteCurrentColection() {
     if (colections.isNotEmpty) {
       int currentPageIndex = _pageController.page!.round();
-      _removeColection(currentPageIndex);
+      _deleteColection(currentPageIndex);
       setState(() {});
     }
   }
 
-  void _removeColection(int index) {
+  void _deleteColection(int index) {
     Boxes.getColection().deleteAt(index);
     //todo rename collection
     colections = Boxes.getColection().values.toList().cast<Colection>();
@@ -292,20 +292,28 @@ class _ColectionPageState extends State<ColectionPage> {
                               children: List.generate(
                                 colections[ColectionIndex].elements.length,
                                 (index) {
-                                  final GlobalKey _sizeBoxKey = GlobalKey();
-                                  final GlobalKey _draggableKey = GlobalKey();
                                   final element = colections[ColectionIndex]
                                       .elements[index];
+
+                                  final GlobalKey _sizeBoxKey = GlobalKey();
+                                  final GlobalKey _draggableKey = GlobalKey();
                                   return DraggableWidget(
                                     key: _draggableKey,
                                     initMatrix4: element.matrix4,
                                     child: SizedBox(
                                       key: _sizeBoxKey,
                                       height: element.height,
-                                      // todo ustawić szerokość obazu pixtureH/ 100 * pstureW
                                       width: element.width,
-                                      //todo dodać element null jeśli niema obrazu i zmienić na id nie index
-                                      child: Image.file(File(element.path)),
+                                      // if image.path is null
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                        child: Image.file(
+                                            File(File(element.path).existsSync()
+                                                ? element.path
+                                                : '${Boxes.appDir}/null.png'),
+                                            fit: BoxFit.fitWidth),
+                                      ),
                                     ),
                                     onDoubleTap: () {},
                                     onSave: (m4) {
@@ -360,7 +368,7 @@ class _ColectionPageState extends State<ColectionPage> {
                 curve: Curves.easeInOut,
               );
             },
-            deletePage: _removeCurrentColection,
+            deletePage: _deleteCurrentColection,
             addPage: _addColectionAndGoTo,
           ),
         ],

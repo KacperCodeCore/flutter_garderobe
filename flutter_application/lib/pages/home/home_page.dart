@@ -4,13 +4,17 @@ import '../../data/boxes.dart';
 import '../../data/colection.dart';
 import 'user_post.dart';
 
-class UserHome extends StatelessWidget {
-  // var colections = Boxes.getColection().values.toList().cast<Colection>();
-  var colections;
+class UserHome extends StatefulWidget {
+  const UserHome({super.key});
 
   @override
+  State<UserHome> createState() => _UserHomeState();
+}
+
+class _UserHomeState extends State<UserHome> {
+  @override
   Widget build(BuildContext context) {
-    colections = Boxes.getColection().values.toList().cast<Colection>();
+    final colections = Boxes.getColection().values.toList().cast<Colection>();
     return Scaffold(
       body: ListView.builder(
         itemCount: colections.length,

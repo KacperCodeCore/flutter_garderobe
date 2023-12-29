@@ -1,15 +1,11 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
-
 import 'package:flutter_application/data/boxes.dart';
-import 'package:flutter_application/data/clother_type_adapter.dart';
-import 'package:flutter_application/data/colection.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'package:flutter_application/pages/element/element_bottom_sheet.dart';
-
 import 'package:flutter_application/pages/element/single_element.dart';
-import 'package:flutter_application/pages/element/element_creator.dart';
 
 class ElementPage extends StatefulWidget {
   const ElementPage({super.key});
@@ -29,6 +25,7 @@ class _ElementPageState extends State<ElementPage> {
   }
 
   void _deleteElement(MyElement element) async {
+    _deleteImage(element.path);
     // Boxes.getMyElements().delete(element);
     final box = Boxes.getMyElements();
     var index = box.values.toList().cast<MyElement>().indexOf(element);
@@ -36,9 +33,19 @@ class _ElementPageState extends State<ElementPage> {
       () {
         box.deleteAt(index);
         elements = box.values.toList().cast<MyElement>();
-        // ..sort((a, b) => a.id.compareTo(b.id));
       },
     );
+  }
+
+  Future<void> _deleteImage(String path) async {
+    try {
+      File imageFile = File(path);
+      if (imageFile.existsSync()) {
+        await imageFile.delete();
+      }
+    } catch (e) {
+      print("element_page _deleteImage error: $e");
+    }
   }
 
   void _updateElement(MyElement myElement) {

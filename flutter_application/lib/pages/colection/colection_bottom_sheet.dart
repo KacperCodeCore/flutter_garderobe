@@ -20,7 +20,7 @@ class ColectionBottomSheet extends StatefulWidget {
 }
 
 class _ColectionBottomSheetState extends State<ColectionBottomSheet> {
-  Color _color1 = Colors.brown.shade600;
+  // Color _color1 = Colors.brown.shade600;
   double _height = 100;
   double _fullHight = 100;
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
