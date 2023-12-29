@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/data/boxes.dart';
 import 'package:flutter_application/data/clother_type_adapter.dart';
 import 'package:flutter_application/data/my_element.dart';
-import 'package:flutter_application/pages/element/element_bottom_sheet_image.dart';
+
 import 'package:image_picker/image_picker.dart';
 import '../../../assets/widgets/sheet_holder.dart';
 
@@ -155,7 +155,9 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
         child: Column(
           children: [
             SheetHolder(),
-            Image.file(File(_myElement.path)),
+            ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(25)),
+                child: Image.file(File(_myElement.path))),
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: Row(
@@ -203,6 +205,16 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
                       } else {
                         widget.add(_myElement);
                       }
+                    },
+                  ),
+                  // back
+                  IconButton(
+                    icon: Icon(
+                      Icons.exit_to_app_rounded,
+                      size: iconSize,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
                     },
                   ),
                 ],

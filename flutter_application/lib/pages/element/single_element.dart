@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application/data/boxes.dart';
 
 class SingleElement extends StatelessWidget {
   final String name;
@@ -21,25 +22,17 @@ class SingleElement extends StatelessWidget {
       children: [
         SizedBox(
           height: 30,
-          child: Text(
-            '$name $height',
-          ),
         ),
         Container(
           height: height,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(30)),
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(25)),
+            child: Image.file(
+                File(File(path).existsSync()
+                    ? path
+                    : '${Boxes.appDir}/null.png'),
+                fit: BoxFit.fitWidth),
           ),
-          child: File(path).existsSync()
-              ? Image.file(
-                  File(
-                    path,
-                  ),
-                  fit: BoxFit.fitWidth)
-              : Icon(
-                  Icons.block_outlined,
-                  size: 50,
-                ),
         ),
       ],
     );
