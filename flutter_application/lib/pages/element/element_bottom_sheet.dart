@@ -89,7 +89,7 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
 
   void _showBottomSheetImage() {
     showModalBottomSheet(
-      backgroundColor: Colors.brown.shade400,
+      // backgroundColor: Colors.brown.shade400,
       context: context,
       builder: (BuildContext context) {
         return Container(

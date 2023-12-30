@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class PostFooter extends StatelessWidget {
   final bool likeIt;
   final VoidCallback onLikeItPress;
+  final VoidCallback onCommentPress;
   final VoidCallback comment;
   final VoidCallback edit;
 
@@ -12,12 +13,13 @@ class PostFooter extends StatelessWidget {
     required this.likeIt,
     required this.edit,
     required this.onLikeItPress,
+    required this.onCommentPress,
   });
 
   @override
   Widget build(BuildContext context) {
     Color _color1 = Colors.brown.shade800;
-    Color _colorLikeIt = Colors.red.shade400;
+    Color _colorLikeIt = Colors.red;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -34,7 +36,7 @@ class PostFooter extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: comment,
+                onPressed: onCommentPress,
                 icon: Icon(
                   Icons.comment,
                   size: 30,

@@ -8,12 +8,14 @@ class UserPost extends StatelessWidget {
   final String? path;
   final bool likeIt;
   final VoidCallback onLikeItPress;
+  final VoidCallback onCommentPress;
 
   UserPost({
     required this.name,
     required this.path,
     required this.onLikeItPress,
     required this.likeIt,
+    required this.onCommentPress,
   });
 
   @override
@@ -32,6 +34,7 @@ class UserPost extends StatelessWidget {
           comment: () {},
           edit: () {},
           onLikeItPress: onLikeItPress,
+          onCommentPress: onCommentPress,
         )
       ],
     );

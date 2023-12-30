@@ -58,6 +58,7 @@ class _ElementPageState extends State<ElementPage> {
   void _showBottomSheet(MyElement? myElement, bool isEdited) {
     showModalBottomSheet(
       // scrollControlDisabledMaxHeightRatio: ,
+      //todo o to robi?
       isScrollControlled: true,
       backgroundColor: Colors.brown.shade400,
       context: context,

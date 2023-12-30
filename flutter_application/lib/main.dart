@@ -76,11 +76,36 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: HomePage(),
       theme: ThemeData(
-          scaffoldBackgroundColor: Colors.brown.shade400,
-          floatingActionButtonTheme: FloatingActionButtonThemeData(
-            backgroundColor: Colors.brown.shade200,
-            foregroundColor: Colors.brown.shade500,
-          )),
+        textTheme: TextTheme(
+            bodyLarge: TextStyle(
+          color: Colors.brown.shade900,
+          fontSize: 20,
+        )),
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide.none,
+          ),
+          // labelStyle: TextStyle(
+          //   color: Colors.brown.shade900,
+          // ),
+        ),
+        scaffoldBackgroundColor: Colors.brown.shade400,
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.brown.shade200,
+          foregroundColor: Colors.brown.shade500,
+        ),
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: Colors.brown.shade200,
+          selectionColor: Colors.brown.shade200,
+          selectionHandleColor: Colors.brown.shade200,
+        ),
+        // bottomAppBarTheme: BottomAppBarTheme(color: Colors.brown.shade400),
+        bottomSheetTheme:
+            BottomSheetThemeData(backgroundColor: Colors.brown.shade400),
+      ),
       // theme: ThemeData(primarySwatch: Colors.brown)
     );
   }
