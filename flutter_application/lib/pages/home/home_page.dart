@@ -16,7 +16,8 @@ class _UserHomeState extends State<UserHome> {
   var colections = Boxes.getColection().values.toList().cast<Colection>();
   final TextEditingController _textController = TextEditingController();
 
-  void _showBottomSheet() {
+  void _showBottomSheet(int index, Colection collection) async {
+    _textController.text = collection.comment;
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -33,6 +34,7 @@ class _UserHomeState extends State<UserHome> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 15, right: 15, top: 0),
                   child: TextField(
+                    controller: _textController,
                     style: TextStyle(),
                     decoration: InputDecoration(hintText: 'Comment'),
                     // autofocus: true,
@@ -40,12 +42,30 @@ class _UserHomeState extends State<UserHome> {
                   ),
                 ),
               ),
+              IconButton(
+                icon: Icon(
+                  Icons.save_alt_rounded,
+                  size: 40,
+                ),
+                onPressed: () {
+                  collection.comment = _textController.text;
+                  _updateCollection(index, collection);
+                  Navigator.of(context).pop();
+                },
+              ),
               SizedBox(height: keyboardHeight),
             ],
           ),
         );
       },
     );
+  }
+
+  void _updateCollection(int index, Colection collection) async {
+    Boxes.getColection().putAt(index, collection);
+    setState(() {
+      colections = Boxes.getColection().values.toList();
+    });
   }
 
   void _onLikeitPress(int index, Colection collection) async {
@@ -68,7 +88,7 @@ class _UserHomeState extends State<UserHome> {
             path: colections[index].screenshotPath,
             likeIt: colections[index].likeIt,
             onLikeItPress: () => _onLikeitPress(index, colections[index]),
-            onCommentPress: () => _showBottomSheet(),
+            onCommentPress: () => _showBottomSheet(index, colections[index]),
           );
         },
       ),

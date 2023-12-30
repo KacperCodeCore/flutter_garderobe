@@ -103,8 +103,13 @@ class MyApp extends StatelessWidget {
           selectionHandleColor: Colors.brown.shade200,
         ),
         // bottomAppBarTheme: BottomAppBarTheme(color: Colors.brown.shade400),
-        bottomSheetTheme:
-            BottomSheetThemeData(backgroundColor: Colors.brown.shade400),
+        bottomSheetTheme: BottomSheetThemeData(
+          backgroundColor: Colors.brown.shade400,
+        ),
+        iconTheme: IconThemeData(
+          size: 30,
+          color: Colors.brown.shade800,
+        ),
       ),
       // theme: ThemeData(primarySwatch: Colors.brown)
     );
