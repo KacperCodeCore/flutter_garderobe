@@ -15,9 +15,6 @@ class HomeNavBar extends StatefulWidget {
 }
 
 class _HomeNavBarState extends State<HomeNavBar> {
-  var appData = Boxes.getAppData().get('appData') ?? ApplicationData();
-
-  late int _collectionInitialIndex = 0;
   int _pageIndex = 0;
 
   late List<Widget> _children = [
@@ -37,17 +34,14 @@ class _HomeNavBarState extends State<HomeNavBar> {
   void initState() {
     super.initState();
 
-    if (Boxes.getAppData().containsKey('appDataKey')) {
-      _collectionInitialIndex =
-          Boxes.getAppData().get('appDataKey')!.colectionIndex;
-    } else {
+    if (!(Boxes.getAppData().containsKey('appDataKey'))) {
       Boxes.getAppData().put('appDataKey', ApplicationData(colectionIndex: 0));
     }
   }
 
   void _onEditPress(int index) async {
     await _updateColectionPage(index);
-    _navigateBottonNavBar(1);
+    await _navigateBottonNavBar(1);
   }
 
   Future<void> _updateColectionPage(int index) async {
@@ -55,7 +49,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
         .put('appDataKey', ApplicationData(colectionIndex: index));
   }
 
-  void _navigateBottonNavBar(int pageIndex) {
+  Future<void> _navigateBottonNavBar(int pageIndex) async {
     setState(() {
       _pageIndex = pageIndex;
     });
