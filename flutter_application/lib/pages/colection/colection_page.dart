@@ -71,8 +71,6 @@ class _ColectionPageState extends State<ColectionPage> {
     });
   }
 
-  // void _onIndexChange() {}
-
   void _addEmptyColection() {
     Colection newColection = Colection(
       name: 'name',
@@ -285,6 +283,8 @@ class _ColectionPageState extends State<ColectionPage> {
     _updateCollectionIndex();
   }
 
+  void _renameCollection() {}
+
   @override
   Widget build(BuildContext context) {
     // bool _isVisible = true;
@@ -405,6 +405,7 @@ class _ColectionPageState extends State<ColectionPage> {
             nextPage: _nextPage,
             deletePage: _deleteCurrentColection,
             addPage: _addColectionAndGoTo,
+            rename: _renameCollection,
           ),
         ],
       ),

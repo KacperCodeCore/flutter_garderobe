@@ -65,14 +65,14 @@ class _HomeNavBarState extends State<HomeNavBar> {
       extendBody: true,
       body: _children[_pageIndex],
       bottomNavigationBar: Container(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(13),
         margin: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
         decoration: BoxDecoration(
           color: Colors.brown[200],
-          borderRadius: BorderRadius.all(Radius.circular(28)),
+          borderRadius: BorderRadius.all(Radius.circular(25)),
           border: Border.all(
             color: _selectedIconColor,
-            width: 3,
+            // width: 3,
           ),
           boxShadow: [
             BoxShadow(

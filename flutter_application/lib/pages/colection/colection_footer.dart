@@ -5,6 +5,7 @@ class ColectionFooter extends StatelessWidget {
   final VoidCallback nextPage;
   final VoidCallback addPage;
   final VoidCallback deletePage;
+  final VoidCallback rename;
 
   const ColectionFooter({
     super.key,
@@ -12,6 +13,7 @@ class ColectionFooter extends StatelessWidget {
     required this.nextPage,
     required this.deletePage,
     required this.addPage,
+    required this.rename,
   });
 
   @override
@@ -52,6 +54,14 @@ class ColectionFooter extends StatelessWidget {
                 onPressed: deletePage,
                 icon: Icon(
                   Icons.delete_forever,
+                  size: 30,
+                  color: _color1,
+                ),
+              ),
+              IconButton(
+                onPressed: rename,
+                icon: Icon(
+                  Icons.edit,
                   size: 30,
                   color: _color1,
                 ),

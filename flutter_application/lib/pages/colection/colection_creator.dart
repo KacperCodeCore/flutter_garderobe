@@ -47,8 +47,7 @@ class ColectionCreator extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: 'Kalam-Regular',
                       fontSize: 40,
-                      // fontWeight: FontWeight.bold,
-                      color: Colors.black, // <-- Inner color
+                      color: Colors.brown.shade900, // <-- Inner color
                     ),
                   ),
                 ],
