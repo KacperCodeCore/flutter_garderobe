@@ -11,7 +11,6 @@ import 'package:flutter_application/pages/colection/colection_creator.dart';
 import 'package:flutter_application/pages/colection/colection_footer.dart';
 import 'package:flutter_application/pages/colection/draggable_widget.dart';
 
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:screenshot/screenshot.dart';
 
 import '../../data/application_data.dart';
@@ -35,7 +34,7 @@ class _ColectionPageState extends State<ColectionPage> {
   var appData = Boxes.getAppData().values.toList().cast<ApplicationData>();
 
   bool showButton = true;
-  late StreamSubscription<bool> _keyboardVisibilitySubscription;
+  // late StreamSubscription<bool> _keyboardVisibilitySubscription;
 
   ScreenshotController _screenshotController = ScreenshotController();
   late PageController _pageController;
@@ -52,21 +51,27 @@ class _ColectionPageState extends State<ColectionPage> {
       _addEmptyColection();
     }
 
-    // todo
-    _keyboardVisibilitySubscription =
-        KeyboardVisibilityController().onChange.listen((visible) {
-      setState(() {
-        _showHideButton(visible);
-      });
-    });
+    // // todo
+    // _keyboardVisibilitySubscription =
+    //     KeyboardVisibilityController().onChange.listen((visible) {
+    //   setState(() {
+    //     _showHideButton(visible);
+    //   });
+    // });
+
     super.initState();
 
-    print('widget.collectionInitialIndex ${widget.collectionInitialIndex}');
     _pageController = PageController(
-      initialPage: widget.collectionInitialIndex,
-      // initialPage: 0,
+      initialPage: Boxes.getAppData().get('appDataKey')!.colectionIndex,
     );
+
+    _pageController.addListener(() {
+      Boxes.getAppData().put('appDataKey',
+          ApplicationData(colectionIndex: _pageController.page!.round()));
+    });
   }
+
+  // void _onIndexChange() {}
 
   void _addEmptyColection() {
     Colection newColection = Colection(
@@ -80,18 +85,18 @@ class _ColectionPageState extends State<ColectionPage> {
     });
   }
 
-  void _showHideButton(bool isKeyboardVisible) {
-    if (isKeyboardVisible) {
-      showButton = false;
-    } else {
-      Future.delayed(Duration(milliseconds: 400), () {
-        setState(() {
-          showButton = true;
-        });
-      });
-    }
-    print('showButton $showButton');
-  }
+  // void _showHideButton(bool isKeyboardVisible) {
+  //   if (isKeyboardVisible) {
+  //     showButton = false;
+  //   } else {
+  //     Future.delayed(Duration(milliseconds: 400), () {
+  //       setState(() {
+  //         showButton = true;
+  //       });
+  //     });
+  //   }
+  //   print('showButton $showButton');
+  // }
 
   Future<void> _addElement(MyElement myElement) async {
     if (colections.isEmpty) return;
@@ -233,20 +238,39 @@ class _ColectionPageState extends State<ColectionPage> {
     return true;
   }
 
+  void _updateCollectionIndex() {
+    Boxes.getAppData().put('appDataKey',
+        ApplicationData(colectionIndex: _pageController.page!.round()));
+    // Boxes.getAppData().put('appDataKey',
+    //     ApplicationData(colectionIndex: _pageController.page!.round()));
+    print(
+        'page index: ${Boxes.getAppData().get('appDataKey')!.colectionIndex}');
+  }
+
+  void _previousPage() {
+    _pageController.previousPage(
+      duration: Duration(milliseconds: 500),
+      //todo sprawdzić jak są inne opcje
+      curve: Curves.easeInOut,
+    );
+    _updateCollectionIndex();
+  }
+
+  void _nextPage() {
+    _pageController.nextPage(
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+    _updateCollectionIndex();
+  }
+
   void _deleteCurrentColection() {
     if (colections.isNotEmpty) {
       int currentPageIndex = _pageController.page!.round();
       _deleteColection(currentPageIndex);
-      _updateCollectionInitIndex(currentPageIndex);
+      _updateCollectionIndex();
       setState(() {});
     }
-  }
-
-  void _updateCollectionInitIndex(index) {
-    ApplicationData? appData = Boxes.getAppData().get('appDataKey');
-    appData!.colectionIndex = index;
-    Boxes.getAppData().put('appDataKey', appData);
-    print('index: $index');
   }
 
   void _deleteColection(int index) {
@@ -258,7 +282,7 @@ class _ColectionPageState extends State<ColectionPage> {
   void _addColectionAndGoTo() {
     _addEmptyColection();
     _pageController.jumpToPage(colections.length - 1);
-    _updateCollectionInitIndex(_pageController.page!.round());
+    _updateCollectionIndex();
   }
 
   @override
@@ -377,21 +401,8 @@ class _ColectionPageState extends State<ColectionPage> {
             ),
           ),
           ColectionFooter(
-            previousPage: () {
-              _pageController.previousPage(
-                duration: Duration(milliseconds: 500),
-                //todo sprawdzić jak są inne opcje
-                curve: Curves.easeInOut,
-              );
-              _updateCollectionInitIndex(_pageController.page!.round());
-            },
-            nextPage: () {
-              _pageController.nextPage(
-                duration: Duration(milliseconds: 500),
-                curve: Curves.easeInOut,
-              );
-              _updateCollectionInitIndex(_pageController.page!.round());
-            },
+            previousPage: _previousPage,
+            nextPage: _nextPage,
             deletePage: _deleteCurrentColection,
             addPage: _addColectionAndGoTo,
           ),
@@ -430,7 +441,7 @@ class _ColectionPageState extends State<ColectionPage> {
 
   @override
   void dispose() {
-    _keyboardVisibilitySubscription.cancel();
+    // _keyboardVisibilitySubscription.cancel();
     _TakeScreenshot();
     _pageController.dispose();
     super.dispose();

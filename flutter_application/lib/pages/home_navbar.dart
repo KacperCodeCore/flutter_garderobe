@@ -16,6 +16,7 @@ class HomeNavBar extends StatefulWidget {
 
 class _HomeNavBarState extends State<HomeNavBar> {
   var appData = Boxes.getAppData().get('appData') ?? ApplicationData();
+
   late int _collectionInitialIndex = 0;
   int _pageIndex = 0;
 
@@ -25,7 +26,10 @@ class _HomeNavBarState extends State<HomeNavBar> {
         _onEditPress(index);
       },
     ),
-    ColectionPage(collectionInitialIndex: _collectionInitialIndex),
+    ColectionPage(
+      collectionInitialIndex:
+          Boxes.getAppData().get('appDataKey')!.colectionIndex,
+    ),
     ElementPage(),
   ];
 
@@ -34,7 +38,6 @@ class _HomeNavBarState extends State<HomeNavBar> {
     super.initState();
 
     if (Boxes.getAppData().containsKey('appDataKey')) {
-      // ApplicationData? appData = Boxes.getAppData().get('appDataKey');
       _collectionInitialIndex =
           Boxes.getAppData().get('appDataKey')!.colectionIndex;
     } else {
@@ -42,17 +45,18 @@ class _HomeNavBarState extends State<HomeNavBar> {
     }
   }
 
-  void _onEditPress(int index) {
-    _collectionInitialIndex = index;
-    _children[1] =
-        ColectionPage(collectionInitialIndex: _collectionInitialIndex);
-    _navigateBottonNavBar(1, index);
+  void _onEditPress(int index) async {
+    await _updateColectionPage(index);
+    _navigateBottonNavBar(1);
   }
 
-  void _navigateBottonNavBar(int pageIndex, [int? collectionIndex]) {
-    setState(() {
-      if (collectionIndex != null) _collectionInitialIndex = collectionIndex;
+  Future<void> _updateColectionPage(int index) async {
+    Boxes.getAppData()
+        .put('appDataKey', ApplicationData(colectionIndex: index));
+  }
 
+  void _navigateBottonNavBar(int pageIndex) {
+    setState(() {
       _pageIndex = pageIndex;
     });
   }
