@@ -10,7 +10,7 @@ import 'package:flutter_application/data/matrix4_adapter.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'package:path_provider/path_provider.dart';
 import 'data/clother_type_adapter.dart';
-import 'pages/home.dart';
+import 'pages/home_navbar.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
@@ -34,7 +34,7 @@ void main() async {
   await Hive.openBox<ColectionElement>('colectionElementBox');
   await Hive.openBox<Colection>('colectionBox');
   // await Hive.deleteBoxFromDisk('colectionBox');
-  await Hive.openBox<ApplicationData>('applicationDataBox');
+  await Hive.openBox<ApplicationData>('appDataBox');
   // await Hive.deleteBoxFromDisk('applicationDataBox');
   Directory myDir = await getApplicationDocumentsDirectory();
   Boxes.appDir = myDir.path;
@@ -51,11 +51,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // #region Description
-    // hide statusbar
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-    //     overlays: [SystemUiOverlay.bottom]);
-
     //transparent bacground for system buttons
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       systemNavigationBarColor: Colors.transparent,
@@ -74,7 +69,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'flutter_garderobe',
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: HomeNavBar(),
       theme: ThemeData(
         textTheme: TextTheme(
             bodyLarge: TextStyle(

@@ -9,6 +9,7 @@ class UserPost extends StatelessWidget {
   final bool likeIt;
   final VoidCallback onLikeItPress;
   final VoidCallback onCommentPress;
+  final VoidCallback onEditPress;
 
   UserPost({
     required this.name,
@@ -16,6 +17,7 @@ class UserPost extends StatelessWidget {
     required this.onLikeItPress,
     required this.likeIt,
     required this.onCommentPress,
+    required this.onEditPress,
   });
 
   @override
@@ -31,10 +33,9 @@ class UserPost extends StatelessWidget {
         // padding
         PostFooter(
           likeIt: likeIt,
-          comment: () {},
-          edit: () {},
           onLikeItPress: onLikeItPress,
           onCommentPress: onCommentPress,
+          onEditPress: onEditPress,
         )
       ],
     );

@@ -9,7 +9,8 @@ class Boxes {
       Hive.box<ColectionElement>('colectionElementBox');
   static Box<Colection> getColection() => Hive.box<Colection>('colectionBox');
   // static Matrix4 m4 = Matrix4.identity();
+
   static Box<ApplicationData> getAppData() =>
-      Hive.box<ApplicationData>('applicationDataBox');
+      Hive.box<ApplicationData>('appDataBox');
   static String appDir = '';
 }

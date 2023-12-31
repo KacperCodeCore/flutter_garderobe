@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 
 import '../../assets/widgets/sheet_holder.dart';
+
 import '../../data/boxes.dart';
 import '../../data/colection.dart';
 import 'user_post.dart';
 
 class UserHome extends StatefulWidget {
-  const UserHome({super.key});
+  final Function(int) onEditPress;
+
+  const UserHome({
+    super.key,
+    required this.onEditPress,
+  });
 
   @override
   State<UserHome> createState() => _UserHomeState();
@@ -14,6 +20,7 @@ class UserHome extends StatefulWidget {
 
 class _UserHomeState extends State<UserHome> {
   var colections = Boxes.getColection().values.toList().cast<Colection>();
+
   final TextEditingController _textController = TextEditingController();
 
   void _showBottomSheet(int index, Colection collection) async {
@@ -77,6 +84,8 @@ class _UserHomeState extends State<UserHome> {
     });
   }
 
+  // void _onEditPress() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,6 +98,11 @@ class _UserHomeState extends State<UserHome> {
             likeIt: colections[index].likeIt,
             onLikeItPress: () => _onLikeitPress(index, colections[index]),
             onCommentPress: () => _showBottomSheet(index, colections[index]),
+            onEditPress: () {
+              print('UserHome index: $index');
+              widget.onEditPress(index);
+              print('UserHome index: $index');
+            },
           );
         },
       ),

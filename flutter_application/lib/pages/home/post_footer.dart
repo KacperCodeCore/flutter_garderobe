@@ -4,16 +4,14 @@ class PostFooter extends StatelessWidget {
   final bool likeIt;
   final VoidCallback onLikeItPress;
   final VoidCallback onCommentPress;
-  final VoidCallback comment;
-  final VoidCallback edit;
+  final VoidCallback onEditPress;
 
   const PostFooter({
     super.key,
-    required this.comment,
     required this.likeIt,
-    required this.edit,
     required this.onLikeItPress,
     required this.onCommentPress,
+    required this.onEditPress,
   });
 
   @override
@@ -49,7 +47,7 @@ class PostFooter extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 10),
           child: IconButton(
-            onPressed: edit,
+            onPressed: onEditPress,
             icon: Icon(
               Icons.edit,
               size: 30,

@@ -18,7 +18,12 @@ import '../../data/application_data.dart';
 import '../../data/boxes.dart';
 
 class ColectionPage extends StatefulWidget {
-  const ColectionPage({Key? key}) : super(key: key);
+  final int collectionInitialIndex;
+
+  const ColectionPage({
+    super.key,
+    required this.collectionInitialIndex,
+  });
 
   @override
   State<ColectionPage> createState() => _ColectionPageState();
@@ -33,7 +38,7 @@ class _ColectionPageState extends State<ColectionPage> {
   late StreamSubscription<bool> _keyboardVisibilitySubscription;
 
   ScreenshotController _screenshotController = ScreenshotController();
-  final PageController _pageController = PageController();
+  late PageController _pageController;
 
   @override
   void initState() {
@@ -54,8 +59,13 @@ class _ColectionPageState extends State<ColectionPage> {
         _showHideButton(visible);
       });
     });
-
     super.initState();
+
+    print('widget.collectionInitialIndex ${widget.collectionInitialIndex}');
+    _pageController = PageController(
+      initialPage: widget.collectionInitialIndex,
+      // initialPage: 0,
+    );
   }
 
   void _addEmptyColection() {
@@ -227,8 +237,16 @@ class _ColectionPageState extends State<ColectionPage> {
     if (colections.isNotEmpty) {
       int currentPageIndex = _pageController.page!.round();
       _deleteColection(currentPageIndex);
+      _updateCollectionInitIndex(currentPageIndex);
       setState(() {});
     }
+  }
+
+  void _updateCollectionInitIndex(index) {
+    ApplicationData? appData = Boxes.getAppData().get('appDataKey');
+    appData!.colectionIndex = index;
+    Boxes.getAppData().put('appDataKey', appData);
+    print('index: $index');
   }
 
   void _deleteColection(int index) {
@@ -240,6 +258,7 @@ class _ColectionPageState extends State<ColectionPage> {
   void _addColectionAndGoTo() {
     _addEmptyColection();
     _pageController.jumpToPage(colections.length - 1);
+    _updateCollectionInitIndex(_pageController.page!.round());
   }
 
   @override
@@ -364,12 +383,14 @@ class _ColectionPageState extends State<ColectionPage> {
                 //todo sprawdzić jak są inne opcje
                 curve: Curves.easeInOut,
               );
+              _updateCollectionInitIndex(_pageController.page!.round());
             },
             nextPage: () {
               _pageController.nextPage(
                 duration: Duration(milliseconds: 500),
                 curve: Curves.easeInOut,
               );
+              _updateCollectionInitIndex(_pageController.page!.round());
             },
             deletePage: _deleteCurrentColection,
             addPage: _addColectionAndGoTo,
@@ -411,6 +432,7 @@ class _ColectionPageState extends State<ColectionPage> {
   void dispose() {
     _keyboardVisibilitySubscription.cancel();
     _TakeScreenshot();
+    _pageController.dispose();
     super.dispose();
   }
 }
