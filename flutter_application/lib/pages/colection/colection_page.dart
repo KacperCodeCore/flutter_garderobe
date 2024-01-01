@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application/data/colection.dart';
@@ -15,6 +16,7 @@ import 'package:screenshot/screenshot.dart';
 
 import '../../data/application_data.dart';
 import '../../data/boxes.dart';
+import 'rename_alert_dialog.dart';
 
 class ColectionPage extends StatefulWidget {
   final int collectionInitialIndex;
@@ -121,8 +123,8 @@ class _ColectionPageState extends State<ColectionPage> {
     });
   }
 
-  Future<void> _updateColectionElement(String name, String path, Matrix4 m4,
-      int index, double height, double width) async {
+  void _updateColectionElement(String name, String path, Matrix4 m4, int index,
+      double height, double width) async {
     ColectionElement element = ColectionElement(
       name: name,
       path: path,
@@ -134,6 +136,14 @@ class _ColectionPageState extends State<ColectionPage> {
     Colection colection = Boxes.getColection().getAt(colectionIndex)!;
     colection.elements[index] = element;
 
+    _updateColection(colection, colectionIndex);
+    // setState(() {
+    //   Boxes.getColection().putAt(colectionIndex, colection);
+    //   colections = Boxes.getColection().values.toList();
+    // });
+  }
+
+  void _updateColection(Colection colection, int colectionIndex) {
     setState(() {
       Boxes.getColection().putAt(colectionIndex, colection);
       colections = Boxes.getColection().values.toList();
@@ -239,8 +249,6 @@ class _ColectionPageState extends State<ColectionPage> {
   void _updateCollectionIndex() {
     Boxes.getAppData().put('appDataKey',
         ApplicationData(colectionIndex: _pageController.page!.round()));
-    // Boxes.getAppData().put('appDataKey',
-    //     ApplicationData(colectionIndex: _pageController.page!.round()));
     print(
         'page index: ${Boxes.getAppData().get('appDataKey')!.colectionIndex}');
   }
@@ -263,12 +271,12 @@ class _ColectionPageState extends State<ColectionPage> {
   }
 
   void _deleteCurrentColection() {
-    if (colections.isNotEmpty) {
-      int currentPageIndex = _pageController.page!.round();
-      _deleteColection(currentPageIndex);
-      _updateCollectionIndex();
-      setState(() {});
-    }
+    if (colections.isEmpty) return;
+
+    int currentPageIndex = _pageController.page!.round();
+    _deleteColection(currentPageIndex);
+    _updateCollectionIndex();
+    setState(() {});
   }
 
   void _deleteColection(int index) {
@@ -283,8 +291,54 @@ class _ColectionPageState extends State<ColectionPage> {
     _updateCollectionIndex();
   }
 
-  void _renameCollection() {}
+  void _showBottomRenameSheet() {
+    void showCustomDialog(BuildContext context) {
+      showGeneralDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        pageBuilder: (BuildContext context, Animation<double> animation,
+            Animation<double> secondaryAnimation) {
+          return Container(
+            width: 200.0,
+            height: 200.0,
+            color: Colors.white,
+            child: Center(
+              child: TextField(),
+            ),
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 200),
+      );
+    }
+    // if (colections.isEmpty) return;
 
+    // int colectionIndex = _pageController.page!.round();
+    // Colection colection = colections[colectionIndex];
+
+    // showModalBottomSheet(
+    //   // scrollControlDisabledMaxHeightRatio: ,
+    //   //todo o to robi?
+    //   isScrollControlled: true,
+    //   backgroundColor: Colors.brown.shade400,
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     // double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    //     // double bottomSheetHeight = keyboardHeight + 300;
+    //     return Container(
+    //         // name: colection.name,
+    //         // onSave: (newName) {
+    //         //   colection.name = newName;
+    //         //   _updateColection(colection, colectionIndex);
+    //         // },
+    //         // keyboardHeight: bottomSheetHeight,
+    //         );
+    //   },
+    // );
+  }
+
+  FocusNode _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     // bool _isVisible = true;
@@ -292,7 +346,6 @@ class _ColectionPageState extends State<ColectionPage> {
 
     return Scaffold(
       // backgroundColor: Colors.brown.shade300,
-      resizeToAvoidBottomInset: false,
 
       body: Column(
         children: [
@@ -405,11 +458,12 @@ class _ColectionPageState extends State<ColectionPage> {
             nextPage: _nextPage,
             deletePage: _deleteCurrentColection,
             addPage: _addColectionAndGoTo,
-            rename: _renameCollection,
+            rename: _showBottomRenameSheet,
           ),
         ],
       ),
 
+      resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: Visibility(
         visible: showButton,

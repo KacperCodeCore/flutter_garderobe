@@ -31,7 +31,7 @@ class ElementBottomSheet extends StatefulWidget {
 const double iconSize = 40;
 
 class _ElementBottomSheetState extends State<ElementBottomSheet> {
-  late TextEditingController _textController;
+  // late TextEditingController _textController;
   late MyElement _myElement;
 
   @override
@@ -47,7 +47,7 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
       _myElement = widget.myElement!;
     }
 
-    _textController = TextEditingController(text: '$_myElement.name');
+    // _textController = TextEditingController(text: '$_myElement.name');
 
     super.initState();
   }

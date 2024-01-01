@@ -11,6 +11,8 @@ class ColectionCreator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _textController =
+        TextEditingController(text: name);
     return
         // Padding(
         // padding: const EdgeInsets.only(top: 15, bottom: 15),
@@ -29,9 +31,10 @@ class ColectionCreator extends StatelessWidget {
               child: Center(
                   child: Stack(
                 children: <Widget>[
-                  Text(
+                  TextField(
                     //https://stackoverflow.com/questions/70874150/how-to-use-both-the-text-color-and-foreground-color-properties-together
-                    name,
+                    controller: _textController,
+                    // name,
                     style: TextStyle(
                       fontFamily: 'Kalam-Regular',
                       fontSize: 40,
@@ -42,8 +45,9 @@ class ColectionCreator extends StatelessWidget {
                         ..color = Colors.brown.shade200, // <-- Border color
                     ),
                   ),
-                  Text(
-                    name,
+                  TextField(
+                    controller: _textController,
+                    // name,
                     style: TextStyle(
                       fontFamily: 'Kalam-Regular',
                       fontSize: 40,
