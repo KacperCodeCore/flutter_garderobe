@@ -15,6 +15,9 @@ class HomeNavBar extends StatefulWidget {
 }
 
 class _HomeNavBarState extends State<HomeNavBar> {
+  GlobalKey _colectionKey = GlobalKey();
+  GlobalKey _elementKey = GlobalKey();
+
   int _pageIndex = 0;
 
   late List<Widget> _children = [
@@ -24,10 +27,13 @@ class _HomeNavBarState extends State<HomeNavBar> {
       },
     ),
     ColectionPage(
+      key: _colectionKey,
       collectionInitialIndex:
           Boxes.getAppData().get('appDataKey')!.colectionIndex,
     ),
-    ElementPage(),
+    ElementPage(
+      key: _elementKey,
+    ),
   ];
 
   @override
@@ -36,6 +42,20 @@ class _HomeNavBarState extends State<HomeNavBar> {
 
     if (!(Boxes.getAppData().containsKey('appDataKey'))) {
       Boxes.getAppData().put('appDataKey', ApplicationData(colectionIndex: 0));
+    }
+  }
+
+  void _onFBAPress() {
+    if (_pageIndex == 1) {
+      setState(() {
+        dynamic colectionPageState = _colectionKey.currentState;
+        colectionPageState?.handleFABPress();
+      });
+    } else if (_pageIndex == 2) {
+      setState(() {
+        dynamic elementPageState = _elementKey.currentState;
+        elementPageState?.handleFABPress();
+      });
     }
   }
 
@@ -75,7 +95,9 @@ class _HomeNavBarState extends State<HomeNavBar> {
                   Visibility(
                     visible: _pageIndex != 0,
                     child: FloatingActionButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _onFBAPress();
+                      },
                       child: Icon(Icons.add_rounded),
                     ),
                   ),

@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_application/data/colection.dart';
@@ -16,7 +15,6 @@ import 'package:screenshot/screenshot.dart';
 
 import '../../data/application_data.dart';
 import '../../data/boxes.dart';
-import 'rename_bottom_sheet.dart';
 
 class ColectionPage extends StatefulWidget {
   final int collectionInitialIndex;
@@ -71,6 +69,10 @@ class _ColectionPageState extends State<ColectionPage> {
       Boxes.getAppData().put('appDataKey',
           ApplicationData(colectionIndex: _pageController.page!.round()));
     });
+  }
+
+  void handleFABPress() {
+    print('handleFABPress() collectionPAge');
   }
 
   void _addEmptyColection() {
@@ -335,34 +337,6 @@ class _ColectionPageState extends State<ColectionPage> {
         );
       },
     );
-
-    // child: AbsorbPointer(
-    //         absorbing: true,
-
-    // if (colections.isEmpty) return;
-
-    // int colectionIndex = _pageController.page!.round();
-    // Colection colection = colections[colectionIndex];
-
-    // showModalBottomSheet(
-    //   // scrollControlDisabledMaxHeightRatio: ,
-    //   //todo o to robi?
-    //   isScrollControlled: true,
-    //   backgroundColor: Colors.brown.shade400,
-    //   context: context,
-    //   builder: (BuildContext context) {
-    //     // double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-    //     // double bottomSheetHeight = keyboardHeight + 300;
-    //     return Container(
-    //         // name: colection.name,
-    //         // onSave: (newName) {
-    //         //   colection.name = newName;
-    //         //   _updateColection(colection, colectionIndex);
-    //         // },
-    //         // keyboardHeight: bottomSheetHeight,
-    //         );
-    //   },
-    // );
   }
 
   FocusNode _focusNode = FocusNode();
@@ -518,6 +492,24 @@ class _ColectionPageState extends State<ColectionPage> {
       //     // ),
       //   ),
       // ),
+    );
+  }
+
+  void dssdsd() {
+    if (colections.length == 0) return;
+
+    showModalBottomSheet(
+      backgroundColor: Colors.brown.shade400,
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return ColectionBottomSheet(
+          onTap: (myElement) {
+            _addElement(myElement);
+            _TakeScreenshot();
+          },
+        );
+      },
     );
   }
 
