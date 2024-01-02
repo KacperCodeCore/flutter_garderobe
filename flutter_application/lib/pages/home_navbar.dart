@@ -71,9 +71,20 @@ class _HomeNavBarState extends State<HomeNavBar> {
             child: Column(children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: [FloatingActionButton(onPressed: () {})],
+                children: [
+                  Visibility(
+                    visible: _pageIndex != 0,
+                    child: FloatingActionButton(
+                      onPressed: () {},
+                      child: Icon(Icons.add_rounded),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                ],
               ),
-              SizedBox(height: 7),
+              SizedBox(height: 8),
               Container(
                 padding: EdgeInsets.all(13),
                 // margin: EdgeInsets.only(top: 10),
