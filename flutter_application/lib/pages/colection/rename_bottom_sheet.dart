@@ -16,20 +16,13 @@ class RenameAlertDialog extends StatelessWidget {
     final TextEditingController _textController =
         TextEditingController(text: name);
 
-    return Column(
-      children: [
-        Container(
-          height: 400,
-        )
-      ],
+    return AlertDialog(
+      insetPadding: const EdgeInsets.all(2),
+      content: SizedBox(
+        height: 100,
+        width: MediaQuery.of(context).size.width, // Set the width
+        child: TextField(),
+      ),
     );
-    // return AlertDialog(
-    //   insetPadding: const EdgeInsets.all(2),
-    //   content: SizedBox(
-    //     height: 100,
-    //     width: MediaQuery.of(context).size.width, // Set the width
-    //     child: TextField(),
-    //   ),
-    // );
   }
 }

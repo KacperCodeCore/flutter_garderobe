@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application/pages/home/bottom_post_sheet.dart';
+import 'package:flutter_application/pages/home/post_bottom_sheet.dart';
 
 class UserPost extends StatelessWidget {
   final String name;

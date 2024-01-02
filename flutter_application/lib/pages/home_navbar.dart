@@ -62,66 +62,81 @@ class _HomeNavBarState extends State<HomeNavBar> {
     Color _selectedIconColor = Colors.brown.shade600;
 
     return Scaffold(
-      extendBody: true,
-      body: _children[_pageIndex],
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.all(13),
-        margin: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
-        decoration: BoxDecoration(
-          color: Colors.brown[200],
-          borderRadius: BorderRadius.all(Radius.circular(25)),
-          border: Border.all(
-            color: _selectedIconColor,
-            // width: 3,
+        extendBody: true,
+        body: _children[_pageIndex],
+        bottomNavigationBar: IntrinsicHeight(
+          child: Container(
+            margin: EdgeInsets.all(10),
+            // color: Colors.red,
+            child: Column(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [FloatingActionButton(onPressed: () {})],
+              ),
+              SizedBox(height: 7),
+              Container(
+                padding: EdgeInsets.all(13),
+                // margin: EdgeInsets.only(top: 10),
+                decoration: BoxDecoration(
+                  color: Colors.brown[200],
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                  border: Border.all(
+                    color: _selectedIconColor,
+                    // width: 3,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _navigateBottonNavBar(0);
+                        },
+                        child: Icon(
+                          Icons.home,
+                          color:
+                              _pageIndex == 0 ? _selectedIconColor : _iconColor,
+                          size: _iconSize,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _navigateBottonNavBar(1);
+                        },
+                        child: Icon(
+                          Icons.collections,
+                          color:
+                              _pageIndex == 1 ? _selectedIconColor : _iconColor,
+                          size: _iconSize,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _navigateBottonNavBar(2);
+                        },
+                        child: Icon(
+                          Icons.add_a_photo_outlined,
+                          color:
+                              _pageIndex == 2 ? _selectedIconColor : _iconColor,
+                          size: _iconSize,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ]),
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 3),
-            ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  _navigateBottonNavBar(0);
-                },
-                child: Icon(
-                  Icons.home,
-                  color: _pageIndex == 0 ? _selectedIconColor : _iconColor,
-                  size: _iconSize,
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  _navigateBottonNavBar(1);
-                },
-                child: Icon(
-                  Icons.collections,
-                  color: _pageIndex == 1 ? _selectedIconColor : _iconColor,
-                  size: _iconSize,
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  _navigateBottonNavBar(2);
-                },
-                child: Icon(
-                  Icons.add_a_photo_outlined,
-                  color: _pageIndex == 2 ? _selectedIconColor : _iconColor,
-                  size: _iconSize,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+        ));
   }
 }

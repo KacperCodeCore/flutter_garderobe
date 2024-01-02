@@ -31,10 +31,10 @@ class ColectionCreator extends StatelessWidget {
               child: Center(
                   child: Stack(
                 children: <Widget>[
-                  TextField(
+                  Text(
                     //https://stackoverflow.com/questions/70874150/how-to-use-both-the-text-color-and-foreground-color-properties-together
-                    controller: _textController,
-                    // name,
+                    // controller: _textController,
+                    name,
                     style: TextStyle(
                       fontFamily: 'Kalam-Regular',
                       fontSize: 40,
@@ -45,9 +45,9 @@ class ColectionCreator extends StatelessWidget {
                         ..color = Colors.brown.shade200, // <-- Border color
                     ),
                   ),
-                  TextField(
-                    controller: _textController,
-                    // name,
+                  Text(
+                    // controller: _textController,
+                    name,
                     style: TextStyle(
                       fontFamily: 'Kalam-Regular',
                       fontSize: 40,

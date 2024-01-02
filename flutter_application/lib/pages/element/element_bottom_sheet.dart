@@ -31,7 +31,8 @@ class ElementBottomSheet extends StatefulWidget {
 const double iconSize = 40;
 
 class _ElementBottomSheetState extends State<ElementBottomSheet> {
-  // late TextEditingController _textController;
+  final String nullPath = '${Boxes.appDir}/null.png';
+  late TextEditingController _textController;
   late MyElement _myElement;
 
   @override
@@ -39,7 +40,7 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
     if (widget.myElement == null) {
       _myElement = MyElement(
           name: 'name',
-          path: '${Boxes.appDir}/null.png',
+          path: nullPath,
           height: 200,
           width: 200,
           type: ClotherType.none);
@@ -47,7 +48,7 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
       _myElement = widget.myElement!;
     }
 
-    // _textController = TextEditingController(text: '$_myElement.name');
+    _textController = TextEditingController(text: '$_myElement.name');
 
     super.initState();
   }
@@ -158,6 +159,10 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
             ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(25)),
                 child: Image.file(File(_myElement.path))),
+            // child: _myElement.path =
+            //     nullPath ? null : Image.file(File(_myElement.path))),
+            // child: _myElement.path = '${Boxes.appDir}/null.png' ? null : Image.file(File(_myElement.path))),
+
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: Row(

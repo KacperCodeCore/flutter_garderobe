@@ -16,7 +16,7 @@ import 'package:screenshot/screenshot.dart';
 
 import '../../data/application_data.dart';
 import '../../data/boxes.dart';
-import 'rename_alert_dialog.dart';
+import 'rename_bottom_sheet.dart';
 
 class ColectionPage extends StatefulWidget {
   final int collectionInitialIndex;
@@ -292,26 +292,53 @@ class _ColectionPageState extends State<ColectionPage> {
   }
 
   void _showBottomRenameSheet() {
-    void showCustomDialog(BuildContext context) {
-      showGeneralDialog(
-        context: context,
-        barrierDismissible: true,
-        barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        pageBuilder: (BuildContext context, Animation<double> animation,
-            Animation<double> secondaryAnimation) {
-          return Container(
-            width: 200.0,
-            height: 200.0,
-            color: Colors.white,
-            child: Center(
-              child: TextField(),
+    // showDialog(
+    //   context: context,
+    //   builder: (context) {
+    //     return RenameAlertDialog(
+    //       name: 'sdsdsd',
+    //       onSave: (String) {},
+    //     );
+    //   },
+    // );
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Stack(
+          children: [
+            Positioned.fill(
+              child: IgnorePointer(
+                ignoring: true,
+                child: Container(
+                  color: Colors.transparent,
+                ),
+              ),
             ),
-          );
-        },
-        transitionDuration: const Duration(milliseconds: 200),
-      );
-    }
+            AlertDialog(
+              title: Text('Alert Dialog'),
+              content: SizedBox(
+                height: 200,
+                width: 200,
+                child: TextField(),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+
+    // child: AbsorbPointer(
+    //         absorbing: true,
+
     // if (colections.isEmpty) return;
 
     // int colectionIndex = _pageController.page!.round();
@@ -463,34 +490,34 @@ class _ColectionPageState extends State<ColectionPage> {
         ],
       ),
 
-      resizeToAvoidBottomInset: false,
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: Visibility(
-        visible: showButton,
-        child: Padding(
-          padding: EdgeInsets.only(bottom: 80),
-          child: FloatingActionButton(
-            onPressed: () {
-              if (colections.length == 0) return;
-              //todo DraggableScrollable
-              showModalBottomSheet(
-                backgroundColor: Colors.brown.shade400,
-                isScrollControlled: true,
-                context: context,
-                builder: (BuildContext context) {
-                  return ColectionBottomSheet(
-                    onTap: (myElement) {
-                      _addElement(myElement);
-                      _TakeScreenshot();
-                    },
-                  );
-                },
-              );
-            },
-            child: Icon(Icons.add),
-          ),
-        ),
-      ),
+      // resizeToAvoidBottomInset: false,
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      // floatingActionButton: Visibility(
+      //   visible: showButton,
+      //   child: Padding(
+      //     padding: EdgeInsets.only(bottom: 80),
+      //     // child: FloatingActionButton(
+      //     //   onPressed: () {
+      //     //     if (colections.length == 0) return;
+      //     //     //todo DraggableScrollable
+      //     //     showModalBottomSheet(
+      //     //       backgroundColor: Colors.brown.shade400,
+      //     //       isScrollControlled: true,
+      //     //       context: context,
+      //     //       builder: (BuildContext context) {
+      //     //         return ColectionBottomSheet(
+      //     //           onTap: (myElement) {
+      //     //             _addElement(myElement);
+      //     //             _TakeScreenshot();
+      //     //           },
+      //     //         );
+      //     //       },
+      //     //     );
+      //     //   },
+      //     //   child: Icon(Icons.add),
+      //     // ),
+      //   ),
+      // ),
     );
   }
 

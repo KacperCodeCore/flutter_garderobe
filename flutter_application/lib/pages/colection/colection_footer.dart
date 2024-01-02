@@ -66,6 +66,7 @@ class ColectionFooter extends StatelessWidget {
                   color: _color1,
                 ),
               ),
+              // FloatingActionButton(onPressed: () {}),
             ],
           ),
         ),
