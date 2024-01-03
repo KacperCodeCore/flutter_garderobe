@@ -6,6 +6,7 @@ import 'package:flutter_application/data/clother_type_adapter.dart';
 import 'package:flutter_application/data/my_element.dart';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 import '../../../assets/widgets/sheet_holder.dart';
 
 class ElementBottomSheet extends StatefulWidget {
@@ -39,6 +40,7 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
   void initState() {
     if (widget.myElement == null) {
       _myElement = MyElement(
+          id: Uuid().v4(),
           name: 'name',
           path: _nullPath,
           height: 200,
@@ -49,7 +51,6 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
     }
 
     // _textController = TextEditingController(text: '$_myElement.name');
-
     super.initState();
   }
 
