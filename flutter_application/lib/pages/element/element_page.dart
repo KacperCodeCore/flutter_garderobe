@@ -34,6 +34,7 @@ class _ElementPageState extends State<ElementPage> {
     var index = box.values.toList().cast<MyElement>().indexOf(element);
     setState(
       () {
+        // todo gdy element jest pusty, to jest błąd
         box.deleteAt(index);
         elements = box.values.toList().cast<MyElement>();
       },
@@ -91,9 +92,7 @@ class _ElementPageState extends State<ElementPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       backgroundColor: Colors.brown.shade300,
-
       body: Center(
         child: ListView.builder(
           itemCount: elements.length,
@@ -109,15 +108,6 @@ class _ElementPageState extends State<ElementPage> {
           },
         ),
       ),
-      // floatingActionButton: Padding(
-      //   padding: EdgeInsets.only(bottom: 65),
-      //   child: FloatingActionButton(
-      //     child: Icon(Icons.add),
-      //     onPressed: () {
-      //       _showBottomSheet(null, false);
-      //     },
-      //   ),
-      // ),
     );
   }
 }

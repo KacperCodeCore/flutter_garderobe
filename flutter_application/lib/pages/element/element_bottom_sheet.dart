@@ -32,7 +32,7 @@ const double iconSize = 40;
 
 class _ElementBottomSheetState extends State<ElementBottomSheet> {
   final String _nullPath = '${Boxes.appDir}/null.png';
-  late TextEditingController _textController;
+  // late TextEditingController _textController;
   late MyElement _myElement;
 
   @override
@@ -48,7 +48,7 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
       _myElement = widget.myElement!;
     }
 
-    _textController = TextEditingController(text: '$_myElement.name');
+    // _textController = TextEditingController(text: '$_myElement.name');
 
     super.initState();
   }
@@ -148,7 +148,12 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
                           color: Colors.brown.shade300,
                         ),
                         child: MaterialButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _myElement.type =
+                                ClotherType.values.elementAt(index);
+                            Navigator.of(context).pop();
+                            // widget.update(_myElement);
+                          },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
