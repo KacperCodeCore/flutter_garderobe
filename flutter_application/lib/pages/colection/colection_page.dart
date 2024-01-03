@@ -72,7 +72,21 @@ class _ColectionPageState extends State<ColectionPage> {
   }
 
   void handleFABPress() {
-    print('handleFABPress() collectionPAge');
+    if (colections.length == 0) return;
+    //todo DraggableScrollable
+    showModalBottomSheet(
+      backgroundColor: Colors.brown.shade400,
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return ColectionBottomSheet(
+          onTap: (myElement) {
+            _addElement(myElement);
+            _TakeScreenshot();
+          },
+        );
+      },
+    );
   }
 
   void _addEmptyColection() {
@@ -464,34 +478,34 @@ class _ColectionPageState extends State<ColectionPage> {
         ],
       ),
 
-      // resizeToAvoidBottomInset: false,
-      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      // floatingActionButton: Visibility(
-      //   visible: showButton,
-      //   child: Padding(
-      //     padding: EdgeInsets.only(bottom: 80),
-      //     // child: FloatingActionButton(
-      //     //   onPressed: () {
-      //     //     if (colections.length == 0) return;
-      //     //     //todo DraggableScrollable
-      //     //     showModalBottomSheet(
-      //     //       backgroundColor: Colors.brown.shade400,
-      //     //       isScrollControlled: true,
-      //     //       context: context,
-      //     //       builder: (BuildContext context) {
-      //     //         return ColectionBottomSheet(
-      //     //           onTap: (myElement) {
-      //     //             _addElement(myElement);
-      //     //             _TakeScreenshot();
-      //     //           },
-      //     //         );
-      //     //       },
-      //     //     );
-      //     //   },
-      //     //   child: Icon(Icons.add),
-      //     // ),
+      //   resizeToAvoidBottomInset: false,
+      //   floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      //   floatingActionButton: Visibility(
+      //     visible: showButton,
+      //     child: Padding(
+      //       padding: EdgeInsets.only(bottom: 80),
+      //       child: FloatingActionButton(
+      //         onPressed: () {
+      //           if (colections.length == 0) return;
+      //           //todo DraggableScrollable
+      //           showModalBottomSheet(
+      //             backgroundColor: Colors.brown.shade400,
+      //             isScrollControlled: true,
+      //             context: context,
+      //             builder: (BuildContext context) {
+      //               return ColectionBottomSheet(
+      //                 onTap: (myElement) {
+      //                   _addElement(myElement);
+      //                   _TakeScreenshot();
+      //                 },
+      //               );
+      //             },
+      //           );
+      //         },
+      //         child: Icon(Icons.add),
+      //       ),
+      //     ),
       //   ),
-      // ),
     );
   }
 

@@ -14,6 +14,10 @@ class ElementPage extends StatefulWidget {
 }
 
 class _ElementPageState extends State<ElementPage> {
+  void handleFABPress() {
+    _showBottomSheet(null, false);
+  }
+
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
 
   void _addMyElement(MyElement myElement) async {
@@ -48,6 +52,7 @@ class _ElementPageState extends State<ElementPage> {
   }
 
   void _updateElement(MyElement myElement) {
+    //todo error?
     Boxes.getMyElements().put(myElement.id, myElement);
     setState(() {
       elements = Boxes.getMyElements().values.toList();
@@ -83,10 +88,6 @@ class _ElementPageState extends State<ElementPage> {
     );
   }
 
-  void handleFABPress() {
-    print('handleFABPress() elementPage');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,15 +109,15 @@ class _ElementPageState extends State<ElementPage> {
           },
         ),
       ),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 65),
-        child: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            _showBottomSheet(null, false);
-          },
-        ),
-      ),
+      // floatingActionButton: Padding(
+      //   padding: EdgeInsets.only(bottom: 65),
+      //   child: FloatingActionButton(
+      //     child: Icon(Icons.add),
+      //     onPressed: () {
+      //       _showBottomSheet(null, false);
+      //     },
+      //   ),
+      // ),
     );
   }
 }

@@ -31,7 +31,7 @@ class ElementBottomSheet extends StatefulWidget {
 const double iconSize = 40;
 
 class _ElementBottomSheetState extends State<ElementBottomSheet> {
-  final String nullPath = '${Boxes.appDir}/null.png';
+  final String _nullPath = '${Boxes.appDir}/null.png';
   late TextEditingController _textController;
   late MyElement _myElement;
 
@@ -40,7 +40,7 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
     if (widget.myElement == null) {
       _myElement = MyElement(
           name: 'name',
-          path: nullPath,
+          path: _nullPath,
           height: 200,
           width: 200,
           type: ClotherType.none);
@@ -94,58 +94,84 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
       context: context,
       builder: (BuildContext context) {
         return Container(
-          height: 200,
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.add_photo_alternate_outlined,
-                    size: iconSize,
-                  ),
-                  onPressed: () {
-                    _choseImage(ImageSource.gallery);
-                    Navigator.of(context).pop();
-                  },
+          height: 125,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                icon: Icon(
+                  Icons.add_photo_alternate_outlined,
+                  size: iconSize,
                 ),
-                IconButton(
-                  icon: Icon(
-                    Icons.camera_alt_outlined,
-                    size: iconSize,
-                  ),
-                  onPressed: () {
-                    _choseImage(ImageSource.camera);
-                    Navigator.of(context).pop();
-                  },
+                onPressed: () {
+                  _choseImage(ImageSource.gallery);
+                  Navigator.of(context).pop();
+                },
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.camera_alt_outlined,
+                  size: iconSize,
                 ),
-              ],
-            ),
+                onPressed: () {
+                  _choseImage(ImageSource.camera);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
           ),
         );
       },
     );
   }
 
-  void _showBottomSheetEnums() {
+  void _showBottomSheetEnums(BuildContext context) {
     showModalBottomSheet(
-      backgroundColor: Colors.brown.shade400,
       context: context,
-      builder: (BuildContext context) {
-        return Container(
-          child: Column(
-            children: ClotherType.values.map((type) {
-              return Container(
-                height: 50,
-                child: Text(
-                  type.toString(),
-                  style: TextStyle(fontSize: 25),
-                ),
-              );
-            }).toList(),
-          ),
-        );
-      },
+      isScrollControlled: false,
+      builder: (context) => DraggableScrollableSheet(
+        expand: false,
+        builder: (BuildContext context, ScrollController scrollController) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Container(
+              // color: Colors.blue[100],
+              child: ListView.builder(
+                controller: scrollController,
+                itemCount: ClotherType.values.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    title: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.brown.shade300,
+                        ),
+                        child: MaterialButton(
+                          onPressed: () {},
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              '   ' +
+                                  ClotherType.values
+                                      .elementAt(index)
+                                      .toString()
+                                      .split('.')
+                                      .last,
+                              style: TextStyle(
+                                  fontSize: 25, color: Colors.brown.shade900),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -156,15 +182,25 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
         child: Column(
           children: [
             SheetHolder(),
-            ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(25)),
-                child: Image.file(File(_myElement.path))),
-            // child: _myElement.path =
-            //     nullPath ? null : Image.file(File(_myElement.path))),
-            // child: _myElement.path = '${Boxes.appDir}/null.png' ? null : Image.file(File(_myElement.path))),
-
+            //image
+            if (_myElement.path != _nullPath)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: (ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: 500),
+                    child: Image.file(File(_myElement.path)),
+                  ),
+                )),
+              ),
+            // buttons
             Padding(
-              padding: const EdgeInsets.all(30.0),
+              padding: const EdgeInsets.only(
+                left: 30.0,
+                bottom: 30.0,
+                right: 30.0,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -185,7 +221,7 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
                       size: iconSize,
                     ),
                     onPressed: () {
-                      _showBottomSheetEnums();
+                      _showBottomSheetEnums(context);
                     },
                   ),
                   //remove
@@ -212,16 +248,16 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
                       }
                     },
                   ),
-                  // back
-                  IconButton(
-                    icon: Icon(
-                      Icons.exit_to_app_rounded,
-                      size: iconSize,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
+                  // // back
+                  // IconButton(
+                  //   icon: Icon(
+                  //     Icons.exit_to_app_rounded,
+                  //     size: iconSize,
+                  //   ),
+                  //   onPressed: () {
+                  //     Navigator.pop(context);
+                  //   },
+                  // ),
                 ],
               ),
             )
