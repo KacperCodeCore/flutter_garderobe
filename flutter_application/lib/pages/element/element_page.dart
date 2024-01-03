@@ -21,21 +21,20 @@ class _ElementPageState extends State<ElementPage> {
   var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
 
   void _addMyElement(MyElement myElement) async {
+    Boxes.getMyElements().add(myElement);
     setState(() {
-      Boxes.getMyElements().add(myElement);
       elements = Boxes.getMyElements().values.toList().cast<MyElement>();
     });
   }
 
-  void _deleteElement(MyElement element) async {
-    _deleteImage(element.path);
+  void _deleteElement(MyElement myElement) async {
+    _deleteImage(myElement.path);
     // Boxes.getMyElements().delete(element);
     final box = Boxes.getMyElements();
-    var index = box.values.toList().cast<MyElement>().indexOf(element);
+    var index = box.values.toList().cast<MyElement>().indexOf(myElement);
+    box.deleteAt(index);
     setState(
       () {
-        // todo gdy element jest pusty, to jest błąd
-        box.deleteAt(index);
         elements = box.values.toList().cast<MyElement>();
       },
     );
@@ -52,9 +51,11 @@ class _ElementPageState extends State<ElementPage> {
     }
   }
 
-  void _updateElement(MyElement myElement) {
-    //todo error?
-    Boxes.getMyElements().put(myElement.id, myElement);
+  void _updateElement(MyElement myElement) async {
+    int index = elements.indexWhere((e) => e.id == myElement.id);
+    if (index == -1) return;
+
+    Boxes.getMyElements().putAt(index, myElement);
     setState(() {
       elements = Boxes.getMyElements().values.toList();
     });

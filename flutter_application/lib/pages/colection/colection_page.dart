@@ -361,151 +361,126 @@ class _ColectionPageState extends State<ColectionPage> {
 
     return Scaffold(
       // backgroundColor: Colors.brown.shade300,
+      // resizeToAvoidBottomInset: false,
 
-      body: Column(
-        children: [
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            height: 630,
-            child: Center(
-              child: Screenshot(
-                controller: _screenshotController,
-                child: PageView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  controller: _pageController,
-                  itemCount: colections.length,
-                  itemBuilder: (context, ColectionIndex) {
-                    final containerKey = GlobalKey();
-                    return ColectionCreator(
-                      name: 'Name',
-                      child: Container(
-                        height: 600,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.brown),
-                          borderRadius: BorderRadius.all(Radius.circular(25)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset: Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(25)),
-                          child: Container(
-                            key: containerKey,
-                            color: Colors.brown.shade100,
-                            child: Stack(
-                              children: List.generate(
-                                colections[ColectionIndex].elements.length,
-                                (index) {
-                                  final element = colections[ColectionIndex]
-                                      .elements[index];
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              height: 630,
+              child: Center(
+                child: Screenshot(
+                  controller: _screenshotController,
+                  child: PageView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    controller: _pageController,
+                    itemCount: colections.length,
+                    itemBuilder: (context, ColectionIndex) {
+                      final containerKey = GlobalKey();
+                      return ColectionCreator(
+                        name: 'Name',
+                        child: Container(
+                          height: 600,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.brown),
+                            borderRadius: BorderRadius.all(Radius.circular(25)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                spreadRadius: 5,
+                                blurRadius: 7,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(25)),
+                            child: Container(
+                              key: containerKey,
+                              color: Colors.brown.shade100,
+                              child: Stack(
+                                children: List.generate(
+                                  colections[ColectionIndex].elements.length,
+                                  (index) {
+                                    final element = colections[ColectionIndex]
+                                        .elements[index];
 
-                                  final GlobalKey _sizeBoxKey = GlobalKey();
-                                  final GlobalKey _draggableKey = GlobalKey();
+                                    final GlobalKey _sizeBoxKey = GlobalKey();
+                                    final GlobalKey _draggableKey = GlobalKey();
 
-                                  return DraggableWidget(
-                                    key: _draggableKey,
-                                    initMatrix4: element.matrix4,
-                                    child: SizedBox(
-                                      key: _sizeBoxKey,
-                                      height: element.height,
-                                      width: element.width,
-                                      // if image.path is null
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-                                        child: Image.file(
-                                            File(
-                                              File(element.path).existsSync()
-                                                  ? element.path
-                                                  : '${Boxes.appDir}/null.png',
-                                            ),
-                                            fit: BoxFit.fitWidth),
+                                    return DraggableWidget(
+                                      key: _draggableKey,
+                                      initMatrix4: element.matrix4,
+                                      child: SizedBox(
+                                        key: _sizeBoxKey,
+                                        height: element.height,
+                                        width: element.width,
+                                        // if image.path is null
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                          child: Image.file(
+                                              File(
+                                                File(element.path).existsSync()
+                                                    ? element.path
+                                                    : '${Boxes.appDir}/null.png',
+                                              ),
+                                              fit: BoxFit.fitWidth),
+                                        ),
                                       ),
-                                    ),
-                                    onDoubleTap: () {},
-                                    onSave: (m4) {
-                                      print(
-                                          'h ${element.height} w ${element.width}');
-                                      if (_overlapsParent(
-                                        _sizeBoxKey,
-                                        containerKey,
-                                      )) {
-                                        print('saving');
-                                        _updateColectionElement(
-                                          'saved',
-                                          element.path,
-                                          m4,
-                                          index,
-                                          element.height,
-                                          element.width,
-                                        );
-                                        _TakeScreenshot();
-                                      } else {
-                                        _deleteColectionElement(
-                                            colections[ColectionIndex]
-                                                .elements[index]
-                                                .id);
-                                        _TakeScreenshot();
-                                      }
-                                    },
-                                  );
-                                },
+                                      onDoubleTap: () {},
+                                      onSave: (m4) {
+                                        print(
+                                            'h ${element.height} w ${element.width}');
+                                        if (_overlapsParent(
+                                          _sizeBoxKey,
+                                          containerKey,
+                                        )) {
+                                          print('saving');
+                                          _updateColectionElement(
+                                            'saved',
+                                            element.path,
+                                            m4,
+                                            index,
+                                            element.height,
+                                            element.width,
+                                          );
+                                          _TakeScreenshot();
+                                        } else {
+                                          _deleteColectionElement(
+                                              colections[ColectionIndex]
+                                                  .elements[index]
+                                                  .id);
+                                          _TakeScreenshot();
+                                        }
+                                      },
+                                    );
+                                  },
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
-          ),
-          ColectionFooter(
-            previousPage: _previousPage,
-            nextPage: _nextPage,
-            deletePage: _deleteCurrentColection,
-            addPage: _addColectionAndGoTo,
-            rename: _showBottomRenameSheet,
-          ),
-        ],
+            ColectionFooter(
+              previousPage: _previousPage,
+              nextPage: _nextPage,
+              deletePage: _deleteCurrentColection,
+              addPage: _addColectionAndGoTo,
+              rename: _showBottomRenameSheet,
+            ),
+          ],
+        ),
       ),
-
-      //   resizeToAvoidBottomInset: false,
-      //   floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      //   floatingActionButton: Visibility(
-      //     visible: showButton,
-      //     child: Padding(
-      //       padding: EdgeInsets.only(bottom: 80),
-      //       child: FloatingActionButton(
-      //         onPressed: () {
-      //           if (colections.length == 0) return;
-      //           //todo DraggableScrollable
-      //           showModalBottomSheet(
-      //             backgroundColor: Colors.brown.shade400,
-      //             isScrollControlled: true,
-      //             context: context,
-      //             builder: (BuildContext context) {
-      //               return ColectionBottomSheet(
-      //                 onTap: (myElement) {
-      //                   _addElement(myElement);
-      //                   _TakeScreenshot();
-      //                 },
-      //               );
-      //             },
-      //           );
-      //         },
-      //         child: Icon(Icons.add),
-      //       ),
-      //     ),
-      //   ),
     );
   }
 

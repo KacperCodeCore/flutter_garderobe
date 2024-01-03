@@ -17,7 +17,7 @@ class MyElementAdapter extends TypeAdapter<MyElement> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MyElement(
-      id: fields[0] as String?,
+      id: fields[0] as String,
       name: fields[1] as String,
       path: fields[2] as String,
       height: fields[3] as double,
