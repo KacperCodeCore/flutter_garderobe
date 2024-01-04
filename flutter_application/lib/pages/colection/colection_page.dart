@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_application/data/clother_type_adapter.dart';
 import 'package:flutter_application/data/colection.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'package:flutter_application/pages/colection/colection_bottom_sheet.dart';
@@ -29,7 +30,11 @@ class ColectionPage extends StatefulWidget {
 }
 
 class _ColectionPageState extends State<ColectionPage> {
-  var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
+  // var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
+  List<MyElement> elements = [];
+  Set<ClotherType> uniquetype = {};
+  Map<ClotherType, List<MyElement>> groupedElements = {};
+
   var colections = Boxes.getColection().values.toList().cast<Colection>();
   var appData = Boxes.getAppData().values.toList().cast<ApplicationData>();
 
@@ -41,6 +46,16 @@ class _ColectionPageState extends State<ColectionPage> {
 
   @override
   void initState() {
+    elements = Boxes.getMyElements().values.toList().cast<MyElement>();
+    uniquetype = Boxes.getMyElements().values.map((e) => e.type).toSet();
+    // groupedElements = {
+    //   for (var type in uniquetype)
+    //     type: elements.where((e) => e.type == type).toList(),
+    // };
+    for (ClotherType type in uniquetype)
+      groupedElements[type] =
+          elements.where((element) => element.type == type).toList();
+
     if (appData.isEmpty) {
       setState(() {
         Boxes.getAppData().add(ApplicationData());
@@ -80,6 +95,7 @@ class _ColectionPageState extends State<ColectionPage> {
       context: context,
       builder: (BuildContext context) {
         return ColectionBottomSheet(
+          groupedElements: groupedElements,
           onTap: (myElement) {
             _addElement(myElement);
             _TakeScreenshot();
@@ -493,6 +509,7 @@ class _ColectionPageState extends State<ColectionPage> {
       context: context,
       builder: (BuildContext context) {
         return ColectionBottomSheet(
+          groupedElements: groupedElements,
           onTap: (myElement) {
             _addElement(myElement);
             _TakeScreenshot();

@@ -9,10 +9,12 @@ import '../../data/my_element.dart';
 
 class ColectionBottomSheet extends StatefulWidget {
   final Function(MyElement) onTap;
+  final Map<ClotherType, List<MyElement>> groupedElements;
 
   ColectionBottomSheet({
     required this.onTap,
     super.key,
+    required this.groupedElements,
   });
 
   @override
@@ -23,18 +25,18 @@ class _ColectionBottomSheetState extends State<ColectionBottomSheet> {
   // Color _color1 = Colors.brown.shade600;
   double _height = 100;
   double _fullHight = 100;
-  var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
-  var uniquetype =
-      Boxes.getMyElements().values.map((element) => element.type).toSet();
-  Map<ClotherType, List<MyElement>> groupedElements = {};
+  // var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
+  // var uniquetype =
+  //     Boxes.getMyElements().values.map((element) => element.type).toSet();
+  // Map<ClotherType, List<MyElement>> groupedElements = {};
 
   @override
   void initState() {
-    for (ClotherType type in uniquetype)
-      groupedElements[type] =
-          elements.where((element) => element.type == type).toList();
+    // for (ClotherType type in uniquetype)
+    //   groupedElements[type] =
+    //       elements.where((element) => element.type == type).toList();
 
-    _fullHight = _height * groupedElements.length.toDouble() + 60;
+    _fullHight = _height * widget.groupedElements.length.toDouble() + 60;
     _fullHight > 400 ? 400 : _fullHight;
     super.initState();
   }
@@ -49,17 +51,17 @@ class _ColectionBottomSheetState extends State<ColectionBottomSheet> {
           SheetHolder(),
           Expanded(
             child: ListView.builder(
-              itemCount: groupedElements.length,
+              itemCount: widget.groupedElements.length,
               itemBuilder: (BuildContext context, int typeIndex) {
-                var type = groupedElements.keys.toList()[typeIndex];
+                var type = widget.groupedElements.keys.toList()[typeIndex];
 
                 return SizedBox(
                   height: _height,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: groupedElements[type]!.length,
+                    itemCount: widget.groupedElements[type]!.length,
                     itemBuilder: (BuildContext context, int index) {
-                      var element = groupedElements[type]![index];
+                      var element = widget.groupedElements[type]![index];
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10, left: 10),
                         child: SizedBox(
