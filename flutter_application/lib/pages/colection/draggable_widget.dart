@@ -50,6 +50,10 @@ class _DraggableWidgetState extends State<DraggableWidget> {
     print('tap!!!');
   }
 
+  void onPressed() {
+    print('onPressed!!!');
+  }
+
   void onTapCancel() {
     print('onTapCancel!!!');
   }
