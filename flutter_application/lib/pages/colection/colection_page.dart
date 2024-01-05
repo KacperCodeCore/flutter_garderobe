@@ -39,7 +39,6 @@ class _ColectionPageState extends State<ColectionPage> {
   var appData = Boxes.getAppData().values.toList().cast<ApplicationData>();
 
   bool showButton = true;
-  // late StreamSubscription<bool> _keyboardVisibilitySubscription;
 
   ScreenshotController _screenshotController = ScreenshotController();
   late PageController _pageController;
@@ -48,10 +47,7 @@ class _ColectionPageState extends State<ColectionPage> {
   void initState() {
     elements = Boxes.getMyElements().values.toList().cast<MyElement>();
     uniquetype = Boxes.getMyElements().values.map((e) => e.type).toSet();
-    // groupedElements = {
-    //   for (var type in uniquetype)
-    //     type: elements.where((e) => e.type == type).toList(),
-    // };
+
     for (ClotherType type in uniquetype)
       groupedElements[type] =
           elements.where((element) => element.type == type).toList();
@@ -65,14 +61,6 @@ class _ColectionPageState extends State<ColectionPage> {
     if (colections.isEmpty) {
       _addEmptyColection();
     }
-
-    // // todo
-    // _keyboardVisibilitySubscription =
-    //     KeyboardVisibilityController().onChange.listen((visible) {
-    //   setState(() {
-    //     _showHideButton(visible);
-    //   });
-    // });
 
     super.initState();
 
@@ -117,32 +105,24 @@ class _ColectionPageState extends State<ColectionPage> {
     });
   }
 
-  // void _showHideButton(bool isKeyboardVisible) {
-  //   if (isKeyboardVisible) {
-  //     showButton = false;
-  //   } else {
-  //     Future.delayed(Duration(milliseconds: 400), () {
-  //       setState(() {
-  //         showButton = true;
-  //       });
-  //     });
-  //   }
-  //   print('showButton $showButton');
-  // }
-
   Future<void> _addElement(MyElement myElement) async {
     if (colections.isEmpty) return;
-    print('added h ${myElement.height}, w ${myElement.width}');
 
-    double width = 100.0;
+    double width = 200.0;
     double height = width * myElement.height / myElement.width;
 
-    var colectionElement = ColectionElement(
+    MyElement newElement = MyElement(
+      id: myElement.id,
       name: myElement.name,
       path: myElement.path,
-      matrix4: Matrix4.identity(),
       height: height,
       width: width,
+      type: myElement.type,
+    );
+
+    var colectionElement = ColectionElement(
+      matrix4: Matrix4.identity(),
+      myElement: newElement,
     );
 
     int index = _pageController.page!.round();
@@ -155,24 +135,18 @@ class _ColectionPageState extends State<ColectionPage> {
     });
   }
 
-  void _updateColectionElement(String name, String path, Matrix4 m4, int index,
-      double height, double width) async {
+  void _updateColectionElement(
+      int index, Matrix4 m4, MyElement myElement) async {
     ColectionElement element = ColectionElement(
-      name: name,
-      path: path,
       matrix4: m4,
-      height: height,
-      width: width,
+      myElement: myElement,
     );
+
     int colectionIndex = _pageController.page!.round();
     Colection colection = Boxes.getColection().getAt(colectionIndex)!;
     colection.elements[index] = element;
 
     _updateColection(colection, colectionIndex);
-    // setState(() {
-    //   Boxes.getColection().putAt(colectionIndex, colection);
-    //   colections = Boxes.getColection().values.toList();
-    // });
   }
 
   void _updateColection(Colection colection, int colectionIndex) {
@@ -226,6 +200,31 @@ class _ColectionPageState extends State<ColectionPage> {
 
     Boxes.getColection().putAt(colectionIndex, colection);
   }
+
+  void _nextElement(Matrix4 m4, int index, MyElement myElement) {
+    // myElement.type exsist ?
+    int index = groupedElements[myElement.type]!
+        .indexWhere((e) => e.id == myElement.id);
+
+    if (groupedElements[myElement.type]!.length <= 1) return;
+
+    // finded element ?
+    if (index == -1) return;
+    if (index >= groupedElements.length) {
+      index = 0;
+    } else {
+      index++;
+    }
+    MyElement nextElement =
+        MyElement.copy(groupedElements[myElement.type]![index]);
+    // myElement = newElement;
+
+    _updateColectionElement(index, m4, nextElement);
+  }
+
+  // void _previousElement() {
+  //   _updateColectionElement();d
+  // }
 
   bool _overlapsParent(GlobalKey key, GlobalKey containerKey) {
     //pobiera dane kontenera
@@ -333,6 +332,7 @@ class _ColectionPageState extends State<ColectionPage> {
     //     );
     //   },
     // );
+
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -369,7 +369,6 @@ class _ColectionPageState extends State<ColectionPage> {
     );
   }
 
-  FocusNode _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     // bool _isVisible = true;
@@ -433,37 +432,42 @@ class _ColectionPageState extends State<ColectionPage> {
                                       initMatrix4: element.matrix4,
                                       child: SizedBox(
                                         key: _sizeBoxKey,
-                                        height: element.height,
-                                        width: element.width,
+                                        height: element.myElement.height,
+                                        width: element.myElement.width,
                                         // if image.path is null
                                         child: ClipRRect(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)),
                                           child: Image.file(
                                               File(
-                                                File(element.path).existsSync()
-                                                    ? element.path
+                                                File(element.myElement.path)
+                                                        .existsSync()
+                                                    ? element.myElement.path
                                                     : '${Boxes.appDir}/null.png',
                                               ),
                                               fit: BoxFit.fitWidth),
                                         ),
                                       ),
+                                      onTap: (m4) {
+                                        _nextElement(
+                                          m4,
+                                          index,
+                                          element.myElement,
+                                        );
+                                      },
                                       onDoubleTap: () {},
                                       onSave: (m4) {
                                         print(
-                                            'h ${element.height} w ${element.width}');
+                                            'h ${element.myElement.height} w ${element.myElement.width}');
                                         if (_overlapsParent(
                                           _sizeBoxKey,
                                           containerKey,
                                         )) {
                                           print('saving');
                                           _updateColectionElement(
-                                            'saved',
-                                            element.path,
-                                            m4,
                                             index,
-                                            element.height,
-                                            element.width,
+                                            m4,
+                                            element.myElement,
                                           );
                                           _TakeScreenshot();
                                         } else {
@@ -497,25 +501,6 @@ class _ColectionPageState extends State<ColectionPage> {
           ],
         ),
       ),
-    );
-  }
-
-  void dssdsd() {
-    if (colections.length == 0) return;
-
-    showModalBottomSheet(
-      backgroundColor: Colors.brown.shade400,
-      isScrollControlled: true,
-      context: context,
-      builder: (BuildContext context) {
-        return ColectionBottomSheet(
-          groupedElements: groupedElements,
-          onTap: (myElement) {
-            _addElement(myElement);
-            _TakeScreenshot();
-          },
-        );
-      },
     );
   }
 

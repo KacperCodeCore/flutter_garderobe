@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:uuid/uuid.dart';
 
 import 'clother_type_adapter.dart';
 
@@ -33,6 +32,14 @@ class MyElement {
     required this.width,
     required this.type,
   });
+
+  MyElement.copy(MyElement other)
+      : id = other.id,
+        name = other.name,
+        path = other.path,
+        height = other.height,
+        width = other.width,
+        type = other.type;
 }
 
 // flutter packages pub run build_runner build --delete-conflicting-outputs

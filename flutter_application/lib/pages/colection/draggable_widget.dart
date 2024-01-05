@@ -10,6 +10,7 @@ class DraggableWidget extends StatefulWidget {
   final double initScale;
   final double initRotation;
   final Matrix4? initMatrix4;
+  final Function(Matrix4) onTap;
   final Function onDoubleTap;
   final Function(Matrix4) onSave;
 
@@ -21,6 +22,7 @@ class DraggableWidget extends StatefulWidget {
     this.initScale = 1.0,
     this.initRotation = 0.0,
     this.initMatrix4 = null,
+    required this.onTap,
     required this.onDoubleTap,
     required this.onSave,
   }) : super(key: key);
@@ -48,6 +50,7 @@ class _DraggableWidgetState extends State<DraggableWidget> {
 
   void onTap() {
     print('tap!!!');
+    widget.onTap(notifier.value);
   }
 
   void onPressed() {

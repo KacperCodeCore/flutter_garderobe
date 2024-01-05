@@ -17,30 +17,21 @@ class ColectionElementAdapter extends TypeAdapter<ColectionElement> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ColectionElement(
-      name: fields[1] as String,
-      path: fields[2] as String,
-      matrix4: fields[3] as Matrix4,
-      height: fields[4] as double,
-      width: fields[5] as double,
+      matrix4: fields[1] as Matrix4,
+      myElement: fields[2] as MyElement,
     )..id = fields[0] as String;
   }
 
   @override
   void write(BinaryWriter writer, ColectionElement obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.name)
-      ..writeByte(2)
-      ..write(obj.path)
-      ..writeByte(3)
       ..write(obj.matrix4)
-      ..writeByte(4)
-      ..write(obj.height)
-      ..writeByte(5)
-      ..write(obj.width);
+      ..writeByte(2)
+      ..write(obj.myElement);
   }
 
   @override
