@@ -210,7 +210,7 @@ class _ColectionPageState extends State<ColectionPage> {
     Boxes.getColection().putAt(colectionIndex, colection);
   }
 
-  void _nextElement(Matrix4 m4, int index, MyElement myElement) {
+  void _elementOnTap(Matrix4 m4, int index, MyElement myElement, bool oneTap) {
     // myElement.type exsist ?
     //todo
     int ElementIndex = groupedElements[myElement.type]!
@@ -218,14 +218,23 @@ class _ColectionPageState extends State<ColectionPage> {
     if (ElementIndex == -1) return;
     if (groupedElements[myElement.type]!.length < 2) return;
 
-    if (ElementIndex >= groupedElements[myElement.type]!.length - 1) {
-      ElementIndex = 0;
+    if (oneTap) {
+      if (ElementIndex >= groupedElements[myElement.type]!.length - 1) {
+        ElementIndex = 0;
+      } else {
+        ElementIndex++;
+      }
     } else {
-      ElementIndex++;
+      if (ElementIndex == 0) {
+        ElementIndex = groupedElements[myElement.type]!.length - 1;
+      } else {
+        ElementIndex--;
+      }
     }
-    MyElement nextElement =
-        MyElement.copy(groupedElements[myElement.type]![ElementIndex]);
-    // myElement = newElement;
+
+    // MyElement nextElement =
+    //     MyElement.copy(groupedElements[myElement.type]![ElementIndex]);
+    MyElement nextElement = groupedElements[myElement.type]![ElementIndex];
 
     _updateColectionElement(index, m4, nextElement);
   }
@@ -457,13 +466,24 @@ class _ColectionPageState extends State<ColectionPage> {
                                         ),
                                       ),
                                       onTap: (m4) {
-                                        _nextElement(
+                                        print('tap');
+                                        _elementOnTap(
                                           m4,
                                           index,
                                           element.myElement,
+                                          true,
                                         );
                                       },
-                                      onDoubleTap: () {},
+                                      onDoubleTap: (m4) {
+                                        print('DoubleTap');
+                                        _elementOnTap(
+                                          m4,
+                                          index,
+                                          element.myElement,
+                                          false,
+                                        );
+                                      },
+                                      onPressed: () {},
                                       onSave: (m4) {
                                         print(
                                             'h ${element.myElement.height} w ${element.myElement.width}');

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/data/clother_type_adapter.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 

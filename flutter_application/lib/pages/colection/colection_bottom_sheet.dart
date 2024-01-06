@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/data/clother_type_adapter.dart';
 import '../../../assets/widgets/sheet_holder.dart';
 
-import '../../data/boxes.dart';
 import '../../data/my_element.dart';
 
 class ColectionBottomSheet extends StatefulWidget {

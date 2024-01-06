@@ -11,7 +11,8 @@ class DraggableWidget extends StatefulWidget {
   final double initRotation;
   final Matrix4? initMatrix4;
   final Function(Matrix4) onTap;
-  final Function onDoubleTap;
+  final Function(Matrix4) onDoubleTap;
+  final Function onPressed;
   final Function(Matrix4) onSave;
 
   DraggableWidget({
@@ -24,6 +25,7 @@ class DraggableWidget extends StatefulWidget {
     this.initMatrix4 = null,
     required this.onTap,
     required this.onDoubleTap,
+    required this.onPressed,
     required this.onSave,
   }) : super(key: key);
 
@@ -44,22 +46,20 @@ class _DraggableWidgetState extends State<DraggableWidget> {
 
   late ValueNotifier<Matrix4> notifier;
 
-  void onDoubleTap() {
-    print('DoubleTap!!!');
-  }
-
   void onTap() {
-    print('tap!!!');
     widget.onTap(notifier.value);
   }
 
+  void onDoubleTap() {
+    widget.onDoubleTap(notifier.value);
+  }
+
   void onPressed() {
+    widget.onPressed();
     print('onPressed!!!');
   }
 
-  void onTapCancel() {
-    print('onTapCancel!!!');
-  }
+  void onTapCancel() {}
 
   @override
   void initState() {
@@ -110,6 +110,7 @@ class _DraggableWidgetState extends State<DraggableWidget> {
             child: GestureDetector(
               onDoubleTap: onDoubleTap,
               onTap: onTap,
+              onLongPress: onPressed,
               child: Align(
                 alignment: Alignment.center,
                 child: FittedBox(

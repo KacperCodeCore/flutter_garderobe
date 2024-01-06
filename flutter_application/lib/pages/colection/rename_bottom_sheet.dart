@@ -13,8 +13,8 @@ class RenameAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _textController =
-        TextEditingController(text: name);
+    // final TextEditingController _textController =
+    TextEditingController(text: name);
 
     return AlertDialog(
       insetPadding: const EdgeInsets.all(2),
