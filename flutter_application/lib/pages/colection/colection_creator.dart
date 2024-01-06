@@ -11,13 +11,8 @@ class ColectionCreator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final TextEditingController _textController =
     TextEditingController(text: name);
-    return
-        // Padding(
-        // padding: const EdgeInsets.only(top: 15, bottom: 15),
-        // child:
-        Center(
+    return Center(
       child: Stack(
         children: [
           //container

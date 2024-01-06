@@ -80,6 +80,12 @@ class _HomeNavBarState extends State<HomeNavBar> {
     double _iconSize = 35;
     Color _iconColor = Colors.brown.shade300;
     Color _selectedIconColor = Colors.brown.shade600;
+    Shadow _shadow1 = BoxShadow(
+        // color: Colors.black.withOpacity(0.6),
+        // spreadRadius: 5,
+        // blurRadius: 20,
+        // offset: Offset(0, 2),
+        );
 
     return Scaffold(
       extendBody: true,
@@ -140,6 +146,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
                         color:
                             _pageIndex == 0 ? _selectedIconColor : _iconColor,
                         size: _iconSize,
+                        shadows: [if (_pageIndex != 0) _shadow1],
                       ),
                     ),
                     GestureDetector(
@@ -151,6 +158,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
                         color:
                             _pageIndex == 1 ? _selectedIconColor : _iconColor,
                         size: _iconSize,
+                        shadows: [if (_pageIndex != 1) _shadow1],
                       ),
                     ),
                     GestureDetector(
@@ -158,10 +166,11 @@ class _HomeNavBarState extends State<HomeNavBar> {
                         _navigateBottonNavBar(2);
                       },
                       child: Icon(
-                        Icons.add_a_photo_outlined,
+                        Icons.add_a_photo,
                         color:
                             _pageIndex == 2 ? _selectedIconColor : _iconColor,
                         size: _iconSize,
+                        shadows: [if (_pageIndex != 2) _shadow1],
                       ),
                     ),
                   ],

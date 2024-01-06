@@ -16,8 +16,16 @@ class PostFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color _color1 = Colors.brown.shade800;
+    Color _color1 = Colors.brown.shade200;
     Color _colorLikeIt = Colors.brown.shade200;
+    Color _colorLikeItOff = Colors.brown.shade800;
+    Shadow _shadow1 = BoxShadow(
+      color: Colors.black.withOpacity(0.6),
+      spreadRadius: 5,
+      blurRadius: 20,
+      offset: Offset(0, 2),
+    );
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -30,16 +38,8 @@ class PostFooter extends StatelessWidget {
                 icon: Icon(
                   Icons.favorite,
                   // size: 30,
-                  color: likeIt ? _colorLikeIt : _color1,
-                  shadows: [
-                    if (likeIt)
-                      (BoxShadow(
-                        color: Colors.black.withOpacity(0.6),
-                        spreadRadius: 5,
-                        blurRadius: 20,
-                        offset: Offset(0, 2),
-                      )),
-                  ],
+                  color: likeIt ? _colorLikeIt : _colorLikeItOff,
+                  shadows: [if (likeIt) _shadow1],
                 ),
               ),
               IconButton(
@@ -48,6 +48,7 @@ class PostFooter extends StatelessWidget {
                   Icons.comment,
                   // size: 30,
                   color: _color1,
+                  shadows: [_shadow1],
                 ),
               ),
             ],
@@ -61,6 +62,7 @@ class PostFooter extends StatelessWidget {
               Icons.edit,
               size: 30,
               color: _color1,
+              shadows: [_shadow1],
             ),
           ),
         ),

@@ -18,7 +18,14 @@ class ColectionFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color _color1 = Colors.brown.shade800;
+    Color _color1 = Colors.brown.shade200;
+    Shadow _shadow1 = BoxShadow(
+      color: Colors.black.withOpacity(0.6),
+      spreadRadius: 5,
+      blurRadius: 20,
+      offset: Offset(0, 2),
+    );
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -26,47 +33,49 @@ class ColectionFooter extends StatelessWidget {
           padding: EdgeInsets.only(left: 10),
           child: Row(
             children: [
+              SizedBox(
+                width: 20,
+              ),
               IconButton(
                 onPressed: previousPage,
                 icon: Icon(
                   Icons.keyboard_arrow_left_rounded,
-                  size: 30,
                   color: _color1,
+                  shadows: [_shadow1],
                 ),
               ),
               IconButton(
                 onPressed: nextPage,
                 icon: Icon(
                   Icons.keyboard_arrow_right_rounded,
-                  size: 30,
                   color: _color1,
+                  shadows: [_shadow1],
                 ),
               ),
               IconButton(
                 onPressed: addPage,
                 icon: Icon(
                   Icons.add_photo_alternate_rounded,
-                  size: 30,
                   color: _color1,
+                  shadows: [_shadow1],
                 ),
               ),
               IconButton(
                 onPressed: deletePage,
                 icon: Icon(
                   Icons.delete_forever,
-                  size: 30,
                   color: _color1,
+                  shadows: [_shadow1],
                 ),
               ),
               IconButton(
                 onPressed: rename,
                 icon: Icon(
                   Icons.edit,
-                  size: 30,
                   color: _color1,
+                  shadows: [_shadow1],
                 ),
               ),
-              // FloatingActionButton(onPressed: () {}),
             ],
           ),
         ),
