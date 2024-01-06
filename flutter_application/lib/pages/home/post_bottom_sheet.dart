@@ -17,7 +17,7 @@ class PostFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color _color1 = Colors.brown.shade800;
-    Color _colorLikeIt = Colors.brown.shade100;
+    Color _colorLikeIt = Colors.brown.shade200;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
