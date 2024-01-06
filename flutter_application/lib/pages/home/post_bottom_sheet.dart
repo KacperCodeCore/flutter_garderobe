@@ -31,6 +31,15 @@ class PostFooter extends StatelessWidget {
                   Icons.favorite,
                   // size: 30,
                   color: likeIt ? _colorLikeIt : _color1,
+                  shadows: [
+                    if (likeIt)
+                      (BoxShadow(
+                        color: Colors.black.withOpacity(0.6),
+                        spreadRadius: 5,
+                        blurRadius: 20,
+                        offset: Offset(0, 2),
+                      )),
+                  ],
                 ),
               ),
               IconButton(
