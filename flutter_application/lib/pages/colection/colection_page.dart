@@ -105,8 +105,12 @@ class _ColectionPageState extends State<ColectionPage> {
     });
   }
 
-  Future<void> _addElement(MyElement myElement) async {
+  Future<void> _addElement(MyElement myElement, [Matrix4? m4]) async {
     if (colections.isEmpty) return;
+
+    if (m4 == null) {
+      m4 = Matrix4.identity();
+    }
 
     double width = 200.0;
     double height = width * myElement.height / myElement.width;
@@ -126,7 +130,7 @@ class _ColectionPageState extends State<ColectionPage> {
     // );
 
     var colectionElement = ColectionElement(
-      matrix4: Matrix4.identity(),
+      matrix4: m4,
       myElement: myElement
         ..height = height
         ..width = width,
@@ -208,6 +212,11 @@ class _ColectionPageState extends State<ColectionPage> {
     colection.screenshotPath = newFilePath;
 
     Boxes.getColection().putAt(colectionIndex, colection);
+  }
+
+  void _elementOnPressed(Matrix4 m4, ColectionElement element) {
+    _deleteColectionElement(element.id);
+    _addElement(element.myElement, m4);
   }
 
   void _elementOnTap(Matrix4 m4, int index, MyElement myElement, bool oneTap) {
@@ -483,7 +492,9 @@ class _ColectionPageState extends State<ColectionPage> {
                                           false,
                                         );
                                       },
-                                      onPressed: () {},
+                                      onPressed: (m4) {
+                                        _elementOnPressed(m4, element);
+                                      },
                                       onSave: (m4) {
                                         print(
                                             'h ${element.myElement.height} w ${element.myElement.width}');
@@ -499,10 +510,7 @@ class _ColectionPageState extends State<ColectionPage> {
                                           );
                                           _TakeScreenshot();
                                         } else {
-                                          _deleteColectionElement(
-                                              colections[ColectionIndex]
-                                                  .elements[index]
-                                                  .id);
+                                          _deleteColectionElement(element.id);
                                           _TakeScreenshot();
                                         }
                                       },

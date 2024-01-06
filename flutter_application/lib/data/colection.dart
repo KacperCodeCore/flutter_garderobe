@@ -11,35 +11,15 @@ class ColectionElement {
   @HiveField(0)
   String id = Uuid().v4();
 
-  // @HiveField(1)
-  // String name;
-
   @HiveField(1)
   Matrix4 matrix4;
 
   @HiveField(2)
   MyElement myElement;
 
-  // @HiveField(2)
-  // String path;
-
-  // @HiveField(4)
-  // double height;
-
-  // @HiveField(5)
-  // double width;
-
-  // @HiveField(6)
-  // ClotherType type;
-
   ColectionElement({
-    // required this.name,
-    // required this.path,
     required this.matrix4,
     required this.myElement,
-    // required this.height,
-    // required this.width,
-    // required this.type,
   });
 }
 

@@ -12,7 +12,7 @@ class DraggableWidget extends StatefulWidget {
   final Matrix4? initMatrix4;
   final Function(Matrix4) onTap;
   final Function(Matrix4) onDoubleTap;
-  final Function onPressed;
+  final Function(Matrix4) onPressed;
   final Function(Matrix4) onSave;
 
   DraggableWidget({
@@ -55,8 +55,7 @@ class _DraggableWidgetState extends State<DraggableWidget> {
   }
 
   void onPressed() {
-    widget.onPressed();
-    print('onPressed!!!');
+    widget.onPressed(notifier.value);
   }
 
   void onTapCancel() {}
