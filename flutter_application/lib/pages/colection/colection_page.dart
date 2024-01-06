@@ -85,7 +85,7 @@ class _ColectionPageState extends State<ColectionPage> {
         return ColectionBottomSheet(
           groupedElements: groupedElements,
           onTap: (myElement) {
-            _addElement(myElement);
+            _addElement(MyElement.copy(myElement));
             _TakeScreenshot();
           },
         );
@@ -111,18 +111,25 @@ class _ColectionPageState extends State<ColectionPage> {
     double width = 200.0;
     double height = width * myElement.height / myElement.width;
 
-    MyElement newElement = MyElement(
-      id: myElement.id,
-      name: myElement.name,
-      path: myElement.path,
-      height: height,
-      width: width,
-      type: myElement.type,
-    );
+    // MyElement newElement = MyElement(
+    //   id: myElement.id,
+    //   name: myElement.name,
+    //   path: myElement.path,
+    //   height: height,
+    //   width: width,
+    //   type: myElement.type,
+    // );
+
+    // var colectionElement = ColectionElement(
+    //   matrix4: Matrix4.identity(),
+    //   myElement: newElement,
+    // );
 
     var colectionElement = ColectionElement(
       matrix4: Matrix4.identity(),
-      myElement: newElement,
+      myElement: myElement
+        ..height = height
+        ..width = width,
     );
 
     int index = _pageController.page!.round();
@@ -131,6 +138,8 @@ class _ColectionPageState extends State<ColectionPage> {
       // aktualizacjia kolekcji w Hive, aby zapisac zmiany.
       Boxes.getColection().getAt(index)!.elements.add(colectionElement);
       // jest to konieczne, aby Hive śledził i zapisywał zmiany.
+      // todo może podmienić?
+      // colections = Boxes.getColection().values.toList();
       Boxes.getColection().putAt(index, Boxes.getColection().getAt(index)!);
     });
   }
@@ -203,20 +212,19 @@ class _ColectionPageState extends State<ColectionPage> {
 
   void _nextElement(Matrix4 m4, int index, MyElement myElement) {
     // myElement.type exsist ?
-    int index = groupedElements[myElement.type]!
+    //todo
+    int ElementIndex = groupedElements[myElement.type]!
         .indexWhere((e) => e.id == myElement.id);
+    if (ElementIndex == -1) return;
+    if (groupedElements[myElement.type]!.length < 2) return;
 
-    if (groupedElements[myElement.type]!.length <= 1) return;
-
-    // finded element ?
-    if (index == -1) return;
-    if (index >= groupedElements.length) {
-      index = 0;
+    if (ElementIndex >= groupedElements[myElement.type]!.length - 1) {
+      ElementIndex = 0;
     } else {
-      index++;
+      ElementIndex++;
     }
     MyElement nextElement =
-        MyElement.copy(groupedElements[myElement.type]![index]);
+        MyElement.copy(groupedElements[myElement.type]![ElementIndex]);
     // myElement = newElement;
 
     _updateColectionElement(index, m4, nextElement);
