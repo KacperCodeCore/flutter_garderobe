@@ -475,25 +475,26 @@ class _ColectionPageState extends State<ColectionPage> {
                                         ),
                                       ),
                                       onTap: (m4) {
-                                        print('tap');
                                         _elementOnTap(
                                           m4,
                                           index,
                                           element.myElement,
                                           true,
                                         );
+                                        _TakeScreenshot();
                                       },
                                       onDoubleTap: (m4) {
-                                        print('DoubleTap');
                                         _elementOnTap(
                                           m4,
                                           index,
                                           element.myElement,
                                           false,
                                         );
+                                        _TakeScreenshot();
                                       },
                                       onPressed: (m4) {
                                         _elementOnPressed(m4, element);
+                                        _TakeScreenshot();
                                       },
                                       onSave: (m4) {
                                         print(
