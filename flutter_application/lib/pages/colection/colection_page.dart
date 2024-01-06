@@ -85,7 +85,7 @@ class _ColectionPageState extends State<ColectionPage> {
         return ColectionBottomSheet(
           groupedElements: groupedElements,
           onTap: (myElement) {
-            _addElement(MyElement.copy(myElement));
+            _addElement(myElement);
             _TakeScreenshot();
           },
         );
@@ -105,36 +105,23 @@ class _ColectionPageState extends State<ColectionPage> {
     });
   }
 
-  Future<void> _addElement(MyElement myElement, [Matrix4? m4]) async {
+  Future<void> _addElement(MyElement element, [Matrix4? m4]) async {
+    MyElement myElement = MyElement.copy(element);
     if (colections.isEmpty) return;
-
-    if (m4 == null) {
-      m4 = Matrix4.identity();
-    }
 
     double width = 200.0;
     double height = width * myElement.height / myElement.width;
 
-    // MyElement newElement = MyElement(
-    //   id: myElement.id,
-    //   name: myElement.name,
-    //   path: myElement.path,
-    //   height: height,
-    //   width: width,
-    //   type: myElement.type,
-    // );
-
-    // var colectionElement = ColectionElement(
-    //   matrix4: Matrix4.identity(),
-    //   myElement: newElement,
-    // );
-
-    var colectionElement = ColectionElement(
-      matrix4: m4,
-      myElement: myElement
-        ..height = height
-        ..width = width,
+    ColectionElement colectionElement = ColectionElement(
+      myElement: m4 != null
+          ? myElement
+          : (myElement
+            ..height = height
+            ..width = width),
+      matrix4: m4 ?? Matrix4.identity(),
     );
+    print(
+        'h: ${colectionElement.myElement.height} w: ${colectionElement.myElement.width}');
 
     int index = _pageController.page!.round();
     setState(() {
@@ -150,9 +137,14 @@ class _ColectionPageState extends State<ColectionPage> {
 
   void _updateColectionElement(
       int index, Matrix4 m4, MyElement myElement) async {
+    double width = 200.0;
+    double height = width * myElement.height / myElement.width;
+
     ColectionElement element = ColectionElement(
       matrix4: m4,
-      myElement: myElement,
+      myElement: myElement
+        ..height = height
+        ..width = width,
     );
 
     int colectionIndex = _pageController.page!.round();
@@ -475,6 +467,8 @@ class _ColectionPageState extends State<ColectionPage> {
                                         ),
                                       ),
                                       onTap: (m4) {
+                                        print(
+                                            'h: ${element.myElement.height} w: ${element.myElement.width}');
                                         _elementOnTap(
                                           m4,
                                           index,
@@ -482,8 +476,12 @@ class _ColectionPageState extends State<ColectionPage> {
                                           true,
                                         );
                                         _TakeScreenshot();
+                                        print(
+                                            'h: ${element.myElement.height} w: ${element.myElement.width}');
                                       },
                                       onDoubleTap: (m4) {
+                                        print(
+                                            'h: ${element.myElement.height} w: ${element.myElement.width}');
                                         _elementOnTap(
                                           m4,
                                           index,
@@ -491,10 +489,16 @@ class _ColectionPageState extends State<ColectionPage> {
                                           false,
                                         );
                                         _TakeScreenshot();
+                                        print(
+                                            'h: ${element.myElement.height} w: ${element.myElement.width}');
                                       },
                                       onPressed: (m4) {
+                                        print(
+                                            'h: ${element.myElement.height} w: ${element.myElement.width}');
                                         _elementOnPressed(m4, element);
                                         _TakeScreenshot();
+                                        print(
+                                            'h: ${element.myElement.height} w: ${element.myElement.width}');
                                       },
                                       onSave: (m4) {
                                         print(
