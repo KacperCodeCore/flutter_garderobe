@@ -95,7 +95,7 @@ class MyApp extends StatelessWidget {
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: Colors.brown.shade200,
           selectionColor: Colors.brown.shade200,
-          selectionHandleColor: Colors.brown.shade200,
+          selectionHandleColor: Colors.transparent,
         ),
         // bottomAppBarTheme: BottomAppBarTheme(color: Colors.brown.shade400),
         bottomSheetTheme: BottomSheetThemeData(
