@@ -66,7 +66,7 @@ class _ElementPageState extends State<ElementPage> {
       // scrollControlDisabledMaxHeightRatio: ,
       //todo o to robi?
       isScrollControlled: true,
-      backgroundColor: Colors.brown.shade400,
+      // backgroundColor: Colors.brown.shade400,
       context: context,
       builder: (BuildContext context) {
         return ElementBottomSheet(
@@ -93,7 +93,7 @@ class _ElementPageState extends State<ElementPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.brown.shade300,
+      // backgroundColor: Colors.brown.shade300,
       body:
           //https://www.youtube.com/watch?v=AloeoaZhjS8&ab_channel=MitchKoko
           MasonryGridView.builder(
@@ -103,21 +103,23 @@ class _ElementPageState extends State<ElementPage> {
         itemBuilder: (BuildContext context, int index) {
           return Padding(
             padding: const EdgeInsets.only(top: 2, left: 1, right: 1),
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              child: Container(
-                height: elements[index].height,
-                width: elements[index].height,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(1),
-                      spreadRadius: 50,
-                      blurRadius: 20,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
+            child: Container(
+              height: elements[index].height,
+              width: elements[index].height,
+              decoration: BoxDecoration(
+                color: Colors.brown.shade700,
+                borderRadius: BorderRadius.all(Radius.circular(25)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 3,
+                    blurRadius: 5,
+                    offset: Offset(0, 2),
+                  )
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
                 child: GestureDetector(
                   child: Image.file(
                       File(File(elements[index].path).existsSync()

@@ -79,7 +79,7 @@ class _DraggableWidgetState extends State<DraggableWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Color _borderColorOn = Color.fromARGB(255, 0, 255, 174);
+    Color _borderColorOn = Color.fromARGB(100, 0, 255, 174);
     Color _borderColorOff = Color.fromARGB(0, 0, 0, 0);
     bool _useingDraggalbe = false;
 
@@ -116,6 +116,8 @@ class _DraggableWidgetState extends State<DraggableWidget> {
                   fit: BoxFit.contain,
                   child: Container(
                     decoration: BoxDecoration(
+                      color:
+                          _useingDraggalbe ? _borderColorOn : _borderColorOff,
                       borderRadius: BorderRadius.all(Radius.circular(12)),
                       border: Border.all(
                         color:

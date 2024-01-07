@@ -16,6 +16,7 @@ import 'package:screenshot/screenshot.dart';
 
 import '../../data/application_data.dart';
 import '../../data/boxes.dart';
+import 'rename_bottom_sheet.dart';
 
 class ColectionPage extends StatefulWidget {
   final int collectionInitialIndex;
@@ -105,41 +106,24 @@ class _ColectionPageState extends State<ColectionPage> {
   }
 
   Future<void> _addElement(MyElement myElement, [Matrix4? m4]) async {
-    // MyElement myElement = MyElement.copy(element);
     if (colections.isEmpty) return;
-
-    // double width = 200.0;
-    // double height = width * myElement.height / myElement.width;
 
     ColectionElement colectionElement = ColectionElement(
       matrix4: m4 ?? Matrix4.identity(),
       myElement: myElement,
-      // ..height = height
-      // ..width = width,
     );
 
     int index = _pageController.page!.round();
     setState(() {
-      //todo za duzo operacji
-      // aktualizacjia kolekcji w Hive, aby zapisac zmiany.
       Boxes.getColection().getAt(index)!.elements.add(colectionElement);
-      // jest to konieczne, aby Hive śledził i zapisywał zmiany.
-      // todo może podmienić?
-      // colections = Boxes.getColection().values.toList();
-      // Boxes.getColection().putAt(index, Boxes.getColection().getAt(index)!);
     });
   }
 
   void _updateColectionElement(
       int index, Matrix4 m4, MyElement myElement) async {
-    // double width = 200.0;
-    // double height = width * myElement.height / myElement.width;
-
     ColectionElement element = ColectionElement(
       matrix4: m4,
       myElement: myElement,
-      // ..height = height
-      // ..width = width,
     );
 
     int colectionIndex = _pageController.page!.round();
@@ -159,7 +143,6 @@ class _ColectionPageState extends State<ColectionPage> {
   void _deleteColectionElement(String id) {
     int colectionIndex = _pageController.page!.round();
     Colection colection = Boxes.getColection().getAt(colectionIndex)!;
-    // colection.elements.removeAt(index);
     colection.elements.removeWhere((e) => e.id == id);
 
     setState(() {
@@ -181,9 +164,6 @@ class _ColectionPageState extends State<ColectionPage> {
         .toIso8601String()
         .replaceAll('.', '-')
         .replaceAll(':', '-');
-
-    // Directory appDocDir = await getApplicationDocumentsDirectory();
-    // String appDocPath = appDocDir.path;
 
     String newFilePath = '${Boxes.appDir}/Screenshoot$time';
 
@@ -331,47 +311,20 @@ class _ColectionPageState extends State<ColectionPage> {
   }
 
   void _showBottomRenameSheet() {
-    // showDialog(
-    //   context: context,
-    //   builder: (context) {
-    //     return RenameAlertDialog(
-    //       name: 'sdsdsd',
-    //       onSave: (String) {},
-    //     );
-    //   },
-    // );
+    if (colections.isEmpty) return;
+    int colectionIndex = _pageController.page!.round();
+    Colection colection = Boxes.getColection().getAt(colectionIndex)!;
 
-    showDialog(
+    showModalBottomSheet(
       context: context,
-      barrierDismissible: false,
       builder: (BuildContext context) {
-        return Stack(
-          children: [
-            Positioned.fill(
-              child: IgnorePointer(
-                ignoring: true,
-                child: Container(
-                  color: Colors.transparent,
-                ),
-              ),
-            ),
-            AlertDialog(
-              title: Text('Alert Dialog'),
-              content: SizedBox(
-                height: 200,
-                width: 200,
-                child: TextField(),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            ),
-          ],
+        return RenameBottomSheet(
+          name: colection.name,
+          onSave: (newName) {
+            colection.name = newName;
+            _updateColection(colection, colectionIndex);
+            Navigator.of(context).pop();
+          },
         );
       },
     );
