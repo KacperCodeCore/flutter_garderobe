@@ -1,23 +1,54 @@
 import 'package:flutter/material.dart';
 
-class RenameBottomSheet extends StatelessWidget {
-  final String name;
-  final Function(String) onSave;
+import '../../assets/widgets/sheet_holder.dart';
 
-  const RenameBottomSheet({
-    required this.name,
-    required this.onSave,
-  });
+class RenameBottomSheet extends StatelessWidget {
+  final TextEditingController textController;
+  final Function(String) updateCollection;
+  final String initialName;
+
+  RenameBottomSheet({
+    Key? key,
+    required this.textController,
+    required this.updateCollection,
+    required this.initialName,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // final TextEditingController _textController =
-    TextEditingController(text: name);
+    double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    double bottomSheetHeight = keyboardHeight + 150;
 
     return Container(
-      height: 100,
-      width: MediaQuery.of(context).size.width, // Set the width
-      child: TextField(),
+      height: bottomSheetHeight,
+      child: Column(
+        children: [
+          SheetHolder(),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 15, right: 15),
+              child: TextField(
+                  controller: textController,
+                  style: TextStyle(),
+                  decoration: InputDecoration(hintText: 'Collection Name'),
+                  maxLines: 1,
+                  maxLength: 16,
+                  textAlignVertical: TextAlignVertical.center),
+            ),
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.save_alt_rounded,
+              size: 40,
+            ),
+            onPressed: () {
+              updateCollection(textController.text);
+              Navigator.of(context).pop();
+            },
+          ),
+          SizedBox(height: keyboardHeight),
+        ],
+      ),
     );
   }
 }

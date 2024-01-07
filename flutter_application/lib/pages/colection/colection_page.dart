@@ -14,6 +14,7 @@ import 'package:flutter_application/pages/colection/draggable_widget.dart';
 
 import 'package:screenshot/screenshot.dart';
 
+import '../../assets/widgets/sheet_holder.dart';
 import '../../data/application_data.dart';
 import '../../data/boxes.dart';
 import 'rename_bottom_sheet.dart';
@@ -312,19 +313,25 @@ class _ColectionPageState extends State<ColectionPage> {
 
   void _showBottomRenameSheet() {
     if (colections.isEmpty) return;
+
     int colectionIndex = _pageController.page!.round();
     Colection colection = Boxes.getColection().getAt(colectionIndex)!;
 
+    final TextEditingController _textController = TextEditingController();
+    _textController.text = colection.name;
+
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (BuildContext context) {
         return RenameBottomSheet(
-          name: colection.name,
-          onSave: (newName) {
-            colection.name = newName;
+          textController: _textController,
+          updateCollection: (name) {
+            colection.name = name;
             _updateColection(colection, colectionIndex);
-            Navigator.of(context).pop();
+            _TakeScreenshot();
           },
+          initialName: colection.name,
         );
       },
     );
@@ -349,10 +356,10 @@ class _ColectionPageState extends State<ColectionPage> {
                     physics: NeverScrollableScrollPhysics(),
                     controller: _pageController,
                     itemCount: colections.length,
-                    itemBuilder: (context, ColectionIndex) {
+                    itemBuilder: (context, colectionIndex) {
                       final containerKey = GlobalKey();
                       return ColectionCreator(
-                        name: 'Name',
+                        name: colections[colectionIndex].name,
                         child: Container(
                           height: 600,
                           decoration: BoxDecoration(
@@ -374,9 +381,9 @@ class _ColectionPageState extends State<ColectionPage> {
                               color: Colors.brown.shade100,
                               child: Stack(
                                 children: List.generate(
-                                  colections[ColectionIndex].elements.length,
+                                  colections[colectionIndex].elements.length,
                                   (index) {
-                                    final element = colections[ColectionIndex]
+                                    final element = colections[colectionIndex]
                                         .elements[index];
 
                                     final GlobalKey _sizeBoxKey = GlobalKey();
