@@ -71,7 +71,7 @@ class ColectionFooter extends StatelessWidget {
               IconButton(
                 onPressed: rename,
                 icon: Icon(
-                  Icons.edit,
+                  Icons.drive_file_rename_outline_outlined,
                   color: _color1,
                   shadows: [_shadow1],
                 ),

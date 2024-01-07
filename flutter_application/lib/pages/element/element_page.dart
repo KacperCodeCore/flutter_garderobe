@@ -107,14 +107,14 @@ class _ElementPageState extends State<ElementPage> {
               height: elements[index].height,
               width: elements[index].height,
               decoration: BoxDecoration(
-                color: Colors.brown.shade700,
-                borderRadius: BorderRadius.all(Radius.circular(25)),
+                color: Colors.brown.shade400,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.2),
-                    spreadRadius: 3,
-                    blurRadius: 5,
-                    offset: Offset(0, 2),
+                    spreadRadius: 2,
+                    blurRadius: 2,
+                    offset: Offset(0, 1),
                   )
                 ],
               ),
