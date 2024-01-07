@@ -30,7 +30,6 @@ class ColectionPage extends StatefulWidget {
 }
 
 class _ColectionPageState extends State<ColectionPage> {
-  // var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
   List<MyElement> elements = [];
   Set<ClotherType> uniquetype = {};
   Map<ClotherType, List<MyElement>> groupedElements = {};
@@ -105,23 +104,19 @@ class _ColectionPageState extends State<ColectionPage> {
     });
   }
 
-  Future<void> _addElement(MyElement element, [Matrix4? m4]) async {
-    MyElement myElement = MyElement.copy(element);
+  Future<void> _addElement(MyElement myElement, [Matrix4? m4]) async {
+    // MyElement myElement = MyElement.copy(element);
     if (colections.isEmpty) return;
 
-    double width = 200.0;
-    double height = width * myElement.height / myElement.width;
+    // double width = 200.0;
+    // double height = width * myElement.height / myElement.width;
 
     ColectionElement colectionElement = ColectionElement(
-      myElement: m4 != null
-          ? myElement
-          : (myElement
-            ..height = height
-            ..width = width),
       matrix4: m4 ?? Matrix4.identity(),
+      myElement: myElement,
+      // ..height = height
+      // ..width = width,
     );
-    print(
-        'h: ${colectionElement.myElement.height} w: ${colectionElement.myElement.width}');
 
     int index = _pageController.page!.round();
     setState(() {
@@ -131,20 +126,20 @@ class _ColectionPageState extends State<ColectionPage> {
       // jest to konieczne, aby Hive śledził i zapisywał zmiany.
       // todo może podmienić?
       // colections = Boxes.getColection().values.toList();
-      Boxes.getColection().putAt(index, Boxes.getColection().getAt(index)!);
+      // Boxes.getColection().putAt(index, Boxes.getColection().getAt(index)!);
     });
   }
 
   void _updateColectionElement(
       int index, Matrix4 m4, MyElement myElement) async {
-    double width = 200.0;
-    double height = width * myElement.height / myElement.width;
+    // double width = 200.0;
+    // double height = width * myElement.height / myElement.width;
 
     ColectionElement element = ColectionElement(
       matrix4: m4,
-      myElement: myElement
-        ..height = height
-        ..width = width,
+      myElement: myElement,
+      // ..height = height
+      // ..width = width,
     );
 
     int colectionIndex = _pageController.page!.round();
@@ -213,7 +208,8 @@ class _ColectionPageState extends State<ColectionPage> {
 
   void _elementOnTap(Matrix4 m4, int index, MyElement myElement, bool oneTap) {
     // myElement.type exsist ?
-    //todo
+    if (!groupedElements.containsKey(myElement.type)) return;
+
     int ElementIndex = groupedElements[myElement.type]!
         .indexWhere((e) => e.id == myElement.id);
     if (ElementIndex == -1) return;
@@ -233,16 +229,10 @@ class _ColectionPageState extends State<ColectionPage> {
       }
     }
 
-    // MyElement nextElement =
-    //     MyElement.copy(groupedElements[myElement.type]![ElementIndex]);
     MyElement nextElement = groupedElements[myElement.type]![ElementIndex];
 
     _updateColectionElement(index, m4, nextElement);
   }
-
-  // void _previousElement() {
-  //   _updateColectionElement();d
-  // }
 
   bool _overlapsParent(GlobalKey key, GlobalKey containerKey) {
     //pobiera dane kontenera
@@ -389,13 +379,7 @@ class _ColectionPageState extends State<ColectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    // bool _isVisible = true;
-    // print('build ${Boxes.getColection().get(0)!.elements[0].matrix4}');
-
     return Scaffold(
-      // backgroundColor: Colors.brown.shade300,
-      // resizeToAvoidBottomInset: false,
-
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
@@ -467,8 +451,6 @@ class _ColectionPageState extends State<ColectionPage> {
                                         ),
                                       ),
                                       onTap: (m4) {
-                                        print(
-                                            'h: ${element.myElement.height} w: ${element.myElement.width}');
                                         _elementOnTap(
                                           m4,
                                           index,
@@ -476,12 +458,8 @@ class _ColectionPageState extends State<ColectionPage> {
                                           true,
                                         );
                                         _TakeScreenshot();
-                                        print(
-                                            'h: ${element.myElement.height} w: ${element.myElement.width}');
                                       },
                                       onDoubleTap: (m4) {
-                                        print(
-                                            'h: ${element.myElement.height} w: ${element.myElement.width}');
                                         _elementOnTap(
                                           m4,
                                           index,
@@ -489,25 +467,16 @@ class _ColectionPageState extends State<ColectionPage> {
                                           false,
                                         );
                                         _TakeScreenshot();
-                                        print(
-                                            'h: ${element.myElement.height} w: ${element.myElement.width}');
                                       },
                                       onPressed: (m4) {
-                                        print(
-                                            'h: ${element.myElement.height} w: ${element.myElement.width}');
                                         _elementOnPressed(m4, element);
                                         _TakeScreenshot();
-                                        print(
-                                            'h: ${element.myElement.height} w: ${element.myElement.width}');
                                       },
                                       onSave: (m4) {
-                                        print(
-                                            'h ${element.myElement.height} w ${element.myElement.width}');
                                         if (_overlapsParent(
                                           _sizeBoxKey,
                                           containerKey,
                                         )) {
-                                          print('saving');
                                           _updateColectionElement(
                                             index,
                                             m4,

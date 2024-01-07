@@ -39,12 +39,11 @@ class _UserHomeState extends State<UserHome> {
               SheetHolder(),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 15, top: 0),
+                  padding: const EdgeInsets.only(left: 15, right: 15),
                   child: TextField(
                     controller: _textController,
                     style: TextStyle(),
                     decoration: InputDecoration(hintText: 'Comment'),
-                    // autofocus: true,
                     maxLines: null,
                   ),
                 ),
@@ -84,8 +83,6 @@ class _UserHomeState extends State<UserHome> {
     });
   }
 
-  // void _onEditPress() {}
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,9 +96,7 @@ class _UserHomeState extends State<UserHome> {
             onLikeItPress: () => _onLikeitPress(index, colections[index]),
             onCommentPress: () => _showBottomSheet(index, colections[index]),
             onEditPress: () {
-              print('UserHome index: $index');
               widget.onEditPress(index);
-              print('UserHome index: $index');
             },
           );
         },

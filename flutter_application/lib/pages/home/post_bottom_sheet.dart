@@ -37,7 +37,6 @@ class PostFooter extends StatelessWidget {
                 onPressed: onLikeItPress,
                 icon: Icon(
                   Icons.favorite,
-                  // size: 30,
                   color: likeIt ? _colorLikeIt : _colorLikeItOff,
                   shadows: [if (likeIt) _shadow1],
                 ),
@@ -46,7 +45,6 @@ class PostFooter extends StatelessWidget {
                 onPressed: onCommentPress,
                 icon: Icon(
                   Icons.comment,
-                  // size: 30,
                   color: _color1,
                   shadows: [_shadow1],
                 ),
@@ -60,7 +58,6 @@ class PostFooter extends StatelessWidget {
             onPressed: onEditPress,
             icon: Icon(
               Icons.edit,
-              size: 30,
               color: _color1,
               shadows: [_shadow1],
             ),

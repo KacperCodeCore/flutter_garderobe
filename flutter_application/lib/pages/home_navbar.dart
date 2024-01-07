@@ -78,6 +78,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
   @override
   Widget build(BuildContext context) {
     double _iconSize = 35;
+    Color _color1 = Colors.brown.shade300;
     Color _iconColor = Colors.brown.shade300;
     Color _selectedIconColor = Colors.brown.shade600;
     Shadow _shadow1 = BoxShadow(
@@ -120,7 +121,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
                 color: Colors.brown[200],
                 borderRadius: BorderRadius.all(Radius.circular(25)),
                 border: Border.all(
-                  color: _selectedIconColor,
+                  color: _color1,
                   // width: 3,
                 ),
                 boxShadow: [

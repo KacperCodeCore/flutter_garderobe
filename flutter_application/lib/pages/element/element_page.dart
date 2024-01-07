@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/data/boxes.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'package:flutter_application/pages/element/element_bottom_sheet.dart';
-import 'package:flutter_application/pages/element/single_element.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ElementPage extends StatefulWidget {
   const ElementPage({super.key});
@@ -94,20 +94,42 @@ class _ElementPageState extends State<ElementPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.brown.shade300,
-      body: Center(
-        child: ListView.builder(
-          itemCount: elements.length,
-          itemBuilder: (BuildContext context, int index) {
-            return GestureDetector(
-              child: SingleElement(
-                name: elements[index].name,
-                path: elements[index].path,
+      body:
+          //https://www.youtube.com/watch?v=AloeoaZhjS8&ab_channel=MitchKoko
+          MasonryGridView.builder(
+        itemCount: elements.length,
+        gridDelegate:
+            SliverSimpleGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemBuilder: (BuildContext context, int index) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 2, left: 1, right: 1),
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              child: Container(
                 height: elements[index].height,
+                width: elements[index].height,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(1),
+                      spreadRadius: 50,
+                      blurRadius: 20,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: GestureDetector(
+                  child: Image.file(
+                      File(File(elements[index].path).existsSync()
+                          ? elements[index].path
+                          : '${Boxes.appDir}/null.png'),
+                      fit: BoxFit.fitWidth),
+                  onTap: () => {_showBottomSheet(elements[index], true)},
+                ),
               ),
-              onTap: () => {_showBottomSheet(elements[index], true)},
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

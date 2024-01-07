@@ -80,7 +80,7 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
     final height = decodeImage.height.toDouble();
     final width = decodeImage.width.toDouble();
     final scale = height / width;
-    final screenWidth = MediaQuery.of(context).size.width;
+    final screenWidth = (MediaQuery.of(context).size.width - 4) / 2;
 
     //todo removesetstate
     setState(() {
