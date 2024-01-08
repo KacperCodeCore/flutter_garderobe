@@ -104,6 +104,7 @@ class _ColectionPageState extends State<ColectionPage> {
     setState(() {
       colections = Boxes.getColection().values.toList();
     });
+    _TakeScreenshot();
   }
 
   Future<void> _addElement(MyElement myElement, [Matrix4? m4]) async {
