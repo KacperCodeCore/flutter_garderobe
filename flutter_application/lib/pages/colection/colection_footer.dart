@@ -18,13 +18,13 @@ class ColectionFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color _color1 = Colors.brown.shade200;
+    Color _color1 = Colors.brown.shade800;
     Shadow _shadow1 = BoxShadow(
-      color: Colors.black.withOpacity(0.6),
-      spreadRadius: 5,
-      blurRadius: 20,
-      offset: Offset(0, 2),
-    );
+        // color: Colors.black.withOpacity(0.6),
+        // spreadRadius: 5,
+        // blurRadius: 20,
+        // offset: Offset(0, 2),
+        );
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -87,7 +87,8 @@ class MyApp extends StatelessWidget {
           //   color: Colors.brown.shade900,
           // ),
         ),
-        scaffoldBackgroundColor: Colors.brown.shade400,
+
+        scaffoldBackgroundColor: Colors.brown.shade600,
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: Colors.brown.shade200,
           foregroundColor: Colors.brown.shade500,
