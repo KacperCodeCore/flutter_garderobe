@@ -6,6 +6,9 @@
         "dart-code.flutter",
         "pkief.material-icon-theme",
         "jeroen-meijer.pubspec-assist",
-        "gruntfuggly.todo-tree"
+        "gruntfuggly.todo-tree",
+        "illixion.vscode-vibrancy-continued",
+        "fabiospampinato.vscode-todo-plus",
+        "streetsidesoftware.code-spell-checker"
     ]
 }

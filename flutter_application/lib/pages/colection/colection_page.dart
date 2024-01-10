@@ -94,6 +94,7 @@ class _ColectionPageState extends State<ColectionPage> {
     );
   }
 
+  // TODO: Refactor everything
   void _addEmptyColection() {
     Colection newColection = Colection(
       name: 'name',
