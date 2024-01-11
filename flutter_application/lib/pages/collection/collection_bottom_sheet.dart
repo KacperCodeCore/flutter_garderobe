@@ -1,27 +1,28 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application/data/clother_type_adapter.dart';
+import 'package:flutter_application/data/clothe_type_adapter.dart';
 import '../../../assets/widgets/sheet_holder.dart';
 
 import '../../data/my_element.dart';
 
-class ColectionBottomSheet extends StatefulWidget {
+class CollectionBottomSheet extends StatefulWidget {
   final Function(MyElement) onTap;
-  final Map<ClotherType, List<MyElement>> groupedElements;
+  final Map<ClotheType, List<MyElement>> groupedElements;
 
-  ColectionBottomSheet({
+  CollectionBottomSheet({
     required this.onTap,
     super.key,
     required this.groupedElements,
   });
 
   @override
-  State<ColectionBottomSheet> createState() => _ColectionBottomSheetState();
+  State<CollectionBottomSheet> createState() => _CollectionBottomSheetState();
 }
 
-//todo
-class _ColectionBottomSheetState extends State<ColectionBottomSheet> {
+// Todo dsdsd
+
+class _CollectionBottomSheetState extends State<CollectionBottomSheet> {
   double _height = 100;
   double _fullHight = 100;
 

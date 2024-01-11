@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../assets/widgets/sheet_holder.dart';
 
 import '../../data/boxes.dart';
-import '../../data/colection.dart';
+import '../../data/collection.dart';
 import 'user_post.dart';
 
 class UserHome extends StatefulWidget {
@@ -19,11 +19,11 @@ class UserHome extends StatefulWidget {
 }
 
 class _UserHomeState extends State<UserHome> {
-  var colections = Boxes.getColection().values.toList().cast<Colection>();
+  var collections = Boxes.getCollection().values.toList().cast<Collection>();
 
   final TextEditingController _textController = TextEditingController();
 
-  void _showBottomSheet(int index, Colection collection) async {
+  void _showBottomSheet(int index, Collection collection) async {
     _textController.text = collection.comment;
     showModalBottomSheet(
       context: context,
@@ -67,19 +67,19 @@ class _UserHomeState extends State<UserHome> {
     );
   }
 
-  void _updateCollection(int index, Colection collection) async {
-    Boxes.getColection().putAt(index, collection);
+  void _updateCollection(int index, Collection collection) async {
+    Boxes.getCollection().putAt(index, collection);
     setState(() {
-      colections = Boxes.getColection().values.toList();
+      collections = Boxes.getCollection().values.toList();
     });
   }
 
-  void _onLikeitPress(int index, Colection collection) async {
+  void _onLikeItPress(int index, Collection collection) async {
     collection.likeIt = !collection.likeIt;
 
-    Boxes.getColection().putAt(index, collection);
+    Boxes.getCollection().putAt(index, collection);
     setState(() {
-      colections = Boxes.getColection().values.toList();
+      collections = Boxes.getCollection().values.toList();
     });
   }
 
@@ -87,14 +87,14 @@ class _UserHomeState extends State<UserHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView.builder(
-        itemCount: colections.length,
+        itemCount: collections.length,
         itemBuilder: (context, index) {
           return UserPost(
-            name: colections[index].name,
-            path: colections[index].screenshotPath,
-            likeIt: colections[index].likeIt,
-            onLikeItPress: () => _onLikeitPress(index, colections[index]),
-            onCommentPress: () => _showBottomSheet(index, colections[index]),
+            name: collections[index].name,
+            path: collections[index].screenshotPath,
+            likeIt: collections[index].likeIt,
+            onLikeItPress: () => _onLikeItPress(index, collections[index]),
+            onCommentPress: () => _showBottomSheet(index, collections[index]),
             onEditPress: () {
               widget.onEditPress(index);
             },

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ColectionCreator extends StatelessWidget {
+class CollectionCreator extends StatelessWidget {
   final String name;
   final Widget child;
 
-  ColectionCreator({
+  CollectionCreator({
     required this.name,
     required this.child,
   });

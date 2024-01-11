@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_application/data/boxes.dart';
-import 'package:flutter_application/data/clother_type_adapter.dart';
+import 'package:flutter_application/data/clothe_type_adapter.dart';
 import 'package:flutter_application/data/my_element.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -45,7 +45,7 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
           path: _nullPath,
           height: 200,
           width: 200,
-          type: ClotherType.none);
+          type: ClotheType.none);
     } else {
       _myElement = widget.myElement!;
     }
@@ -64,7 +64,7 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
       if (mounted) {}
 
       _myElement.path = image.path;
-      //todo usunąć setstete
+      //todo can i remove setState?
       setState(() {
         _setPictureSize();
       });
@@ -82,7 +82,7 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
     final scale = height / width;
     final screenWidth = (MediaQuery.of(context).size.width - 4) / 2;
 
-    //todo removesetstate
+    //todo can i remove setState?
     setState(() {
       _myElement.height = screenWidth * scale;
       _myElement.width = screenWidth;
@@ -139,7 +139,7 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
               // color: Colors.blue[100],
               child: ListView.builder(
                 controller: scrollController,
-                itemCount: ClotherType.values.length,
+                itemCount: ClotheType.values.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     title: ClipRRect(
@@ -151,7 +151,7 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
                         child: MaterialButton(
                           onPressed: () {
                             _myElement.type =
-                                ClotherType.values.elementAt(index);
+                                ClotheType.values.elementAt(index);
                             Navigator.of(context).pop();
                             // widget.update(_myElement);
                           },
@@ -159,7 +159,7 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                               '   ' +
-                                  ClotherType.values
+                                  ClotheType.values
                                       .elementAt(index)
                                       .toString()
                                       .split('.')

@@ -1,13 +1,14 @@
 import 'package:flutter_application/data/application_data.dart';
-import 'package:flutter_application/data/colection.dart';
+import 'package:flutter_application/data/collection.dart';
 import 'package:hive/hive.dart';
 import 'my_element.dart';
 
 class Boxes {
   static Box<MyElement> getMyElements() => Hive.box<MyElement>('myElementBox');
-  static Box<ColectionElement> getColectionElement() =>
-      Hive.box<ColectionElement>('colectionElementBox');
-  static Box<Colection> getColection() => Hive.box<Colection>('colectionBox');
+  static Box<CollectionElement> getCollectionElement() =>
+      Hive.box<CollectionElement>('collectionElementBox');
+  static Box<Collection> getCollection() =>
+      Hive.box<Collection>('collectionBox');
   // static Matrix4 m4 = Matrix4.identity();
 
   static Box<ApplicationData> getAppData() =>

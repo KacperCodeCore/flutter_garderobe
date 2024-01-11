@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-import 'clother_type_adapter.dart';
+import 'clothe_type_adapter.dart';
 
 part 'my_element.g.dart';
 
@@ -23,7 +23,7 @@ class MyElement {
   double width;
 
   @HiveField(5)
-  ClotherType type;
+  ClotheType type;
   MyElement({
     required this.id,
     required this.name,

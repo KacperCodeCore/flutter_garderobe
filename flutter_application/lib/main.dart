@@ -5,11 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_application/data/application_data.dart';
 import 'package:flutter_application/data/asset_exporter.dart';
 import 'package:flutter_application/data/boxes.dart';
-import 'package:flutter_application/data/colection.dart';
+import 'package:flutter_application/data/collection.dart';
 import 'package:flutter_application/data/matrix4_adapter.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'package:path_provider/path_provider.dart';
-import 'data/clother_type_adapter.dart';
+import 'data/clothe_type_adapter.dart';
 import 'pages/home_navbar.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -22,18 +22,19 @@ void main() async {
 
   // Register adapters for your models
   Hive.registerAdapter(Matrix4Adapter());
-  Hive.registerAdapter(ClotherTypeAdapter());
+
+  Hive.registerAdapter(ClotheTypeAdapter());
   Hive.registerAdapter(MyElementAdapter());
-  Hive.registerAdapter(ColectionElementAdapter());
-  Hive.registerAdapter(ColectionAdapter());
+  Hive.registerAdapter(CollectionElementAdapter());
+  Hive.registerAdapter(CollectionAdapter());
   Hive.registerAdapter(ApplicationDataAdapter());
 
   // Open boxes
   await Hive.openBox<MyElement>('myElementBox');
   // await Hive.deleteBoxFromDisk('myElementBox');
-  await Hive.openBox<ColectionElement>('colectionElementBox');
-  await Hive.openBox<Colection>('colectionBox');
-  // await Hive.deleteBoxFromDisk('colectionBox');
+  await Hive.openBox<CollectionElement>('collectionElementBox');
+  await Hive.openBox<Collection>('collectionBox');
+  // await Hive.deleteBoxFromDisk('collectionBox');
   await Hive.openBox<ApplicationData>('appDataBox');
   // await Hive.deleteBoxFromDisk('applicationDataBox');
   Directory myDir = await getApplicationDocumentsDirectory();
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    //transparent bacground for system buttons
+    //transparent background for system buttons
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       systemNavigationBarColor: Colors.transparent,
       systemNavigationBarDividerColor: null,
@@ -65,7 +66,7 @@ class MyApp extends StatelessWidget {
     // block screen rotation
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    // #endregion
+
     return MaterialApp(
       title: 'flutter_garderobe',
       debugShowCheckedModeBanner: false,
@@ -83,11 +84,7 @@ class MyApp extends StatelessWidget {
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide.none,
           ),
-          // labelStyle: TextStyle(
-          //   color: Colors.brown.shade900,
-          // ),
         ),
-
         scaffoldBackgroundColor: Colors.brown.shade600,
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: Colors.brown.shade200,
@@ -98,7 +95,6 @@ class MyApp extends StatelessWidget {
           selectionColor: Colors.brown.shade200,
           selectionHandleColor: Colors.transparent,
         ),
-        // bottomAppBarTheme: BottomAppBarTheme(color: Colors.brown.shade400),
         bottomSheetTheme: BottomSheetThemeData(
           backgroundColor: Colors.brown.shade400,
         ),
@@ -107,7 +103,6 @@ class MyApp extends StatelessWidget {
           color: Colors.brown.shade800,
         ),
       ),
-      // theme: ThemeData(primarySwatch: Colors.brown)
     );
   }
 }

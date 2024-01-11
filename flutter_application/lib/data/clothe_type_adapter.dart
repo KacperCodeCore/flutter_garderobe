@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-enum ClotherType {
+enum ClotheType {
   none,
   tShirt,
   jeans,
@@ -11,17 +11,17 @@ enum ClotherType {
   shorts,
 }
 
-class ClotherTypeAdapter extends TypeAdapter<ClotherType> {
+class ClotheTypeAdapter extends TypeAdapter<ClotheType> {
   @override
   final int typeId = 5; // Unique identifier for the adapter
 
   @override
-  ClotherType read(BinaryReader reader) {
-    return ClotherType.values[reader.readByte()];
+  ClotheType read(BinaryReader reader) {
+    return ClotheType.values[reader.readByte()];
   }
 
   @override
-  void write(BinaryWriter writer, ClotherType obj) {
+  void write(BinaryWriter writer, ClotheType obj) {
     writer.writeByte(obj.index);
   }
 }

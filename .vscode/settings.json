@@ -2,5 +2,8 @@
     "dartimportsorter.sortOnSave": true,
     "editor.formatOnSave": true,
     "dart.formatOnSave": true,
-    "todo-tree.tree.scanMode": "current file"
+    "todo-tree.tree.scanMode": "current file",
+    "cSpell.words": [
+        "ARGB"
+    ]
 }

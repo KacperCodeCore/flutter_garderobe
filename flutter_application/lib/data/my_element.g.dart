@@ -22,7 +22,7 @@ class MyElementAdapter extends TypeAdapter<MyElement> {
       path: fields[2] as String,
       height: fields[3] as double,
       width: fields[4] as double,
-      type: fields[5] as ClotherType,
+      type: fields[5] as ClotheType,
     );
   }
 

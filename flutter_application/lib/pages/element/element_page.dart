@@ -63,10 +63,8 @@ class _ElementPageState extends State<ElementPage> {
 
   void _showBottomSheet(MyElement? myElement, bool isEdited) {
     showModalBottomSheet(
-      // scrollControlDisabledMaxHeightRatio: ,
-      //todo o to robi?
+      //todo need this? ↓
       isScrollControlled: true,
-      // backgroundColor: Colors.brown.shade400,
       context: context,
       builder: (BuildContext context) {
         return ElementBottomSheet(
@@ -76,7 +74,6 @@ class _ElementPageState extends State<ElementPage> {
             _addMyElement(e);
             Navigator.of(context).pop();
           },
-          // update: (e) => _updateElement1(e),
           update: (e) {
             _updateElement(e);
             Navigator.of(context).pop();
@@ -93,7 +90,6 @@ class _ElementPageState extends State<ElementPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.brown.shade300,
       body:
           //https://www.youtube.com/watch?v=AloeoaZhjS8&ab_channel=MitchKoko
           MasonryGridView.builder(

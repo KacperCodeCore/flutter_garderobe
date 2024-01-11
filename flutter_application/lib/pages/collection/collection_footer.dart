@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ColectionFooter extends StatelessWidget {
+class CollectionFooter extends StatelessWidget {
   final VoidCallback previousPage;
   final VoidCallback nextPage;
   final VoidCallback addPage;
   final VoidCallback deletePage;
   final VoidCallback rename;
 
-  const ColectionFooter({
+  const CollectionFooter({
     super.key,
     required this.previousPage,
     required this.nextPage,

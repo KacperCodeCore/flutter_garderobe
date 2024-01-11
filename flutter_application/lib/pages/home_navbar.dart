@@ -5,7 +5,7 @@ import 'package:flutter_application/pages/element/element_page.dart';
 
 import 'package:flutter_application/pages/home/user_home_page.dart';
 
-import 'colection/colection_page.dart';
+import 'collection/collection_page.dart';
 
 class HomeNavBar extends StatefulWidget {
   const HomeNavBar({Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class HomeNavBar extends StatefulWidget {
 }
 
 class _HomeNavBarState extends State<HomeNavBar> {
-  GlobalKey _colectionKey = GlobalKey();
+  GlobalKey _collectionKey = GlobalKey();
   GlobalKey _elementKey = GlobalKey();
 
   int _pageIndex = 0;
@@ -26,10 +26,10 @@ class _HomeNavBarState extends State<HomeNavBar> {
         _onEditPress(index);
       },
     ),
-    ColectionPage(
-      key: _colectionKey,
+    CollectionPage(
+      key: _collectionKey,
       collectionInitialIndex:
-          Boxes.getAppData().get('appDataKey')!.colectionIndex,
+          Boxes.getAppData().get('appDataKey')!.collectionIndex,
     ),
     ElementPage(
       key: _elementKey,
@@ -41,15 +41,15 @@ class _HomeNavBarState extends State<HomeNavBar> {
     super.initState();
 
     if (!(Boxes.getAppData().containsKey('appDataKey'))) {
-      Boxes.getAppData().put('appDataKey', ApplicationData(colectionIndex: 0));
+      Boxes.getAppData().put('appDataKey', ApplicationData(collectionIndex: 0));
     }
   }
 
   void _onFBAPress() {
     if (_pageIndex == 1) {
       setState(() {
-        dynamic colectionPageState = _colectionKey.currentState;
-        colectionPageState?.handleFABPress();
+        dynamic collectionPageState = _collectionKey.currentState;
+        collectionPageState?.handleFABPress();
       });
     } else if (_pageIndex == 2) {
       setState(() {
@@ -60,16 +60,16 @@ class _HomeNavBarState extends State<HomeNavBar> {
   }
 
   void _onEditPress(int index) async {
-    await _updateColectionPage(index);
-    await _navigateBottonNavBar(1);
+    await _updateCollectionPage(index);
+    await _navigateBottomNavBar(1);
   }
 
-  Future<void> _updateColectionPage(int index) async {
+  Future<void> _updateCollectionPage(int index) async {
     Boxes.getAppData()
-        .put('appDataKey', ApplicationData(colectionIndex: index));
+        .put('appDataKey', ApplicationData(collectionIndex: index));
   }
 
-  Future<void> _navigateBottonNavBar(int pageIndex) async {
+  Future<void> _navigateBottomNavBar(int pageIndex) async {
     setState(() {
       _pageIndex = pageIndex;
     });
@@ -116,7 +116,6 @@ class _HomeNavBarState extends State<HomeNavBar> {
             SizedBox(height: 8),
             Container(
               padding: EdgeInsets.all(13),
-              // margin: EdgeInsets.only(top: 10),
               decoration: BoxDecoration(
                 color: Colors.brown[200],
                 borderRadius: BorderRadius.all(Radius.circular(25)),
@@ -140,7 +139,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        _navigateBottonNavBar(0);
+                        _navigateBottomNavBar(0);
                       },
                       child: Icon(
                         Icons.home,
@@ -152,7 +151,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        _navigateBottonNavBar(1);
+                        _navigateBottomNavBar(1);
                       },
                       child: Icon(
                         Icons.collections,
@@ -164,7 +163,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        _navigateBottonNavBar(2);
+                        _navigateBottomNavBar(2);
                       },
                       child: Icon(
                         Icons.add_a_photo,

@@ -4,39 +4,38 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_application/data/clother_type_adapter.dart';
-import 'package:flutter_application/data/colection.dart';
+import 'package:flutter_application/data/clothe_type_adapter.dart';
+import 'package:flutter_application/data/collection.dart';
 import 'package:flutter_application/data/my_element.dart';
-import 'package:flutter_application/pages/colection/colection_bottom_sheet.dart';
-import 'package:flutter_application/pages/colection/colection_creator.dart';
-import 'package:flutter_application/pages/colection/colection_footer.dart';
-import 'package:flutter_application/pages/colection/draggable_widget.dart';
+import 'package:flutter_application/pages/collection/collection_bottom_sheet.dart';
+import 'package:flutter_application/pages/collection/collection_creator.dart';
+import 'package:flutter_application/pages/collection/collection_footer.dart';
+import 'package:flutter_application/pages/collection/draggable_widget.dart';
 
 import 'package:screenshot/screenshot.dart';
 
-import '../../assets/widgets/sheet_holder.dart';
 import '../../data/application_data.dart';
 import '../../data/boxes.dart';
 import 'rename_bottom_sheet.dart';
 
-class ColectionPage extends StatefulWidget {
+class CollectionPage extends StatefulWidget {
   final int collectionInitialIndex;
 
-  const ColectionPage({
+  const CollectionPage({
     super.key,
     required this.collectionInitialIndex,
   });
 
   @override
-  State<ColectionPage> createState() => _ColectionPageState();
+  State<CollectionPage> createState() => _CollectionPageState();
 }
 
-class _ColectionPageState extends State<ColectionPage> {
+class _CollectionPageState extends State<CollectionPage> {
   List<MyElement> elements = [];
-  Set<ClotherType> uniquetype = {};
-  Map<ClotherType, List<MyElement>> groupedElements = {};
+  Set<ClotheType> uniqueType = {};
+  Map<ClotheType, List<MyElement>> groupedElements = {};
 
-  var colections = Boxes.getColection().values.toList().cast<Colection>();
+  var collections = Boxes.getCollection().values.toList().cast<Collection>();
   var appData = Boxes.getAppData().values.toList().cast<ApplicationData>();
 
   bool showButton = true;
@@ -47,9 +46,9 @@ class _ColectionPageState extends State<ColectionPage> {
   @override
   void initState() {
     elements = Boxes.getMyElements().values.toList().cast<MyElement>();
-    uniquetype = Boxes.getMyElements().values.map((e) => e.type).toSet();
+    uniqueType = Boxes.getMyElements().values.map((e) => e.type).toSet();
 
-    for (ClotherType type in uniquetype)
+    for (ClotheType type in uniqueType)
       groupedElements[type] =
           elements.where((element) => element.type == type).toList();
 
@@ -59,31 +58,31 @@ class _ColectionPageState extends State<ColectionPage> {
       });
     }
 
-    if (colections.isEmpty) {
-      _addEmptyColection();
+    if (collections.isEmpty) {
+      _addEmptyCollection();
     }
 
     super.initState();
 
     _pageController = PageController(
-      initialPage: Boxes.getAppData().get('appDataKey')!.colectionIndex,
+      initialPage: Boxes.getAppData().get('appDataKey')!.collectionIndex,
     );
 
     _pageController.addListener(() {
       Boxes.getAppData().put('appDataKey',
-          ApplicationData(colectionIndex: _pageController.page!.round()));
+          ApplicationData(collectionIndex: _pageController.page!.round()));
     });
   }
 
   void handleFABPress() {
-    if (colections.length == 0) return;
+    if (collections.length == 0) return;
     //todo DraggableScrollable
     showModalBottomSheet(
       backgroundColor: Colors.brown.shade400,
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
-        return ColectionBottomSheet(
+        return CollectionBottomSheet(
           groupedElements: groupedElements,
           onTap: (myElement) {
             _addElement(myElement);
@@ -94,63 +93,62 @@ class _ColectionPageState extends State<ColectionPage> {
     );
   }
 
-  // TODO: Refactor everything
-  void _addEmptyColection() {
-    Colection newColection = Colection(
+  void _addEmptyCollection() {
+    Collection newCollection = Collection(
       name: 'name',
       elements: [],
       lastEdited: DateTime.now(),
     );
-    Boxes.getColection().add(newColection);
+    Boxes.getCollection().add(newCollection);
     setState(() {
-      colections = Boxes.getColection().values.toList();
+      collections = Boxes.getCollection().values.toList();
     });
     _TakeScreenshot();
   }
 
   Future<void> _addElement(MyElement myElement, [Matrix4? m4]) async {
-    if (colections.isEmpty) return;
+    if (collections.isEmpty) return;
 
-    ColectionElement colectionElement = ColectionElement(
+    CollectionElement collectionElement = CollectionElement(
       matrix4: m4 ?? Matrix4.identity(),
       myElement: myElement,
     );
 
     int index = _pageController.page!.round();
     setState(() {
-      Boxes.getColection().getAt(index)!.elements.add(colectionElement);
+      Boxes.getCollection().getAt(index)!.elements.add(collectionElement);
     });
   }
 
-  void _updateColectionElement(
+  void _updateCollectionElement(
       int index, Matrix4 m4, MyElement myElement) async {
-    ColectionElement element = ColectionElement(
+    CollectionElement element = CollectionElement(
       matrix4: m4,
       myElement: myElement,
     );
 
-    int colectionIndex = _pageController.page!.round();
-    Colection colection = Boxes.getColection().getAt(colectionIndex)!;
-    colection.elements[index] = element;
+    int collectionIndex = _pageController.page!.round();
+    Collection collection = Boxes.getCollection().getAt(collectionIndex)!;
+    collection.elements[index] = element;
 
-    _updateColection(colection, colectionIndex);
+    _updateCollection(collection, collectionIndex);
   }
 
-  void _updateColection(Colection colection, int colectionIndex) {
+  void _updateCollection(Collection collection, int collectionIndex) {
     setState(() {
-      Boxes.getColection().putAt(colectionIndex, colection);
-      colections = Boxes.getColection().values.toList();
+      Boxes.getCollection().putAt(collectionIndex, collection);
+      collections = Boxes.getCollection().values.toList();
     });
   }
 
-  void _deleteColectionElement(String id) {
-    int colectionIndex = _pageController.page!.round();
-    Colection colection = Boxes.getColection().getAt(colectionIndex)!;
-    colection.elements.removeWhere((e) => e.id == id);
+  void _deleteCollectionElement(String id) {
+    int collectionIndex = _pageController.page!.round();
+    Collection collection = Boxes.getCollection().getAt(collectionIndex)!;
+    collection.elements.removeWhere((e) => e.id == id);
 
     setState(() {
-      Boxes.getColection().putAt(colectionIndex, colection);
-      colections = Boxes.getColection().values.toList();
+      Boxes.getCollection().putAt(collectionIndex, collection);
+      collections = Boxes.getCollection().values.toList();
     });
   }
 
@@ -168,29 +166,29 @@ class _ColectionPageState extends State<ColectionPage> {
         .replaceAll('.', '-')
         .replaceAll(':', '-');
 
-    String newFilePath = '${Boxes.appDir}/Screenshoot$time';
+    String newFilePath = '${Boxes.appDir}/ScreenShoot$time';
 
-    int colectionIndex = _pageController.page!.round();
-    String? oldFilePath = colections[colectionIndex].screenshotPath;
+    int collectionIndex = _pageController.page!.round();
+    String? oldFilePath = collections[collectionIndex].screenshotPath;
     if (oldFilePath != null && !(await File(oldFilePath).exists())) {
       File(oldFilePath).delete();
     }
     File file = File(newFilePath);
     await file.writeAsBytes(image);
 
-    Colection colection = Boxes.getColection().getAt(colectionIndex)!;
-    colection.screenshotPath = newFilePath;
+    Collection collection = Boxes.getCollection().getAt(collectionIndex)!;
+    collection.screenshotPath = newFilePath;
 
-    Boxes.getColection().putAt(colectionIndex, colection);
+    Boxes.getCollection().putAt(collectionIndex, collection);
   }
 
-  void _elementOnPressed(Matrix4 m4, ColectionElement element) {
-    _deleteColectionElement(element.id);
+  void _elementOnPressed(Matrix4 m4, CollectionElement element) {
+    _deleteCollectionElement(element.id);
     _addElement(element.myElement, m4);
   }
 
   void _elementOnTap(Matrix4 m4, int index, MyElement myElement, bool oneTap) {
-    // myElement.type exsist ?
+    // myElement.type exist ?
     if (!groupedElements.containsKey(myElement.type)) return;
 
     int ElementIndex = groupedElements[myElement.type]!
@@ -214,20 +212,20 @@ class _ColectionPageState extends State<ColectionPage> {
 
     MyElement nextElement = groupedElements[myElement.type]![ElementIndex];
 
-    _updateColectionElement(index, m4, nextElement);
+    _updateCollectionElement(index, m4, nextElement);
   }
 
   bool _overlapsParent(GlobalKey key, GlobalKey containerKey) {
-    //pobiera dane kontenera
-    RenderBox? contaiterBox =
+    //retrieves the data of Container
+    RenderBox? containerBox =
         containerKey.currentContext?.findRenderObject() as RenderBox;
-    Offset containerPisition = contaiterBox.localToGlobal(Offset.zero);
-    double containerMaxX = containerPisition.dx;
-    double containerMinX = containerPisition.dx + contaiterBox.size.width;
-    double containerMaxY = containerPisition.dy;
-    double containerMinY = containerPisition.dy + contaiterBox.size.height;
+    Offset containerPosition = containerBox.localToGlobal(Offset.zero);
+    double containerMaxX = containerPosition.dx;
+    double containerMinX = containerPosition.dx + containerBox.size.width;
+    double containerMaxY = containerPosition.dy;
+    double containerMinY = containerPosition.dy + containerBox.size.height;
 
-    // pobiera dane konkretnego dragablebox
+    // retrieves the data of a specific draggableBox
     RenderBox? draggableBox =
         key.currentContext?.findRenderObject() as RenderBox?;
 
@@ -242,7 +240,7 @@ class _ColectionPageState extends State<ColectionPage> {
     List<Offset> globalVertices =
         vertices.map((vertex) => draggableBox.localToGlobal(vertex)).toList();
 
-    // lista warunków do spełnienia
+    // list of conditions
     List<bool Function(Offset)> checkVertexBounds = [
       (Offset vertex) => vertex.dx > containerMaxX,
       (Offset vertex) => vertex.dx < containerMinX,
@@ -250,7 +248,7 @@ class _ColectionPageState extends State<ColectionPage> {
       (Offset vertex) => vertex.dy < containerMinY,
     ];
 
-    // sprawdza, czy wszystkie wierzchołki są po tej samej stronie poza rodzicem
+    // checks if all vertices are on the same side except the parent
     for (var item in checkVertexBounds) {
       int counter = 0;
 
@@ -270,15 +268,14 @@ class _ColectionPageState extends State<ColectionPage> {
 
   void _updateCollectionIndex() {
     Boxes.getAppData().put('appDataKey',
-        ApplicationData(colectionIndex: _pageController.page!.round()));
+        ApplicationData(collectionIndex: _pageController.page!.round()));
     print(
-        'page index: ${Boxes.getAppData().get('appDataKey')!.colectionIndex}');
+        'page index: ${Boxes.getAppData().get('appDataKey')!.collectionIndex}');
   }
 
   void _previousPage() {
     _pageController.previousPage(
       duration: Duration(milliseconds: 500),
-      //todo sprawdzić jak są inne opcje
       curve: Curves.easeInOut,
     );
     _updateCollectionIndex();
@@ -292,35 +289,35 @@ class _ColectionPageState extends State<ColectionPage> {
     _updateCollectionIndex();
   }
 
-  void _deleteCurrentColection() {
-    if (colections.isEmpty) return;
+  void _deleteCurrentCollection() {
+    if (collections.isEmpty) return;
 
     int currentPageIndex = _pageController.page!.round();
-    _deleteColection(currentPageIndex);
+    _deleteCollection(currentPageIndex);
     _updateCollectionIndex();
     setState(() {});
   }
 
-  void _deleteColection(int index) {
-    Boxes.getColection().deleteAt(index);
+  void _deleteCollection(int index) {
+    Boxes.getCollection().deleteAt(index);
     //todo rename collection
-    colections = Boxes.getColection().values.toList().cast<Colection>();
+    collections = Boxes.getCollection().values.toList().cast<Collection>();
   }
 
-  void _addColectionAndGoTo() {
-    _addEmptyColection();
-    _pageController.jumpToPage(colections.length - 1);
+  void _addCollectionAndGoTo() {
+    _addEmptyCollection();
+    _pageController.jumpToPage(collections.length - 1);
     _updateCollectionIndex();
   }
 
   void _showBottomRenameSheet() {
-    if (colections.isEmpty) return;
+    if (collections.isEmpty) return;
 
-    int colectionIndex = _pageController.page!.round();
-    Colection colection = Boxes.getColection().getAt(colectionIndex)!;
+    int collectionIndex = _pageController.page!.round();
+    Collection collection = Boxes.getCollection().getAt(collectionIndex)!;
 
     final TextEditingController _textController = TextEditingController();
-    _textController.text = colection.name;
+    _textController.text = collection.name;
 
     showModalBottomSheet(
       context: context,
@@ -329,11 +326,11 @@ class _ColectionPageState extends State<ColectionPage> {
         return RenameBottomSheet(
           textController: _textController,
           updateCollection: (name) {
-            colection.name = name;
-            _updateColection(colection, colectionIndex);
+            collection.name = name;
+            _updateCollection(collection, collectionIndex);
             _TakeScreenshot();
           },
-          initialName: colection.name,
+          initialName: collection.name,
         );
       },
     );
@@ -357,11 +354,11 @@ class _ColectionPageState extends State<ColectionPage> {
                   child: PageView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     controller: _pageController,
-                    itemCount: colections.length,
-                    itemBuilder: (context, colectionIndex) {
+                    itemCount: collections.length,
+                    itemBuilder: (context, collectionIndex) {
                       final containerKey = GlobalKey();
-                      return ColectionCreator(
-                        name: colections[colectionIndex].name,
+                      return CollectionCreator(
+                        name: collections[collectionIndex].name,
                         child: Container(
                           height: 600,
                           decoration: BoxDecoration(
@@ -383,9 +380,9 @@ class _ColectionPageState extends State<ColectionPage> {
                               color: Colors.brown.shade100,
                               child: Stack(
                                 children: List.generate(
-                                  colections[colectionIndex].elements.length,
+                                  collections[collectionIndex].elements.length,
                                   (index) {
-                                    final element = colections[colectionIndex]
+                                    final element = collections[collectionIndex]
                                         .elements[index];
 
                                     final GlobalKey _sizeBoxKey = GlobalKey();
@@ -439,14 +436,14 @@ class _ColectionPageState extends State<ColectionPage> {
                                           _sizeBoxKey,
                                           containerKey,
                                         )) {
-                                          _updateColectionElement(
+                                          _updateCollectionElement(
                                             index,
                                             m4,
                                             element.myElement,
                                           );
                                           _TakeScreenshot();
                                         } else {
-                                          _deleteColectionElement(element.id);
+                                          _deleteCollectionElement(element.id);
                                           _TakeScreenshot();
                                         }
                                       },
@@ -463,11 +460,11 @@ class _ColectionPageState extends State<ColectionPage> {
                 ),
               ),
             ),
-            ColectionFooter(
+            CollectionFooter(
               previousPage: _previousPage,
               nextPage: _nextPage,
-              deletePage: _deleteCurrentColection,
-              addPage: _addColectionAndGoTo,
+              deletePage: _deleteCurrentCollection,
+              addPage: _addCollectionAndGoTo,
               rename: _showBottomRenameSheet,
             ),
           ],

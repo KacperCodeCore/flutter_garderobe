@@ -33,7 +33,7 @@ class DraggableWidget extends StatefulWidget {
   _DraggableWidgetState createState() => _DraggableWidgetState();
 
   void dispose() {
-    //todo
+    // ToDo add dispose
   }
 }
 
@@ -81,11 +81,11 @@ class _DraggableWidgetState extends State<DraggableWidget> {
   Widget build(BuildContext context) {
     Color _borderColorOn = Color.fromARGB(100, 0, 255, 174);
     Color _borderColorOff = Color.fromARGB(0, 0, 0, 0);
-    bool _useingDraggalbe = false;
+    bool _usingDraggable = false;
 
     return MatrixGestureDetector(
       onMatrixUpdate: (m, tm, sm, rm) {
-        //służy do init matrix4 tylko raz przy utworzeniu
+        //init only one time set matrix 4
         if (canUseOnce) {
           currentMatrix = m..multiply(initialMatrix);
           canUseOnce = false;
@@ -95,10 +95,10 @@ class _DraggableWidgetState extends State<DraggableWidget> {
         isBeingUsed = true;
       },
       onScaleStart: () {
-        _useingDraggalbe = true;
+        _usingDraggable = true;
       },
       onScaleEnd: () {
-        _useingDraggalbe = false;
+        _usingDraggable = false;
         widget.onSave(notifier.value);
       },
       child: AnimatedBuilder(
@@ -116,12 +116,11 @@ class _DraggableWidgetState extends State<DraggableWidget> {
                   fit: BoxFit.contain,
                   child: Container(
                     decoration: BoxDecoration(
-                      color:
-                          _useingDraggalbe ? _borderColorOn : _borderColorOff,
+                      color: _usingDraggable ? _borderColorOn : _borderColorOff,
                       borderRadius: BorderRadius.all(Radius.circular(12)),
                       border: Border.all(
                         color:
-                            _useingDraggalbe ? _borderColorOn : _borderColorOff,
+                            _usingDraggable ? _borderColorOn : _borderColorOff,
                         width: 2.0,
                       ),
                     ),
@@ -138,8 +137,6 @@ class _DraggableWidgetState extends State<DraggableWidget> {
 
   @override
   void dispose() {
-    // timer.cancel(); // Dodaj tę linię
-    // Boxes.m4 = notifier.value;
     notifier.dispose();
     super.dispose();
   }

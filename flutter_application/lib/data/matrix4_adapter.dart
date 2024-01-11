@@ -4,11 +4,11 @@ import 'package:vector_math/vector_math_64.dart';
 
 class Matrix4Adapter extends TypeAdapter<Matrix4> {
   @override
-  final int typeId = 3; // Unikalny typeId
+  final int typeId = 3;
 
   @override
   Matrix4 read(BinaryReader reader) {
-    final data = Float64List(16); // Macierz 4x4
+    final data = Float64List(16); // matrix 4x4
 
     for (int i = 0; i < 16; i++) {
       data[i] = reader.readDouble();

@@ -4,10 +4,10 @@ import 'package:uuid/uuid.dart';
 
 import 'my_element.dart';
 
-part 'colection.g.dart';
+part 'collection.g.dart';
 
-@HiveType(typeId: 1, adapterName: 'ColectionElementAdapter')
-class ColectionElement {
+@HiveType(typeId: 1, adapterName: 'CollectionElementAdapter')
+class CollectionElement {
   @HiveField(0)
   String id = Uuid().v4();
 
@@ -17,14 +17,14 @@ class ColectionElement {
   @HiveField(2)
   MyElement myElement;
 
-  ColectionElement({
+  CollectionElement({
     required this.matrix4,
     required this.myElement,
   });
 }
 
-@HiveType(typeId: 2, adapterName: 'ColectionAdapter')
-class Colection {
+@HiveType(typeId: 2, adapterName: 'CollectionAdapter')
+class Collection {
   @HiveField(0)
   String id = Uuid().v4();
 
@@ -32,7 +32,7 @@ class Colection {
   String name;
 
   @HiveField(2)
-  List<ColectionElement> elements;
+  List<CollectionElement> elements;
 
   @HiveField(3)
   DateTime lastEdited;
@@ -46,7 +46,7 @@ class Colection {
   @HiveField(6)
   String comment = '';
 
-  Colection({
+  Collection({
     required this.name,
     required this.elements,
     required this.lastEdited,

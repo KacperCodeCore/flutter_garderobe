@@ -1,29 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'colection.dart';
+part of 'collection.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ColectionElementAdapter extends TypeAdapter<ColectionElement> {
+class CollectionElementAdapter extends TypeAdapter<CollectionElement> {
   @override
   final int typeId = 1;
 
   @override
-  ColectionElement read(BinaryReader reader) {
+  CollectionElement read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return ColectionElement(
+    return CollectionElement(
       matrix4: fields[1] as Matrix4,
       myElement: fields[2] as MyElement,
     )..id = fields[0] as String;
   }
 
   @override
-  void write(BinaryWriter writer, ColectionElement obj) {
+  void write(BinaryWriter writer, CollectionElement obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
@@ -40,24 +40,24 @@ class ColectionElementAdapter extends TypeAdapter<ColectionElement> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ColectionElementAdapter &&
+      other is CollectionElementAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class ColectionAdapter extends TypeAdapter<Colection> {
+class CollectionAdapter extends TypeAdapter<Collection> {
   @override
   final int typeId = 2;
 
   @override
-  Colection read(BinaryReader reader) {
+  Collection read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Colection(
+    return Collection(
       name: fields[1] as String,
-      elements: (fields[2] as List).cast<ColectionElement>(),
+      elements: (fields[2] as List).cast<CollectionElement>(),
       lastEdited: fields[3] as DateTime,
       screenshotPath: fields[4] as String?,
     )
@@ -67,7 +67,7 @@ class ColectionAdapter extends TypeAdapter<Colection> {
   }
 
   @override
-  void write(BinaryWriter writer, Colection obj) {
+  void write(BinaryWriter writer, Collection obj) {
     writer
       ..writeByte(7)
       ..writeByte(0)
@@ -92,7 +92,7 @@ class ColectionAdapter extends TypeAdapter<Colection> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ColectionAdapter &&
+      other is CollectionAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
