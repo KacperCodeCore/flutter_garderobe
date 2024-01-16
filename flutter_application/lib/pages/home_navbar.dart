@@ -45,16 +45,25 @@ class _HomeNavBarState extends State<HomeNavBar> {
     }
   }
 
-  void _onFBAPress() {
+  void _onFBAPress_0() {
+    if (_pageIndex == 2) {
+      setState(() {
+        dynamic elementPageState = _elementKey.currentState;
+        elementPageState?.handleFABPress_0();
+      });
+    }
+  }
+
+  void _onFBAPress_1() {
     if (_pageIndex == 1) {
       setState(() {
         dynamic collectionPageState = _collectionKey.currentState;
-        collectionPageState?.handleFABPress();
+        collectionPageState?.handleFABPress_1();
       });
     } else if (_pageIndex == 2) {
       setState(() {
         dynamic elementPageState = _elementKey.currentState;
-        elementPageState?.handleFABPress();
+        elementPageState?.handleFABPress_1();
       });
     }
   }
@@ -96,6 +105,24 @@ class _HomeNavBarState extends State<HomeNavBar> {
           margin: EdgeInsets.all(10),
           // color: Colors.red,
           child: Column(children: [
+            Visibility(
+              visible: _pageIndex == 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FloatingActionButton(
+                    onPressed: () {
+                      _onFBAPress_0();
+                    },
+                    child: Icon(Icons.door_sliding_outlined),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -103,7 +130,7 @@ class _HomeNavBarState extends State<HomeNavBar> {
                   visible: _pageIndex != 0,
                   child: FloatingActionButton(
                     onPressed: () {
-                      _onFBAPress();
+                      _onFBAPress_1();
                     },
                     child: Icon(Icons.add_rounded),
                   ),

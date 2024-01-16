@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/data/boxes.dart';
 import 'package:flutter_application/data/my_element.dart';
 import 'package:flutter_application/pages/element/element_bottom_sheet.dart';
+import 'package:flutter_application/pages/element/garderobe.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ElementPage extends StatefulWidget {
@@ -14,7 +15,11 @@ class ElementPage extends StatefulWidget {
 }
 
 class _ElementPageState extends State<ElementPage> {
-  void handleFABPress() {
+  void handleFABPress_0() {
+    _showBottomGarderobe();
+  }
+
+  void handleFABPress_1() {
     _showBottomSheet(null, false);
   }
 
@@ -59,6 +64,18 @@ class _ElementPageState extends State<ElementPage> {
     setState(() {
       elements = Boxes.getMyElements().values.toList();
     });
+  }
+
+  void _showBottomGarderobe() {
+    showModalBottomSheet(
+      //todo need this? ↓
+      isScrollControlled: true,
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Garderobe();
+      },
+    );
   }
 
   void _showBottomSheet(MyElement? myElement, bool isEdited) {

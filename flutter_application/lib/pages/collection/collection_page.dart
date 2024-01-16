@@ -74,7 +74,7 @@ class _CollectionPageState extends State<CollectionPage> {
     });
   }
 
-  void handleFABPress() {
+  void handleFABPress_1() {
     if (collections.length == 0) return;
     //todo DraggableScrollable
     showModalBottomSheet(
