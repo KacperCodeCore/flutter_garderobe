@@ -41,7 +41,7 @@ class Garderobe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 5, right: 5, bottom: 30),
+      padding: const EdgeInsets.only(left: 5, right: 5, bottom: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
