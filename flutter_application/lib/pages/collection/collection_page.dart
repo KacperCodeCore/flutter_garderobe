@@ -48,6 +48,7 @@ class _CollectionPageState extends State<CollectionPage> {
     elements = Boxes.getMyElements().values.toList().cast<MyElement>();
     uniqueType = Boxes.getMyElements().values.map((e) => e.type).toSet();
 
+    //todo ? shorter, maybe remove for?
     for (ClotheType type in uniqueType)
       groupedElements[type] =
           elements.where((element) => element.type == type).toList();

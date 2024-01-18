@@ -23,13 +23,14 @@ class MyElementAdapter extends TypeAdapter<MyElement> {
       height: fields[3] as double,
       width: fields[4] as double,
       type: fields[5] as ClotheType,
+      shelfIndex: fields[6] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, MyElement obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class MyElementAdapter extends TypeAdapter<MyElement> {
       ..writeByte(4)
       ..write(obj.width)
       ..writeByte(5)
-      ..write(obj.type);
+      ..write(obj.type)
+      ..writeByte(6)
+      ..write(obj.shelfIndex);
   }
 
   @override

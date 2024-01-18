@@ -18,15 +18,17 @@ class ApplicationDataAdapter extends TypeAdapter<ApplicationData> {
     };
     return ApplicationData(
       collectionIndex: fields[0] as int,
-    );
+    )..shelfIndex = fields[1] as int?;
   }
 
   @override
   void write(BinaryWriter writer, ApplicationData obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.collectionIndex);
+      ..write(obj.collectionIndex)
+      ..writeByte(1)
+      ..write(obj.shelfIndex);
   }
 
   @override

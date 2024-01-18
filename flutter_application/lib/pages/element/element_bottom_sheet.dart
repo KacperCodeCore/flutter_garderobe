@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/data/boxes.dart';
 import 'package:flutter_application/data/clothe_type_adapter.dart';
 import 'package:flutter_application/data/my_element.dart';
+import 'package:flutter_application/pages/element/garderobe.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
@@ -40,12 +41,14 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
   void initState() {
     if (widget.myElement == null) {
       _myElement = MyElement(
-          id: Uuid().v4(),
-          name: 'name',
-          path: _nullPath,
-          height: 200,
-          width: 200,
-          type: ClotheType.none);
+        id: Uuid().v4(),
+        name: 'name',
+        path: _nullPath,
+        height: 200,
+        width: 200,
+        type: ClotheType.none,
+        shelfIndex: 0,
+      );
     } else {
       _myElement = widget.myElement!;
     }
@@ -136,7 +139,6 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
           return Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Container(
-              // color: Colors.blue[100],
               child: ListView.builder(
                 controller: scrollController,
                 itemCount: ClotheType.values.length,
@@ -153,7 +155,6 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
                             _myElement.type =
                                 ClotheType.values.elementAt(index);
                             Navigator.of(context).pop();
-                            // widget.update(_myElement);
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -178,6 +179,26 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
           );
         },
       ),
+    );
+  }
+
+  void _setShelfIndex(index) async {
+    _myElement.shelfIndex = index;
+  }
+
+  void _showBottomGarderobe() {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return Garderobe(
+          onShelfUpdate: (index) {
+            _setShelfIndex(index);
+          },
+          initIndex: _myElement.shelfIndex ?? 0,
+        );
+      },
     );
   }
 
@@ -231,6 +252,16 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
                   ),
                   onPressed: () {
                     _showBottomSheetChooseEnums(context);
+                  },
+                ),
+                //garderobe shelfIndex
+                IconButton(
+                  icon: Icon(
+                    Icons.door_sliding_outlined,
+                    size: iconSize,
+                  ),
+                  onPressed: () {
+                    _showBottomGarderobe();
                   },
                 ),
                 //remove

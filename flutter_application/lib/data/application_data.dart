@@ -7,5 +7,10 @@ class ApplicationData {
   @HiveField(0)
   int collectionIndex;
 
-  ApplicationData({this.collectionIndex = 0});
+  @HiveField(1)
+  int? shelfIndex;
+
+  ApplicationData({
+    this.collectionIndex = 0,
+  });
 }

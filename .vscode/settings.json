@@ -4,6 +4,7 @@
     "dart.formatOnSave": true,
     "todo-tree.tree.scanMode": "current file",
     "cSpell.words": [
-        "ARGB"
+        "ARGB",
+        "Kalam"
     ]
 }

@@ -24,6 +24,10 @@ class MyElement {
 
   @HiveField(5)
   ClotheType type;
+
+  @HiveField(6)
+  int? shelfIndex;
+
   MyElement({
     required this.id,
     required this.name,
@@ -31,6 +35,7 @@ class MyElement {
     required this.height,
     required this.width,
     required this.type,
+    required this.shelfIndex,
   });
 
   MyElement.copy(MyElement other)
@@ -39,7 +44,8 @@ class MyElement {
         path = other.path,
         height = other.height,
         width = other.width,
-        type = other.type;
+        type = other.type,
+        shelfIndex = other.shelfIndex;
 }
 
 // flutter packages pub run build_runner build --delete-conflicting-outputs

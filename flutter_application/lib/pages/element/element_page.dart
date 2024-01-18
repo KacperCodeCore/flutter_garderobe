@@ -15,6 +15,29 @@ class ElementPage extends StatefulWidget {
 }
 
 class _ElementPageState extends State<ElementPage> {
+  List<MyElement> elements = [];
+  List<MyElement> elementsShelfIndex = [];
+  Map<int?, List<MyElement>> groupedElements = {};
+  int shelfIndex = 0;
+
+  @override
+  void initState() {
+    elements = Boxes.getMyElements().values.toList().cast<MyElement>();
+
+    _updateElementList();
+
+    super.initState();
+  }
+
+  void _updateElementList() {
+    // for (ClotheType type in uniqueType)
+    //   groupedElements[type] =
+    //       elements.where((element) => element.type == type).toList();
+
+    groupedElements[shelfIndex] =
+        elements.where((element) => element.shelfIndex == shelfIndex).toList();
+  }
+
   void handleFABPress_0() {
     _showBottomGarderobe();
   }
@@ -22,8 +45,6 @@ class _ElementPageState extends State<ElementPage> {
   void handleFABPress_1() {
     _showBottomSheet(null, false);
   }
-
-  var elements = Boxes.getMyElements().values.toList().cast<MyElement>();
 
   void _addMyElement(MyElement myElement) async {
     Boxes.getMyElements().add(myElement);
@@ -67,20 +88,35 @@ class _ElementPageState extends State<ElementPage> {
   }
 
   void _showBottomGarderobe() {
+    print(shelfIndex);
+
+    print(groupedElements[shelfIndex]);
     showModalBottomSheet(
-      //todo need this? ↓
       isScrollControlled: true,
       context: context,
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
-        return Garderobe();
+        return Garderobe(
+          onShelfUpdate: (index) {
+            setState(() {
+              shelfIndex = index;
+              _updateElementList();
+            });
+            print(shelfIndex);
+          },
+          initIndex: 1,
+        );
       },
     );
   }
 
   void _showBottomSheet(MyElement? myElement, bool isEdited) {
+    //todo remove ↓
+    if (myElement != null) {
+      print(myElement.shelfIndex);
+    }
+
     showModalBottomSheet(
-      //todo need this? ↓
       isScrollControlled: true,
       context: context,
       builder: (BuildContext context) {
@@ -110,15 +146,19 @@ class _ElementPageState extends State<ElementPage> {
       body:
           //https://www.youtube.com/watch?v=AloeoaZhjS8&ab_channel=MitchKoko
           MasonryGridView.builder(
-        itemCount: elements.length,
+        //todo
+        itemCount: groupedElements[shelfIndex] == null
+            ? 0
+            : groupedElements[shelfIndex]!.length,
         gridDelegate:
             SliverSimpleGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemBuilder: (BuildContext context, int index) {
           return Padding(
             padding: const EdgeInsets.only(top: 2, left: 1, right: 1),
             child: Container(
-              height: elements[index].height,
-              width: elements[index].height,
+              // height: elements[index].height,
+              height: groupedElements[shelfIndex]![index].height,
+              width: groupedElements[shelfIndex]![index].height,
               decoration: BoxDecoration(
                 color: Colors.brown.shade400,
                 borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -135,7 +175,8 @@ class _ElementPageState extends State<ElementPage> {
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 child: GestureDetector(
                   child: Image.file(
-                      File(File(elements[index].path).existsSync()
+                      File(File(groupedElements[shelfIndex]![index].path)
+                              .existsSync()
                           ? elements[index].path
                           : '${Boxes.appDir}/null.png'),
                       fit: BoxFit.fitWidth),

@@ -20,8 +20,6 @@ class CollectionBottomSheet extends StatefulWidget {
   State<CollectionBottomSheet> createState() => _CollectionBottomSheetState();
 }
 
-// Todo dsdsd
-
 class _CollectionBottomSheetState extends State<CollectionBottomSheet> {
   double _height = 100;
   double _fullHight = 100;
