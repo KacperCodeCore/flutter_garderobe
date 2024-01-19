@@ -5,7 +5,7 @@ class SheetHolder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color _color1 = Colors.brown.shade600;
+    Color _color1 = Colors.brown.shade700;
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(18.0),

@@ -114,7 +114,7 @@ class _GarderobeState extends State<Garderobe> {
                 color: _color3,
                 border: Border.all(width: 4, color: _color4),
               ),
-              height: 570,
+              height: 574,
               child: Padding(
                 padding: const EdgeInsets.only(
                     top: 15, left: 8, right: 8, bottom: 15),
