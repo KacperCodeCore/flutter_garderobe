@@ -8,9 +8,10 @@ class ApplicationData {
   int collectionIndex;
 
   @HiveField(1)
-  int? shelfIndex;
+  int shelfIndex;
 
   ApplicationData({
     this.collectionIndex = 0,
+    this.shelfIndex = 0,
   });
 }

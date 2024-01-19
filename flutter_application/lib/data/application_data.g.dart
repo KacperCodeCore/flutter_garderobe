@@ -18,7 +18,8 @@ class ApplicationDataAdapter extends TypeAdapter<ApplicationData> {
     };
     return ApplicationData(
       collectionIndex: fields[0] as int,
-    )..shelfIndex = fields[1] as int?;
+      shelfIndex: fields[1] as int,
+    );
   }
 
   @override

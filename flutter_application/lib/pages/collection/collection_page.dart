@@ -70,8 +70,10 @@ class _CollectionPageState extends State<CollectionPage> {
     );
 
     _pageController.addListener(() {
-      Boxes.getAppData().put('appDataKey',
-          ApplicationData(collectionIndex: _pageController.page!.round()));
+      Boxes.getAppData().put(
+        'appDataKey',
+        ApplicationData(collectionIndex: _pageController.page!.round()),
+      );
     });
   }
 

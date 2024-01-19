@@ -36,6 +36,8 @@ void main() async {
   await Hive.openBox<Collection>('collectionBox');
   // await Hive.deleteBoxFromDisk('collectionBox');
   await Hive.openBox<ApplicationData>('appDataBox');
+  // await Hive.deleteBoxFromDisk('appDataBox');
+
   // await Hive.deleteBoxFromDisk('applicationDataBox');
   Directory myDir = await getApplicationDocumentsDirectory();
   Boxes.appDir = myDir.path;

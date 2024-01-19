@@ -7,6 +7,8 @@ import 'package:flutter_application/pages/element/element_bottom_sheet.dart';
 import 'package:flutter_application/pages/element/garderobe.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
+import '../../data/application_data.dart';
+
 class ElementPage extends StatefulWidget {
   const ElementPage({super.key});
 
@@ -15,27 +17,43 @@ class ElementPage extends StatefulWidget {
 }
 
 class _ElementPageState extends State<ElementPage> {
+  var appData = Boxes.getAppData().values.toList().cast<ApplicationData>();
   List<MyElement> elements = [];
   List<MyElement> elementsShelfIndex = [];
   Map<int?, List<MyElement>> groupedElements = {};
-  int shelfIndex = 0;
+  late int _shelfIndex;
 
   @override
   void initState() {
     elements = Boxes.getMyElements().values.toList().cast<MyElement>();
 
-    _updateElementList();
+    if (appData.isEmpty) {
+      setState(() {
+        Boxes.getAppData().add(ApplicationData());
+      });
+    }
+    _shelfIndex = Boxes.getAppData().get('appDataKey')!.shelfIndex;
+    print(_shelfIndex);
+
+    _updateElementList(_shelfIndex);
 
     super.initState();
   }
 
-  void _updateElementList() {
-    // for (ClotheType type in uniqueType)
-    //   groupedElements[type] =
-    //       elements.where((element) => element.type == type).toList();
+  void _updateElementList(index) {
+    Boxes.getAppData().put(
+      'appDataKey',
+      ApplicationData(shelfIndex: index),
+    );
+    _shelfIndex = Boxes.getAppData().get('appDataKey')!.shelfIndex ?? 0;
 
-    groupedElements[shelfIndex] =
-        elements.where((element) => element.shelfIndex == shelfIndex).toList();
+    if (_shelfIndex == 0) {
+      groupedElements[_shelfIndex] = elements;
+    } else {
+      groupedElements[_shelfIndex] = elements
+          .where((element) => element.shelfIndex == _shelfIndex)
+          .toList();
+    }
   }
 
   void handleFABPress_0() {
@@ -88,9 +106,7 @@ class _ElementPageState extends State<ElementPage> {
   }
 
   void _showBottomGarderobe() {
-    print(shelfIndex);
-
-    print(groupedElements[shelfIndex]);
+    print(groupedElements[_shelfIndex]);
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -99,12 +115,11 @@ class _ElementPageState extends State<ElementPage> {
         return Garderobe(
           onShelfUpdate: (index) {
             setState(() {
-              shelfIndex = index;
-              _updateElementList();
+              _shelfIndex = index;
+              _updateElementList(_shelfIndex);
             });
-            print(shelfIndex);
           },
-          initIndex: 1,
+          initIndex: _shelfIndex,
         );
       },
     );
@@ -147,9 +162,9 @@ class _ElementPageState extends State<ElementPage> {
           //https://www.youtube.com/watch?v=AloeoaZhjS8&ab_channel=MitchKoko
           MasonryGridView.builder(
         //todo
-        itemCount: groupedElements[shelfIndex] == null
+        itemCount: groupedElements[_shelfIndex] == null
             ? 0
-            : groupedElements[shelfIndex]!.length,
+            : groupedElements[_shelfIndex]!.length,
         gridDelegate:
             SliverSimpleGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemBuilder: (BuildContext context, int index) {
@@ -157,8 +172,8 @@ class _ElementPageState extends State<ElementPage> {
             padding: const EdgeInsets.only(top: 2, left: 1, right: 1),
             child: Container(
               // height: elements[index].height,
-              height: groupedElements[shelfIndex]![index].height,
-              width: groupedElements[shelfIndex]![index].height,
+              height: groupedElements[_shelfIndex]![index].height,
+              width: groupedElements[_shelfIndex]![index].height,
               decoration: BoxDecoration(
                 color: Colors.brown.shade400,
                 borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -175,7 +190,7 @@ class _ElementPageState extends State<ElementPage> {
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 child: GestureDetector(
                   child: Image.file(
-                      File(File(groupedElements[shelfIndex]![index].path)
+                      File(File(groupedElements[_shelfIndex]![index].path)
                               .existsSync()
                           ? elements[index].path
                           : '${Boxes.appDir}/null.png'),
