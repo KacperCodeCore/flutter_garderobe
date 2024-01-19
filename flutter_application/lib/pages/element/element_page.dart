@@ -35,25 +35,31 @@ class _ElementPageState extends State<ElementPage> {
     _shelfIndex = Boxes.getAppData().get('appDataKey')!.shelfIndex;
     print(_shelfIndex);
 
-    _updateElementList(_shelfIndex);
+    _updateGroupedElements(_shelfIndex);
+
+    print(_shelfIndex);
 
     super.initState();
   }
 
-  void _updateElementList(index) {
-    Boxes.getAppData().put(
-      'appDataKey',
-      ApplicationData(shelfIndex: index),
-    );
-    _shelfIndex = Boxes.getAppData().get('appDataKey')!.shelfIndex ?? 0;
-
-    if (_shelfIndex == 0) {
-      groupedElements[_shelfIndex] = elements;
-    } else {
-      groupedElements[_shelfIndex] = elements
-          .where((element) => element.shelfIndex == _shelfIndex)
-          .toList();
+  void _updateGroupedElements(int? index) {
+    if (index != null) {
+      Boxes.getAppData().put(
+        'appDataKey',
+        ApplicationData(shelfIndex: index),
+      );
+      _shelfIndex = Boxes.getAppData().get('appDataKey')!.shelfIndex;
     }
+
+    setState(() {
+      if (_shelfIndex == 0) {
+        groupedElements[_shelfIndex] = elements;
+      } else {
+        groupedElements[_shelfIndex] = elements
+            .where((element) => element.shelfIndex == _shelfIndex)
+            .toList();
+      }
+    });
   }
 
   void handleFABPress_0() {
@@ -69,11 +75,11 @@ class _ElementPageState extends State<ElementPage> {
     setState(() {
       elements = Boxes.getMyElements().values.toList().cast<MyElement>();
     });
+    _updateGroupedElements(null);
   }
 
   void _deleteElement(MyElement myElement) async {
     _deleteImage(myElement.path);
-    // Boxes.getMyElements().delete(element);
     final box = Boxes.getMyElements();
     var index = box.values.toList().cast<MyElement>().indexOf(myElement);
     box.deleteAt(index);
@@ -116,7 +122,7 @@ class _ElementPageState extends State<ElementPage> {
           onShelfUpdate: (index) {
             setState(() {
               _shelfIndex = index;
-              _updateElementList(_shelfIndex);
+              _updateGroupedElements(_shelfIndex);
             });
           },
           initIndex: _shelfIndex,
@@ -126,11 +132,6 @@ class _ElementPageState extends State<ElementPage> {
   }
 
   void _showBottomSheet(MyElement? myElement, bool isEdited) {
-    //todo remove ↓
-    if (myElement != null) {
-      print(myElement.shelfIndex);
-    }
-
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
@@ -162,9 +163,7 @@ class _ElementPageState extends State<ElementPage> {
           //https://www.youtube.com/watch?v=AloeoaZhjS8&ab_channel=MitchKoko
           MasonryGridView.builder(
         //todo
-        itemCount: groupedElements[_shelfIndex] == null
-            ? 0
-            : groupedElements[_shelfIndex]!.length,
+        itemCount: groupedElements[_shelfIndex]!.length ?? 0,
         gridDelegate:
             SliverSimpleGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
         itemBuilder: (BuildContext context, int index) {
@@ -192,7 +191,7 @@ class _ElementPageState extends State<ElementPage> {
                   child: Image.file(
                       File(File(groupedElements[_shelfIndex]![index].path)
                               .existsSync()
-                          ? elements[index].path
+                          ? groupedElements[_shelfIndex]![index].path
                           : '${Boxes.appDir}/null.png'),
                       fit: BoxFit.fitWidth),
                   onTap: () => {_showBottomSheet(elements[index], true)},
