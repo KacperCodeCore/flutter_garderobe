@@ -112,11 +112,10 @@ class _ElementPageState extends State<ElementPage> {
   }
 
   void _showBottomGarderobe() {
-    print(groupedElements[_shelfIndex]);
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
-      backgroundColor: Colors.transparent,
+      // backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return Garderobe(
           onShelfUpdate: (index) {

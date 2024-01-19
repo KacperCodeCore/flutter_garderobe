@@ -303,7 +303,6 @@ class _CollectionPageState extends State<CollectionPage> {
 
   void _deleteCollection(int index) {
     Boxes.getCollection().deleteAt(index);
-    //todo rename collection
     collections = Boxes.getCollection().values.toList().cast<Collection>();
   }
 
