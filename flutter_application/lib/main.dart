@@ -21,12 +21,12 @@ void main() async {
   await Hive.initFlutter();
 
   // Register adapters for your models
-  Hive.registerAdapter(Matrix4Adapter());
-
-  Hive.registerAdapter(ClotheTypeAdapter());
   Hive.registerAdapter(MyElementAdapter());
+  Hive.registerAdapter(ClotheTypeAdapter());
   Hive.registerAdapter(CollectionElementAdapter());
   Hive.registerAdapter(CollectionAdapter());
+
+  Hive.registerAdapter(Matrix4Adapter());
   Hive.registerAdapter(ApplicationDataAdapter());
 
   // Open boxes
@@ -34,11 +34,8 @@ void main() async {
   // await Hive.deleteBoxFromDisk('myElementBox');
   await Hive.openBox<CollectionElement>('collectionElementBox');
   await Hive.openBox<Collection>('collectionBox');
-  // await Hive.deleteBoxFromDisk('collectionBox');
   await Hive.openBox<ApplicationData>('appDataBox');
-  // await Hive.deleteBoxFromDisk('appDataBox');
 
-  // await Hive.deleteBoxFromDisk('applicationDataBox');
   Directory myDir = await getApplicationDocumentsDirectory();
   Boxes.appDir = myDir.path;
 
@@ -49,19 +46,18 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     //transparent background for system buttons
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarDividerColor: null,
-      systemNavigationBarIconBrightness: Brightness.light,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarColor: Colors.transparent,
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarDividerColor: null,
+        systemNavigationBarIconBrightness: Brightness.light,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarColor: Colors.transparent,
+      ),
+    );
     // Setting SystemUIMode // from transparent
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge,
         overlays: [SystemUiOverlay.top]);
@@ -75,10 +71,11 @@ class MyApp extends StatelessWidget {
       home: HomeNavBar(),
       theme: ThemeData(
         textTheme: TextTheme(
-            bodyLarge: TextStyle(
-          color: Colors.brown.shade900,
-          fontSize: 20,
-        )),
+          bodyLarge: TextStyle(
+            color: Colors.brown.shade900,
+            fontSize: 20,
+          ),
+        ),
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
             borderSide: BorderSide.none,

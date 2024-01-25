@@ -8,7 +8,6 @@ part 'my_element.g.dart';
 class MyElement {
   @HiveField(0)
   String id;
-  // String? id = Uuid().v4();
 
   @HiveField(1)
   String name;
@@ -37,15 +36,6 @@ class MyElement {
     required this.type,
     required this.shelfIndex,
   });
-
-  MyElement.copy(MyElement other)
-      : id = other.id,
-        name = other.name,
-        path = other.path,
-        height = other.height,
-        width = other.width,
-        type = other.type,
-        shelfIndex = other.shelfIndex;
 }
 
 // flutter packages pub run build_runner build --delete-conflicting-outputs
