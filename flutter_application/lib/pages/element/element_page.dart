@@ -74,8 +74,8 @@ class _ElementPageState extends State<ElementPage> {
     Boxes.getMyElements().add(myElement);
     setState(() {
       elements = Boxes.getMyElements().values.toList().cast<MyElement>();
+      _updateGroupedElements(null);
     });
-    _updateGroupedElements(null);
   }
 
   void _deleteElement(MyElement myElement) async {
@@ -86,6 +86,7 @@ class _ElementPageState extends State<ElementPage> {
     setState(
       () {
         elements = box.values.toList().cast<MyElement>();
+        _updateGroupedElements(null);
       },
     );
   }
@@ -108,6 +109,7 @@ class _ElementPageState extends State<ElementPage> {
     Boxes.getMyElements().putAt(index, myElement);
     setState(() {
       elements = Boxes.getMyElements().values.toList();
+      _updateGroupedElements(null);
     });
   }
 

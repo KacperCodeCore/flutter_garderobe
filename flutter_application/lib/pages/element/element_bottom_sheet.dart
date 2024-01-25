@@ -190,7 +190,6 @@ class _ElementBottomSheetState extends State<ElementBottomSheet> {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
-      backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
         return Garderobe(
           onShelfUpdate: (index) {
