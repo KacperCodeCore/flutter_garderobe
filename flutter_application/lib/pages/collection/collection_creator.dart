@@ -55,7 +55,6 @@ class CollectionCreator extends StatelessWidget {
           ),
         ],
       ),
-      // ),
     );
   }
 }

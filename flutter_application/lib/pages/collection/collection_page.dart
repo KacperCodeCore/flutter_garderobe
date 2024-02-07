@@ -89,7 +89,7 @@ class _CollectionPageState extends State<CollectionPage> {
           groupedElements: groupedElements,
           onTap: (myElement) {
             _addElement(myElement);
-            _TakeScreenshot();
+            _takeScreenshot();
           },
         );
       },
@@ -106,7 +106,7 @@ class _CollectionPageState extends State<CollectionPage> {
     setState(() {
       collections = Boxes.getCollection().values.toList();
     });
-    _TakeScreenshot();
+    _takeScreenshot();
   }
 
   Future<void> _addElement(MyElement myElement, [Matrix4? m4]) async {
@@ -155,7 +155,7 @@ class _CollectionPageState extends State<CollectionPage> {
     });
   }
 
-  void _TakeScreenshot() async {
+  void _takeScreenshot() async {
     _screenshotController.capture().then((Uint8List? image) {
       _saveScreenshot(image!);
     }).catchError((error) {
@@ -330,7 +330,7 @@ class _CollectionPageState extends State<CollectionPage> {
           updateCollection: (name) {
             collection.name = name;
             _updateCollection(collection, collectionIndex);
-            _TakeScreenshot();
+            _takeScreenshot();
           },
           initialName: collection.name,
         );
@@ -418,7 +418,7 @@ class _CollectionPageState extends State<CollectionPage> {
                                           element.myElement,
                                           true,
                                         );
-                                        _TakeScreenshot();
+                                        _takeScreenshot();
                                       },
                                       onDoubleTap: (m4) {
                                         _elementOnTap(
@@ -427,11 +427,11 @@ class _CollectionPageState extends State<CollectionPage> {
                                           element.myElement,
                                           false,
                                         );
-                                        _TakeScreenshot();
+                                        _takeScreenshot();
                                       },
                                       onPressed: (m4) {
                                         _elementOnPressed(m4, element);
-                                        _TakeScreenshot();
+                                        _takeScreenshot();
                                       },
                                       onSave: (m4) {
                                         if (_overlapsParent(
@@ -443,10 +443,10 @@ class _CollectionPageState extends State<CollectionPage> {
                                             m4,
                                             element.myElement,
                                           );
-                                          _TakeScreenshot();
+                                          _takeScreenshot();
                                         } else {
                                           _deleteCollectionElement(element.id);
-                                          _TakeScreenshot();
+                                          _takeScreenshot();
                                         }
                                       },
                                     );
@@ -477,8 +477,7 @@ class _CollectionPageState extends State<CollectionPage> {
 
   @override
   void dispose() {
-    // _keyboardVisibilitySubscription.cancel();
-    _TakeScreenshot();
+    _takeScreenshot();
     _pageController.dispose();
     super.dispose();
   }
