@@ -1,0 +1,10 @@
+Instrukcja Uruchomienia Aplikacji
+1.	Instalacja VS Code:
+•	Zainstaluj Visual Studio Code (VS Code) na swoim komputerze. VS Code jest dostępny do pobrania na oficjalnej stronie internetowej. Środowisko to zapewnia wsparcie dla Fluttera oraz Dart, co jest niezbędne do pracy nad aplikacją.
+link: https://docs.flutter.dev/get-started/install
+
+2.	Przygotowanie urządzenia z Androidem:
+•	Aplikacja została zaprojektowana z myślą o optymalnym działaniu na telefonie Samsung Galaxy S23. Jednakże, zaleca się użycie Samsung Galaxy S9 lub nowszego modelu, aby zapewnić kompatybilność i optymalne warunki testowe.
+•	Podłącz telefon z Androidem do komputera za pomocą kabla USB. Następnie, upewnij się, że w ustawieniach systemu Android na urządzeniu włączone są opcje programistyczne oraz debugowanie przez USB. Pozwoli to na bezpośrednie uruchamianie i testowanie aplikacji na urządzeniu.
+
+Po skonfigurowaniu środowiska programistycznego w VS Code i przygotowaniu urządzenia mobilnego, możesz przejść do uruchomienia aplikacji. W tym celu otwórz folder projektu aplikacji w VS Code, a następnie skorzystaj z terminala wbudowanego, aby wykonać odpowiednie polecenia dla instalacji zależności i uruchomienia aplikacji na podłączonym urządzeniu z systemem Android.

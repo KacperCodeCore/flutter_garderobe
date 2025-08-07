@@ -17,16 +17,20 @@ class MyElementAdapter extends TypeAdapter<MyElement> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MyElement(
+      id: fields[0] as String,
       name: fields[1] as String,
       path: fields[2] as String,
       height: fields[3] as double,
-    )..id = fields[0] as String;
+      width: fields[4] as double,
+      type: fields[5] as ClotheType,
+      shelfIndex: fields[6] as int?,
+    );
   }
 
   @override
   void write(BinaryWriter writer, MyElement obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -34,7 +38,13 @@ class MyElementAdapter extends TypeAdapter<MyElement> {
       ..writeByte(2)
       ..write(obj.path)
       ..writeByte(3)
-      ..write(obj.height);
+      ..write(obj.height)
+      ..writeByte(4)
+      ..write(obj.width)
+      ..writeByte(5)
+      ..write(obj.type)
+      ..writeByte(6)
+      ..write(obj.shelfIndex);
   }
 
   @override

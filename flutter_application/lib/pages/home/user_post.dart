@@ -1,66 +1,41 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_application/pages/home/post_bottom_sheet.dart';
 
 class UserPost extends StatelessWidget {
   final String name;
+  final String? path;
+  final bool likeIt;
+  final VoidCallback onLikeItPress;
+  final VoidCallback onCommentPress;
+  final VoidCallback onEditPress;
 
-  UserPost({required this.name});
+  UserPost({
+    required this.name,
+    required this.path,
+    required this.onLikeItPress,
+    required this.likeIt,
+    required this.onCommentPress,
+    required this.onEditPress,
+  });
 
   @override
   Widget build(BuildContext context) {
+    // double screenWidth = MediaQuery.of(context).size.width;
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            children: [
-              // profile logo
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  shape: BoxShape.circle,
-                ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              // nick name
-              Text(
-                name,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Spacer(),
-              // menu icon
-              Icon(Icons.menu),
-            ],
-          ),
-        ),
-        //Post
+        // post
         Container(
-          height: 400,
-          color: Colors.grey,
+          height: 630,
+          child: path != null ? Image.file(File(path!)) : null,
         ),
-        // below the post
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Row(
-                children: [
-                  Icon(Icons.favorite),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Icon(Icons.chat),
-                  ),
-                  Icon(Icons.share),
-                ],
-              ),
-              // Spacer(),
-              Icon(Icons.bookmark)
-            ],
-          ),
+        // padding
+        PostFooter(
+          likeIt: likeIt,
+          onLikeItPress: onLikeItPress,
+          onCommentPress: onCommentPress,
+          onEditPress: onEditPress,
         )
       ],
     );

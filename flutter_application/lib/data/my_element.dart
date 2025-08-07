@@ -1,12 +1,13 @@
 import 'package:hive/hive.dart';
-import 'package:uuid/uuid.dart';
+
+import 'clothe_type_adapter.dart';
 
 part 'my_element.g.dart';
 
 @HiveType(typeId: 0, adapterName: 'MyElementAdapter')
 class MyElement {
   @HiveField(0)
-  String id = Uuid().v4();
+  String id;
 
   @HiveField(1)
   String name;
@@ -17,10 +18,23 @@ class MyElement {
   @HiveField(3)
   double height;
 
+  @HiveField(4)
+  double width;
+
+  @HiveField(5)
+  ClotheType type;
+
+  @HiveField(6)
+  int? shelfIndex;
+
   MyElement({
+    required this.id,
     required this.name,
     required this.path,
     required this.height,
+    required this.width,
+    required this.type,
+    required this.shelfIndex,
   });
 }
 
