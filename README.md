@@ -18,3 +18,6 @@ View and manage all saved styling collections in a central Home gallery. You can
 ---
 ## 🎥 Watch video
 [▶️ Watch the demo video](https://kacpercodecore.github.io/flutter_garderobe/flutter_application/lib/assets/videos/Screen_Recording_20250806_220848.mp4)
+
+## Technical issues
+The app may not work properly on devices other than the Samsung s23.
